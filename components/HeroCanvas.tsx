@@ -274,6 +274,7 @@ const Scene = ({ scrollY, isActive = true }: { scrollY?: MotionValue<number>; is
     const spotLightRef = useRef<THREE.SpotLight>(null);
     const ambientLightRef = useRef<THREE.AmbientLight>(null);
     const dirLightRef = useRef<THREE.DirectionalLight>(null);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     // Find the camera named "sh_cam"
     const shCam = useMemo(() => {
@@ -370,16 +371,18 @@ const Scene = ({ scrollY, isActive = true }: { scrollY?: MotionValue<number>; is
             <Environment preset="city" environmentIntensity={0.4} />
             <fog attach="fog" args={['#000000', 5, 35]} />
 
-            <EffectComposer multisampling={0}>
-                <Bloom
-                    luminanceThreshold={1}
-                    mipmapBlur
-                    intensity={0.2}
-                    radius={0.4}
-                />
-                <Noise opacity={0.015} />
-                <Vignette eskil={false} offset={0.1} darkness={1.1} />
-            </EffectComposer>
+            {!isMobile && (
+                <EffectComposer multisampling={0}>
+                    <Bloom
+                        luminanceThreshold={1}
+                        mipmapBlur
+                        intensity={0.2}
+                        radius={0.4}
+                    />
+                    <Noise opacity={0.015} />
+                    <Vignette eskil={false} offset={0.1} darkness={1.1} />
+                </EffectComposer>
+            )}
         </>
     );
 };

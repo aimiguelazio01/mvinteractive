@@ -604,6 +604,8 @@ const Section05Experience: React.FC = () => {
 
     const getImgPath = (i: number) => `/assets/images/vfx/vfx_${(i + 1).toString().padStart(2, '0')}.png`;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none">
             <Canvas
@@ -627,13 +629,15 @@ const Section05Experience: React.FC = () => {
 
                     <Environment files="/assets/3d/s05/moon_lab_1k.hdr" />
 
-                    <ContactShadows
-                        position={[0, -7, 0]}
-                        opacity={0.6}
-                        scale={20}
-                        blur={2}
-                        far={10}
-                    />
+                    {!isMobile && (
+                        <ContactShadows
+                            position={[0, -7, 0]}
+                            opacity={0.6}
+                            scale={20}
+                            blur={2}
+                            far={10}
+                        />
+                    )}
 
                     <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={30} castShadow />
                     <pointLight position={[0, -10, 0]} intensity={20} color="#ffffff" />

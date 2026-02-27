@@ -435,6 +435,8 @@ const Section03Experience: React.FC = () => {
         }, 4000);
     };
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <div className="absolute inset-0 z-[2500] pointer-events-none">
             <Canvas
@@ -465,13 +467,15 @@ const Section03Experience: React.FC = () => {
 
                     <ControlOverlay key={ballKey} onRotationChange={setModelRotation} />
 
-                    <ContactShadows
-                        position={[0, -4.9, 0]}
-                        opacity={0.4}
-                        scale={30}
-                        blur={2.5}
-                        far={10}
-                    />
+                    {!isMobile && (
+                        <ContactShadows
+                            position={[0, -4.9, 0]}
+                            opacity={0.4}
+                            scale={30}
+                            blur={2.5}
+                            far={10}
+                        />
+                    )}
 
                     <Environment preset="city" />
 

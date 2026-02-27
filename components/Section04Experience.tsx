@@ -524,6 +524,7 @@ const Section04Content = ({ virtualMouse }: { virtualMouse: THREE.Vector2 }) => 
 
     const [indices, setIndices] = useState({ curr: 4, next: 0 });
     const [transition, setTransition] = useState(0);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     useEffect(() => {
         loadedTextures.forEach(tex => {
@@ -579,7 +580,7 @@ const Section04Content = ({ virtualMouse }: { virtualMouse: THREE.Vector2 }) => 
             />
             <MouseTrail virtualMouse={virtualMouse} />
 
-            <ContactShadows position={[0, -15, 0]} opacity={0.3} scale={50} blur={2.5} far={20} />
+            {!isMobile && <ContactShadows position={[0, -15, 0]} opacity={0.3} scale={50} blur={2.5} far={20} />}
             <Environment files="/assets/3d/s04/hdri.exr" />
         </>
     );

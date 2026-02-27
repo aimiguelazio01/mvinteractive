@@ -630,6 +630,7 @@ const FloatingButtons: React.FC<FloatingButtonsProps> = ({ activeButtonIdx, onHo
 const Section01Experience: React.FC = () => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [activeButtonIdx, setActiveButtonIdx] = useState(() => Math.floor(Math.random() * 6));
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   const handleNextButton = useCallback(() => {
     // Small delay before setting hoveredButton to null to start the return timer
@@ -663,8 +664,8 @@ const Section01Experience: React.FC = () => {
             position={[50, 80, 50]}
             intensity={1.5}
             castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
+            shadow-mapSize-width={isMobile ? 512 : 1024}
+            shadow-mapSize-height={isMobile ? 512 : 1024}
             shadow-camera-far={500}
             shadow-camera-left={-100}
             shadow-camera-right={100}
@@ -675,9 +676,11 @@ const Section01Experience: React.FC = () => {
 
           <FloatingButtons activeButtonIdx={activeButtonIdx} onHover={handleNextButton} />
           <Particles />
-          <EffectComposer multisampling={0}>
-            <Bloom luminanceThreshold={0.2} intensity={1.5} radius={0.5} />
-          </EffectComposer>
+          {!isMobile && (
+            <EffectComposer multisampling={0}>
+              <Bloom luminanceThreshold={0.2} intensity={1.5} radius={0.5} />
+            </EffectComposer>
+          )}
         </Canvas>
       </MorphContext.Provider>
     </div>

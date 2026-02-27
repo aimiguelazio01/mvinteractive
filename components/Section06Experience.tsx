@@ -94,6 +94,8 @@ const Section06Experience: React.FC<Section06ExperienceProps> = ({ scrollProgres
         };
     }, [scrollProgress]);
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none">
             <Canvas
@@ -116,13 +118,15 @@ const Section06Experience: React.FC<Section06ExperienceProps> = ({ scrollProgres
                         </Center>
                     </Float>
 
-                    <ContactShadows
-                        position={[0, -10, 0]}
-                        opacity={0.4}
-                        scale={30}
-                        blur={2.5}
-                        far={15}
-                    />
+                    {!isMobile && (
+                        <ContactShadows
+                            position={[0, -10, 0]}
+                            opacity={0.4}
+                            scale={30}
+                            blur={2.5}
+                            far={15}
+                        />
+                    )}
 
                     <Environment preset="warehouse" />
                 </Suspense>

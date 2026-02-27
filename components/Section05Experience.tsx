@@ -609,9 +609,9 @@ const Section05Experience: React.FC = () => {
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none">
             <Canvas
-                shadows
+                shadows={!isMobile}
                 gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
-                dpr={[1, 1.5]}
+                dpr={isMobile ? [1, 1] : [1, 1.5]}
                 style={{ pointerEvents: 'auto' }}
             >
                 <color attach="background" args={['#030308']} />

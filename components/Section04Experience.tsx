@@ -589,6 +589,7 @@ const Section04Content = ({ virtualMouse }: { virtualMouse: THREE.Vector2 }) => 
 const Section04Experience: React.FC = () => {
     const [virtualMouse] = useState(() => new THREE.Vector2(0, 0));
     const [useHand, setUseHand] = useState(false);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none" style={{ background: '#1e1d1c' }}>
@@ -620,9 +621,9 @@ const Section04Experience: React.FC = () => {
             />
 
             <Canvas
-                shadows
+                shadows={!isMobile}
                 gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
-                dpr={[1, 1.5]}
+                dpr={isMobile ? [1, 1] : [1, 1.5]}
                 style={{ pointerEvents: 'auto' }}
                 onPointerMove={(e) => {
                     if (!useHand) {

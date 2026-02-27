@@ -18,6 +18,8 @@ const StackedSections: React.FC<StackedSectionsProps> = ({ sections, lang, onExp
 
     useEffect(() => {
         const ctx = gsap.context(() => {
+            if (window.innerWidth < 768) return; // Disable scroll-jacking on mobile
+
             const panels = panelsRef.current.filter(Boolean) as HTMLDivElement[];
 
             panels.forEach((panel, i) => {

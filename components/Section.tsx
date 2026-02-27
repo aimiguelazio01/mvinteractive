@@ -544,7 +544,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
         </AnimatePresence>
 
         <div
-          className={`w-full md:w-[60%] pt-16 md:pt-[6vh] lg:pt-[8vh] pb-8 md:pb-[4vh] lg:pb-[5vh] relative flex items-start ${isAlternate ? 'md:justify-center' : 'md:justify-start'} overflow-visible group`}
+          className={`w-full md:w-[60%] pt-16 md:pt-[3vh] lg:pt-[5vh] pb-8 md:pb-[2vh] lg:pb-[3vh] flex flex-col justify-center relative ${isAlternate ? 'md:justify-center' : 'md:justify-start'} overflow-visible group`}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => handleIntelHover(null)}
         >
@@ -893,13 +893,13 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, margin: isMobile ? "-5%" : "-15%" }}
-            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]' : 'max-w-2xl md:pl-20 md:pr-12'} px-8 flex flex-col gap-2 md:gap-[2vh] mt-4 md:mt-0`}
+            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]' : 'max-w-2xl md:pl-20 md:pr-12'} px-8 flex flex-col gap-2 md:gap-[1.5vh] mt-4 md:mt-0`}
           >
             {/* Main Title / Section Index Transition Block */}
             {!isExpanded ? (
               <motion.div
                 layoutId={`section-title-${data.id}`}
-                className="w-full origin-left flex flex-col gap-1 md:gap-2"
+                className="w-full origin-left flex flex-col gap-1 md:gap-[0.5vh]"
               >
                 {/* Section Index Indicator */}
                 <motion.div
@@ -928,7 +928,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
               <motion.div
                 layoutId={`interaction-button-${data.id}`}
                 onClick={() => setIsExpanded(true)}
-                className="mt-4 md:mt-2 pointer-events-auto flex items-center gap-6 group cursor-pointer w-fit"
+                className="mt-2 md:mt-[1vh] pointer-events-auto flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
               >
                 <motion.div
                   className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center opacity-70 group-hover:opacity-100 group-hover:border-black/50 bg-black/5 backdrop-blur-sm transition-all duration-300"
@@ -958,7 +958,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             <motion.ul
               animate={{ opacity: isExpanded ? 0 : 1, x: isExpanded ? -20 : 0, pointerEvents: isExpanded ? 'none' : 'auto' }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col gap-2 md:gap-[1.5vh] lg:gap-4 border-l-2 border-black/20 pl-6 md:pl-8 max-w-2xl"
+              className="flex flex-col gap-2 md:gap-[1vh] lg:gap-[1.5vh] border-l-2 border-black/20 pl-6 md:pl-8 max-w-2xl"
             >
               {data.description.map((item, i) => (
                 <motion.li
@@ -967,10 +967,10 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                   whileHover={{ x: 10, transition: { duration: 0.2 } }}
                   className="flex flex-col md:gap-0.5 lg:gap-1 group cursor-default"
                 >
-                  <span className="text-sm md:text-base font-tech font-bold tracking-widest text-gray-800 uppercase group-hover:text-gray-950 transition-colors duration-300">
+                  <span className="text-[13px] md:text-[clamp(11px,1.5vh,1rem)] lg:text-base font-tech font-bold tracking-widest text-gray-800 uppercase group-hover:text-gray-950 transition-colors duration-300">
                     {t.intel[item as keyof typeof t.intel]?.title || item}
                   </span>
-                  <p className="text-[11px] md:text-xs font-sans text-gray-800/70 leading-tight md:leading-normal tracking-wide normal-case opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-[10px] md:text-[clamp(9px,1.2vh,0.75rem)] lg:text-xs font-sans text-gray-800/70 leading-tight md:leading-snug tracking-wide normal-case opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                     {t.intel[item as keyof typeof t.intel]?.description}
                   </p>
                 </motion.li>

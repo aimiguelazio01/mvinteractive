@@ -544,7 +544,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
         </AnimatePresence>
 
         <div
-          className={`w-full md:w-[60%] pt-24 md:pt-[15vh] pb-12 md:pb-[8vh] relative flex items-start ${isAlternate ? 'md:justify-center' : 'md:justify-start'} overflow-visible group`}
+          className={`w-full md:w-[60%] pt-20 md:pt-[10vh] lg:pt-[12vh] pb-10 md:pb-[5vh] lg:pb-[8vh] relative flex items-start ${isAlternate ? 'md:justify-center' : 'md:justify-start'} overflow-visible group`}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => handleIntelHover(null)}
         >
@@ -893,7 +893,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, margin: isMobile ? "-5%" : "-15%" }}
-            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]' : 'max-w-2xl md:pl-20 md:pr-12'} px-8 flex flex-col gap-6 md:gap-[4vh] mt-8 md:mt-0`}
+            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]' : 'max-w-2xl md:pl-20 md:pr-12'} px-8 flex flex-col gap-4 md:gap-[3vh] mt-6 md:mt-0`}
           >
             {/* Main Title / Section Index Transition Block */}
             {!isExpanded ? (
@@ -958,14 +958,14 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             <motion.ul
               animate={{ opacity: isExpanded ? 0 : 1, x: isExpanded ? -20 : 0, pointerEvents: isExpanded ? 'none' : 'auto' }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col gap-6 border-l-2 border-black/20 pl-8 max-w-2xl"
+              className="flex flex-col gap-3 md:gap-[2vh] lg:gap-5 border-l-2 border-black/20 pl-6 md:pl-8 max-w-2xl"
             >
               {data.description.map((item, i) => (
                 <motion.li
                   key={i}
                   variants={itemVariants}
                   whileHover={{ x: 10, transition: { duration: 0.2 } }}
-                  className="flex flex-col gap-2 group cursor-default"
+                  className="flex flex-col gap-1 md:gap-1.5 lg:gap-2 group cursor-default"
                 >
                   <span className="text-sm md:text-base font-tech font-bold tracking-widest text-gray-800 uppercase group-hover:text-gray-950 transition-colors duration-300">
                     {t.intel[item as keyof typeof t.intel]?.title || item}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGL • Mouse Trail</title>
+    <style>
+        body {
+            margin: 0;
+            background: #050505;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            pointer-events: none;
+            opacity: 0.5;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="info">OGL Polyline Trail</div>
+    <script type="module">
+        import { Renderer, Transform, Vec3, Color, Polyline } from './src/index.js';
+
+        const vertex = /* glsl */ `
+            precision highp float;
+            attribute vec3 position;
+            attribute vec3 next;
+            attribute vec3 prev;
+            attribute vec2 uv;
+            attribute float side;
+            uniform vec2 uResolution;
+            uniform float uDPR;
+            uniform float uThickness;
+            void main() {
+                vec4 current = vec4(position, 1);
+                vec2 aspect = vec2(uResolution.x / uResolution.y, 1);
+                vec2 nextScreen = next.xy * aspect;
+                vec2 prevScreen = prev.xy * aspect;
+                vec2 tangent = normalize(nextScreen - prevScreen);
+                vec2 normal = vec2(-tangent.y, tangent.x);
+                normal /= aspect;
+                normal *= mix(1.0, 0.05, pow(abs(uv.y - 0.5) * 2.0, 2.0));
+                float dist = length(nextScreen - prevScreen);
+                normal *= smoothstep(0.0, 0.02, dist);
+                float pixelWidthRatio = 1.0 / (uResolution.y / uDPR);
+                normal *= current.w * pixelWidthRatio * uThickness;
+                current.xy -= normal * side;
+                gl_Position = current;
+            }
+        `;
+
+        const fragment = /* glsl */ `
+            precision highp float;
+            uniform vec3 uColor;
+            varying vec2 vUv;
+            void main() {
+                gl_FragColor = vec4(uColor, 1.0 - uv.y);
+            }
+        `;
+
+        const renderer = new Renderer({ dpr: 2, alpha: true });
+        const gl = renderer.gl;
+        document.body.appendChild(gl.canvas);
+
+        const scene = new Transform();
+        const lines = [];
+
+        function resize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            lines.forEach(l => l.polyline.resize());
+        }
+        window.addEventListener('resize', resize);
+
+        ['#00f2ff', '#0070ff', '#5500ff'].forEach((color, i) => {
+            const points = [];
+            for (let j = 0; j < 50; j++) points.push(new Vec3());
+            const polyline = new Polyline(gl, {
+                points, vertex,
+                uniforms: { uColor: { value: new Color(color) }, uThickness: { value: 40 + i * 20 } }
+            });
+            polyline.program.transparent = true;
+            polyline.mesh.setParent(scene);
+            lines.push({ polyline, points, spring: 0.05 + i * 0.01, friction: 0.85 + i * 0.01, v: new Vec3() });
+        });
+
+        resize();
+
+        const mouse = new Vec3();
+        window.addEventListener('mousemove', e => {
+            mouse.set((e.x / gl.renderer.width) * 2 - 1, (e.y / gl.renderer.height) * -2 + 1, 0);
+        });
+
+        function update() {
+            requestAnimationFrame(update);
+            lines.forEach(l => {
+                for (let i = l.points.length - 1; i >= 0; i--) {
+                    if (i === 0) {
+                        const tmp = new Vec3().copy(mouse).sub(l.points[i]).multiply(l.spring);
+                        l.v.add(tmp).multiply(l.friction);
+                        l.points[i].add(l.v);
+                    } else {
+                        l.points[i].lerp(l.points[i - 1], 0.85);
+                    }
+                }
+                l.polyline.updateGeometry();
+            });
+            renderer.render({ scene });
+        }
+        update();
+    </script>
+</body>
+
+</html>

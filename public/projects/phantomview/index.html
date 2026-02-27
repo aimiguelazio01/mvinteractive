@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolls-Royce Phantom | The Pinnacle of Luxury</title>
+    <meta name="description"
+        content="Experience the unparalleled luxury and craftsmanship of the Rolls-Royce Phantom. Explore our interactive gallery and cinematic journey.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav id="navbar">
+            <div class="logo">
+                <img src="assets/vectors/rolls-royce_logo_white_text_side.svg" alt="Rolls-Royce Logo" id="rr-logo">
+            </div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#video-section">Cinematic</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <img src="assets/vectors/rolls-royce_logo_white_text_side.svg" alt="Rolls-Royce Logo"
+                    class="hero-logo fade-in">
+                <h1 class="fade-in">PHANTOM</h1>
+                <p class="fade-in delay-1">THE PINNACLE OF LUXURY</p>
+                <a href="#gallery" class="cta-button fade-in delay-2">Explore Gallery</a>
+            </div>
+            <div class="hero-overlay"></div>
+            <video autoplay muted loop id="hero-video">
+                <source src="assets/video/rr_interactive.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+
+        <section id="video-section">
+            <div class="container">
+                <h2 class="section-title">The Experience</h2>
+                <div class="video-container">
+                    <video controls id="interactive-video">
+                        <source src="assets/video/rr_interactive.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="container">
+                <h2 class="section-title">Gallery</h2>
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="configurator">Configurator</button>
+                    <button class="filter-btn" data-category="street">Street</button>
+                    <button class="filter-btn" data-category="winter">Winter</button>
+                </div>
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Images will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <img src="assets/vectors/rolls-royce_logo_white.svg" alt="Rolls-Royce Logo" class="footer-logo">
+            <p>&copy; 2026 Rolls-Royce Motor Cars. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <img id="modal-img" src="" alt="Premium View">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

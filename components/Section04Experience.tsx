@@ -620,7 +620,8 @@ const Section04Experience: React.FC = () => {
 
             <Canvas
                 shadows
-                gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+                gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+                dpr={[1, 1.5]}
                 style={{ pointerEvents: 'auto' }}
                 onPointerMove={(e) => {
                     if (!useHand) {

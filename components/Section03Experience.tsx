@@ -441,7 +441,8 @@ const Section03Experience: React.FC = () => {
                 shadows
                 camera={{ position: [0, 2, 5], fov: 45 }}
                 style={{ pointerEvents: 'auto' }}
-                gl={{ antialias: true, alpha: true }}
+                gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
+                dpr={[1, 1.5]}
             >
                 <Suspense fallback={null}>
                     <PerspectiveCamera makeDefault position={[0, 5, 15]} fov={35} />

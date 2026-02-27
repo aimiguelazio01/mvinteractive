@@ -99,7 +99,8 @@ const Section06Experience: React.FC<Section06ExperienceProps> = ({ scrollProgres
             <Canvas
                 shadows
                 style={{ pointerEvents: scrollProgress > 0.95 ? 'auto' : 'none' }}
-                gl={{ antialias: true, alpha: true }}
+                gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
+                dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 25], fov: 30 }}
             >
                 <Suspense fallback={null}>

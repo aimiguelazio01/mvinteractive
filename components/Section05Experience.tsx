@@ -608,7 +608,8 @@ const Section05Experience: React.FC = () => {
         <div className="absolute inset-0 z-[50] pointer-events-none">
             <Canvas
                 shadows
-                gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+                gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+                dpr={[1, 1.5]}
                 style={{ pointerEvents: 'auto' }}
             >
                 <color attach="background" args={['#030308']} />

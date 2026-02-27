@@ -370,7 +370,7 @@ const Scene = ({ scrollY, isActive = true }: { scrollY?: MotionValue<number>; is
             <Environment preset="city" environmentIntensity={0.4} />
             <fog attach="fog" args={['#000000', 5, 35]} />
 
-            <EffectComposer>
+            <EffectComposer multisampling={0}>
                 <Bloom
                     luminanceThreshold={1}
                     mipmapBlur
@@ -411,9 +411,9 @@ const HeroCanvas: React.FC<{ scrollY?: MotionValue<number> }> = ({ scrollY }) =>
         >
             <Canvas
                 shadows
-                dpr={[1, 2]}
+                dpr={[1, 1.5]}
                 gl={{
-                    antialias: true,
+                    antialias: false,
                     toneMapping: THREE.ACESFilmicToneMapping,
                     powerPreference: "high-performance"
                 }}

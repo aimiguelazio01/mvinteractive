@@ -30,7 +30,8 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl })
         <div className="absolute inset-0 z-[2500] pointer-events-none">
             <Canvas
                 style={{ pointerEvents: 'auto' }}
-                gl={{ antialias: true }}
+                gl={{ antialias: false, powerPreference: 'high-performance' }}
+                dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 0.1], fov: 75 }}
             >
                 <Suspense fallback={null}>

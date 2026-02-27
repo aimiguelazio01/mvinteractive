@@ -653,7 +653,8 @@ const Section01Experience: React.FC = () => {
         <Canvas
           style={{ pointerEvents: 'auto' }}
           camera={{ position: [0, 0, 100], fov: 50, far: 10000 }}
-          gl={{ antialias: true, alpha: true }}
+          gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
+          dpr={[1, 1.5]}
           shadows
         >
           {/* Scene Lighting */}
@@ -674,7 +675,7 @@ const Section01Experience: React.FC = () => {
 
           <FloatingButtons activeButtonIdx={activeButtonIdx} onHover={handleNextButton} />
           <Particles />
-          <EffectComposer>
+          <EffectComposer multisampling={0}>
             <Bloom luminanceThreshold={0.2} intensity={1.5} radius={0.5} />
           </EffectComposer>
         </Canvas>

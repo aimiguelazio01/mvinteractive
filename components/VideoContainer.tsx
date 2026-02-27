@@ -12,8 +12,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ poster, videoUrl }) => 
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Glitch is active by default, disabled when hovered
-  const isActive = !isHovered;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  // Glitch is active by default, disabled when hovered or on mobile
+  const isActive = !isHovered && !isMobile;
 
   useEffect(() => {
     const observer = new IntersectionObserver(

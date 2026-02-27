@@ -49,7 +49,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
       <div className="w-full overflow-visible" style={{ maxWidth: isMobile ? '100%' : '75vw' }}>
         {data.id === 'section_01' ? (
           <motion.h3
-            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold text-gray-800 leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-1`}
+            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-1`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
@@ -67,7 +67,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_02' ? (
           <motion.h3
-            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold text-gray-800 leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
+            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
@@ -85,7 +85,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_03' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-semibold text-gray-800 leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-col items-start gap-0`}
+            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-col items-start gap-0`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
@@ -129,7 +129,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_05' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-bold text-gray-800 leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-wrap items-start`}
+            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-wrap items-start`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
@@ -167,7 +167,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_06' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-bold text-gray-800 leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
+            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
@@ -182,7 +182,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       viewport={{ once: false }}
                     >
                       <motion.span
-                        className="relative z-20 inline-block text-gray-800"
+                        className={`relative z-20 inline-block ${isSmall ? 'text-gray-300' : 'text-gray-800'}`}
                         variants={{
                           hidden: { opacity: 0, filter: 'blur(10px)', scale: 0.9 },
                           visible: {
@@ -209,7 +209,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_04' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-semibold text-gray-800 leading-[1.1] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
+            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-[1.1] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
             style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
@@ -227,7 +227,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-7xl lg:text-9xl'} font-display font-semibold text-gray-800 leading-tight tracking-tight uppercase cursor-pointer transition-all duration-300 ${theme === 'glitch' ? 'hover:skew-x-12' : 'hover:tracking-widest'}`}
+            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-7xl lg:text-9xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-800'} leading-tight tracking-tight uppercase cursor-pointer transition-all duration-300 ${theme === 'glitch' ? 'hover:skew-x-12' : 'hover:tracking-widest'}`}
           >
             {sectionT.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-[0.3em] overflow-hidden">
@@ -1016,10 +1016,10 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                 {/* Section Index Indicator (Expanded Mode) */}
                 <div className="flex items-center gap-4 opacity-60 scale-75 origin-left">
                   <div
-                    className="h-[1px] bg-black/40"
+                    className="h-[1px] bg-white/40"
                     style={{ width: isMobile ? '30px' : '50px' }}
                   />
-                  <span className="text-xs font-mono text-gray-800/60">0{index + 1}</span>
+                  <span className="text-xs font-mono text-gray-300/60">0{index + 1}</span>
                 </div>
                 <div>
                   {renderTitle(true)}

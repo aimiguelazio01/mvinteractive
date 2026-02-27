@@ -87,8 +87,8 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
         >
           <motion.span
             className={`font-tech tracking-widest transition-all duration-300 ${isLinkable
-              ? `${mobile ? 'text-lg' : 'text-[13px]'} text-gray-800 group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
-              : `${mobile ? 'text-sm' : 'text-[11px]'} text-concrete`
+              ? `${mobile ? 'text-xl font-bold text-gray-900' : 'text-[15px] text-white'} group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
+              : `${mobile ? 'text-base text-gray-400' : 'text-[13px] text-gray-500'}`
               }`}
             whileHover={isLinkable && !mobile ? { x: -10 } : {}}
           >
@@ -96,7 +96,7 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
           </motion.span>
           {!mobile && (
             <motion.div
-              className={`w-1 h-1 ml-3 rounded-full transition-all duration-300 ${isLinkable ? 'bg-white/50 group-hover:bg-accent' : 'bg-concrete'
+              className={`w-1 h-1 ml-3 rounded-full transition-all duration-300 ${isLinkable ? 'bg-white group-hover:bg-accent' : 'bg-gray-500'
                 }`}
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: isLinkable ? 0.6 : 0.3, scale: 1 }}
@@ -115,7 +115,7 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
       <AnimatePresence>
         {isVisible && (
           <motion.button
-            className="fixed bottom-8 right-8 z-[60] lg:hidden w-12 h-12 rounded-full bg-white text-gray-800 flex items-center justify-center font-tech font-bold text-[10px] tracking-tighter"
+            className={`fixed bottom-8 right-8 z-[60] lg:hidden w-12 h-12 rounded-full flex items-center justify-center font-tech font-bold text-[10px] tracking-tighter shadow-lg ${isOpen ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'}`}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
@@ -131,14 +131,14 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-[55] lg:hidden bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center p-8 overflow-y-auto"
+            className="fixed inset-0 z-[55] lg:hidden bg-white/95 backdrop-blur-xl flex flex-col items-center justify-center p-8 overflow-y-auto"
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
-            <div className="mb-12 border-b border-white/20 pb-4 w-full text-center">
-              <span className="font-tech text-xl tracking-[0.4em] text-gray-800 uppercase font-bold">
+            <div className="mb-12 border-b border-black/20 pb-4 w-full text-center">
+              <span className="font-tech text-xl tracking-[0.4em] text-gray-900 uppercase font-bold">
                 {t.works.title} INDEX
               </span>
             </div>
@@ -170,7 +170,7 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <span className="font-tech text-xs tracking-[0.4em] text-gray-800 uppercase font-bold">
+              <span className="font-tech text-xs tracking-[0.4em] text-white uppercase font-bold">
                 {t.works.title}
               </span>
             </motion.div>

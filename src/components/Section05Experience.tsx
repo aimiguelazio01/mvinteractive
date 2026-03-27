@@ -81,7 +81,7 @@ const GlowingOrbs = ({ count = 12 }: { count?: number }) => {
         <group ref={groupRef}>
             {orbs.map((orb, i) => (
                 <mesh key={i} position={orb.pos}>
-                    <sphereGeometry args={[1, 8, 8]} />
+                <sphereGeometry args={[1.5, 12, 12]} />
                     <meshBasicMaterial color={orb.color} transparent opacity={0.4} />
                 </mesh>
             ))}
@@ -157,7 +157,7 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
             velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.03;
             velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
 
-            sizes[i] = 0.06 + Math.random() * 0.1;
+            sizes[i] = 0.1 + Math.random() * 0.15;
 
             const gray = 0.3 + Math.random() * 0.5;
             colors[i * 3] = gray;

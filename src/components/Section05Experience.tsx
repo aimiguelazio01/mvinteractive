@@ -27,17 +27,17 @@ const ImageGallery = ({ onSelect, onHover, collidersRef, occluderMeshes }: {
         const activeMeshes = meshRefs.current.filter((m): m is THREE.Mesh => m !== null);
         collidersRef.current = activeMeshes;
     }, []);
-    const count = 10;
+    const count = 6;
 
     const items = useMemo(() => {
-        const spiralHeight = 10; // Reduced vertical span as requested
+        const spiralHeight = 8;
         return Array.from({ length: count }, (_, i) => ({
             iframeUrl: GALLERY_IFRAMES[i % GALLERY_IFRAMES.length],
             angleOffset: (i / count) * Math.PI * 2,
-            radius: 3.5, // Keep the tighter orbit
-            height: -spiralHeight / 2 + (i / (count - 1)) * spiralHeight, // Spaced to avoid overlap
-            rotationSpeed: 0.15,
-            scale: 1.4 // Increased from 1.2
+            radius: 3.5,
+            height: -spiralHeight / 2 + (i / (count - 1)) * spiralHeight,
+            rotationSpeed: 0.12,
+            scale: 1.3
         }));
     }, [count]);
 
@@ -72,15 +72,11 @@ const ImageGallery = ({ onSelect, onHover, collidersRef, occluderMeshes }: {
                         scale={[item.scale, item.scale, 1]}
                     >
                         <planeGeometry args={[1, 1]} />
-                        <meshPhysicalMaterial
+                        <meshBasicMaterial
                             transparent
-                            opacity={0.1}
+                            opacity={0.08}
                             color="#444444"
                             side={THREE.DoubleSide}
-                            roughness={0.1}
-                            metalness={0.8}
-                            clearcoat={1}
-                            reflectivity={0.5}
                         />
                         <Html
                             transform
@@ -109,21 +105,20 @@ const ImageGallery = ({ onSelect, onHover, collidersRef, occluderMeshes }: {
 };
 
 // Flowing nebula dust clouds
-const NebulaBackground = ({ count = 50 }: { count?: number }) => {
+const NebulaBackground = ({ count = 20 }: { count?: number }) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const dummy = useMemo(() => new THREE.Object3D(), []);
 
     const clouds = useMemo(() => {
         return Array.from({ length: count }, () => ({
             pos: new THREE.Vector3(
-                (Math.random() - 0.5) * 60,
                 (Math.random() - 0.5) * 40,
-                -20 - Math.random() * 30
+                (Math.random() - 0.5) * 25,
+                -15 - Math.random() * 20
             ),
-            scale: 3 + Math.random() * 8,
-            speed: 0.02 + Math.random() * 0.05,
-            rotSpeed: (Math.random() - 0.5) * 0.1,
-            opacity: 0.03 + Math.random() * 0.08
+            scale: 4 + Math.random() * 6,
+            speed: 0.03 + Math.random() * 0.04,
+            rotSpeed: (Math.random() - 0.5) * 0.05
         }));
     }, [count]);
 
@@ -132,8 +127,8 @@ const NebulaBackground = ({ count = 50 }: { count?: number }) => {
         const time = state.clock.elapsedTime;
         clouds.forEach((c, i) => {
             dummy.position.set(
-                c.pos.x + Math.sin(time * c.speed + i) * 5,
-                c.pos.y + Math.cos(time * c.speed * 0.7 + i) * 3,
+                c.pos.x + Math.sin(time * c.speed + i) * 3,
+                c.pos.y + Math.cos(time * c.speed * 0.7 + i) * 2,
                 c.pos.z
             );
             dummy.scale.setScalar(c.scale);
@@ -147,25 +142,25 @@ const NebulaBackground = ({ count = 50 }: { count?: number }) => {
     return (
         <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
             <planeGeometry args={[1, 1]} />
-            <meshBasicMaterial color="#2a1a4a" transparent opacity={0.06} side={THREE.DoubleSide} depthWrite={false} />
+            <meshBasicMaterial color="#2a1a4a" transparent opacity={0.04} side={THREE.DoubleSide} depthWrite={false} />
         </instancedMesh>
     );
 };
 
 // Distant glowing orbs for depth
-const GlowingOrbs = ({ count = 30 }: { count?: number }) => {
+const GlowingOrbs = ({ count = 12 }: { count?: number }) => {
     const groupRef = useRef<THREE.Group>(null);
 
     const orbs = useMemo(() => {
         return Array.from({ length: count }, () => ({
             pos: new THREE.Vector3(
-                (Math.random() - 0.5) * 50,
-                (Math.random() - 0.5) * 30,
-                -15 - Math.random() * 25
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 20,
+                -10 - Math.random() * 15
             ),
-            scale: 0.1 + Math.random() * 0.4,
+            scale: 0.15 + Math.random() * 0.3,
             color: Math.random() > 0.7 ? '#6644ff' : Math.random() > 0.5 ? '#4488ff' : '#ffffff',
-            speed: 0.3 + Math.random() * 0.5,
+            speed: 0.4 + Math.random() * 0.4,
             phase: Math.random() * Math.PI * 2
         }));
     }, [count]);
@@ -184,8 +179,8 @@ const GlowingOrbs = ({ count = 30 }: { count?: number }) => {
         <group ref={groupRef}>
             {orbs.map((orb, i) => (
                 <mesh key={i} position={orb.pos}>
-                    <sphereGeometry args={[1, 16, 16]} />
-                    <meshBasicMaterial color={orb.color} transparent opacity={0.5} />
+                    <sphereGeometry args={[1, 8, 8]} />
+                    <meshBasicMaterial color={orb.color} transparent opacity={0.4} />
                 </mesh>
             ))}
         </group>
@@ -193,18 +188,18 @@ const GlowingOrbs = ({ count = 30 }: { count?: number }) => {
 };
 
 // Ambient floating particles
-const AmbientDust = ({ count = 200 }: { count?: number }) => {
+const AmbientDust = ({ count = 80 }: { count?: number }) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const dummy = useMemo(() => new THREE.Object3D(), []);
 
     const particles = useMemo(() => {
         return Array.from({ length: count }, () => ({
             pos: new THREE.Vector3(
-                (Math.random() - 0.5) * 40,
                 (Math.random() - 0.5) * 30,
-                (Math.random() - 0.5) * 40
+                (Math.random() - 0.5) * 20,
+                (Math.random() - 0.5) * 30
             ),
-            speed: 0.1 + Math.random() * 0.3,
+            speed: 0.15 + Math.random() * 0.2,
             phase: Math.random() * 100
         }));
     }, [count]);
@@ -215,10 +210,10 @@ const AmbientDust = ({ count = 200 }: { count?: number }) => {
         particles.forEach((p, i) => {
             dummy.position.set(
                 p.pos.x,
-                p.pos.y + Math.sin(time * p.speed + p.phase) * 2,
+                p.pos.y + Math.sin(time * p.speed + p.phase) * 1.5,
                 p.pos.z
             );
-            dummy.scale.setScalar(0.02 + Math.sin(time + i) * 0.01);
+            dummy.scale.setScalar(0.025 + Math.sin(time + i) * 0.01);
             dummy.updateMatrix();
             meshRef.current!.setMatrixAt(i, dummy.matrix);
         });
@@ -228,14 +223,13 @@ const AmbientDust = ({ count = 200 }: { count?: number }) => {
     return (
         <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
             <sphereGeometry args={[1, 4, 4]} />
-            <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.2} />
         </instancedMesh>
     );
 };
 
-const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?: number, colliders?: React.MutableRefObject<THREE.Mesh[]>[], hoveredPlaneIdx?: number | null }) => {
+const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?: number, colliders?: React.MutableRefObject<THREE.Mesh[]>[], hoveredPlaneIdx?: number | null }) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
-    const boxMeshRef = useRef<THREE.InstancedMesh>(null);
     const dummy = useMemo(() => new THREE.Object3D(), []);
     const envMap = useLoader(RGBELoader, '/assets/3d/s05/moon_lab_1k.hdr');
     envMap.mapping = THREE.EquirectangularReflectionMapping;
@@ -248,24 +242,22 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
         const colors = new Float32Array(count * 3);
 
         for (let i = 0; i < count; i++) {
-            // Distribute in a vertical cylinder around the sculpture
             const theta = Math.random() * Math.PI * 2;
-            const r = 2.5 + Math.random() * 2.5; // Orbit radius
-            const height = 10; // Total height span
-            const y = (Math.random() - 0.5) * height; // Top to bottom
+            const r = 2.5 + Math.random() * 2.5;
+            const height = 8;
+            const y = (Math.random() - 0.5) * height;
 
             positions[i * 3] = Math.cos(theta) * r;
             positions[i * 3 + 1] = y;
             positions[i * 3 + 2] = Math.sin(theta) * r;
 
-            velocities[i * 3] = (Math.random() - 0.5) * 0.1;
-            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05; // Less vertical movement initially
-            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+            velocities[i * 3] = (Math.random() - 0.5) * 0.05;
+            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.03;
+            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
 
-            sizes[i] = 0.08 + Math.random() * 0.15;
+            sizes[i] = 0.06 + Math.random() * 0.1;
 
-            // Random color between light gray (0.8) and dark gray (0.2)
-            const gray = 0.2 + Math.random() * 0.6;
+            const gray = 0.3 + Math.random() * 0.5;
             colors[i * 3] = gray;
             colors[i * 3 + 1] = gray;
             colors[i * 3 + 2] = gray;
@@ -276,12 +268,10 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
     const vPos = useMemo(() => new THREE.Vector3(), []);
     const vVel = useMemo(() => new THREE.Vector3(), []);
     const vAcc = useMemo(() => new THREE.Vector3(), []);
-    const vOther = useMemo(() => new THREE.Vector3(), []);
     const vAttrack = useMemo(() => new THREE.Vector3(), []);
     const vCellPos = useMemo(() => new THREE.Vector3(), []);
     const center = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
-    // Track cell data in world space each frame
     const cellWorldData = useMemo(() => [] as {
         pos: THREE.Vector3,
         quat: THREE.Quaternion,
@@ -294,7 +284,6 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
         if (!meshRef.current) return;
         const dt = Math.min(delta, 0.05);
 
-        // Update all cell world data once per frame
         cellWorldData.length = 0;
 
         const allMeshes: THREE.Mesh[] = [];
@@ -303,17 +292,15 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
         });
 
         if (allMeshes.length > 0) {
-            allMeshes.forEach((m, idx) => {
+            allMeshes.forEach((m) => {
                 const wc = new THREE.Vector3();
                 const wq = new THREE.Quaternion();
 
-                // Ensure world matrix is fresh
                 m.updateWorldMatrix(true, false);
 
                 if (!m.geometry.boundingBox) m.geometry.computeBoundingBox();
                 const box = m.geometry.boundingBox!;
 
-                // Get the actual center of the geometry in world space
                 const localCenter = new THREE.Vector3();
                 box.getCenter(localCenter);
                 wc.copy(localCenter).applyMatrix4(m.matrixWorld);
@@ -330,10 +317,8 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
                     quat: wq,
                     halfExtents: localExtents
                 });
-
             });
 
-            // ONE-TIME INITIALIZATION
             if (!initialized) {
                 const color = new THREE.Color();
                 for (let i = 0; i < count; i++) {
@@ -341,10 +326,9 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
                     const angle = Math.random() * Math.PI * 2;
                     const r = 2.0;
                     state.positions[i * 3] = cell.pos.x + Math.cos(angle) * r;
-                    state.positions[i * 3 + 1] = cell.pos.y + (Math.random() - 0.5) * 5.0;
+                    state.positions[i * 3 + 1] = cell.pos.y + (Math.random() - 0.5) * 4.0;
                     state.positions[i * 3 + 2] = cell.pos.z + Math.sin(angle) * r;
 
-                    // Set instance color
                     color.setRGB(state.colors[i * 3], state.colors[i * 3 + 1], state.colors[i * 3 + 2]);
                     meshRef.current.setColorAt(i, color);
                 }
@@ -353,7 +337,6 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
             }
         }
 
-        // Vectors for OBB check
         const relPos = new THREE.Vector3();
         const localPos = new THREE.Vector3();
         const closestPoint = new THREE.Vector3();
@@ -363,50 +346,36 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
             vVel.set(state.velocities[i * 3], state.velocities[i * 3 + 1], state.velocities[i * 3 + 2]);
             vAcc.set(0, 0, 0);
 
-            // 1. DYNAMIC ATTRACTION: Pull to nearest cell & track index
             let nearestDistSq = Infinity;
             let nearestCellPos = center;
-            let nearestCellIdx = -1;
 
-            cellWorldData.forEach((cell, idx) => {
+            cellWorldData.forEach((cell) => {
                 const dSq = vPos.distanceToSquared(cell.pos);
                 if (dSq < nearestDistSq) {
                     nearestDistSq = dSq;
                     nearestCellPos = cell.pos;
-                    nearestCellIdx = idx;
                 }
             });
 
             vAttrack.subVectors(nearestCellPos, vPos).normalize();
-            // Smoother attraction: Proportional but capped. Soften when very close.
             const dist = Math.sqrt(nearestDistSq);
-            let pull = Math.min(dist * 0.6, 3.0);
-            if (dist < 1.0) pull *= dist; // Linear falloff when close to stabilize
+            let pull = Math.min(dist * 0.5, 2.5);
+            if (dist < 1.0) pull *= dist;
             vAcc.add(vAttrack.multiplyScalar(pull));
 
-            // 1.5 HOVER REDIRECT: Send particles from hovered plane to the sculpture
+            // Skip self-repulsion and OBB collision for performance - just use simple bounding sphere
             const sculptureCount = colliders?.[0]?.current?.length || 0;
             if (hoveredPlaneIdx !== null && hoveredPlaneIdx !== undefined) {
                 const hoveredWorldIdx = sculptureCount + hoveredPlaneIdx;
-                if (nearestCellIdx === hoveredWorldIdx && sculptureCount > 0) {
-                    // Find nearest sculpture cell to redirect particle there
-                    let nearestSculptureDist = Infinity;
-                    let nearestSculpturePos = center;
-                    for (let s = 0; s < sculptureCount; s++) {
-                        const sculptureCell = cellWorldData[s];
-                        const dSq = vPos.distanceToSquared(sculptureCell.pos);
-                        if (dSq < nearestSculptureDist) {
-                            nearestSculptureDist = dSq;
-                            nearestSculpturePos = sculptureCell.pos;
-                        }
+                if (sculptureCount > 0 && hoveredWorldIdx < cellWorldData.length) {
+                    const hoveredCell = cellWorldData[hoveredWorldIdx];
+                    if (hoveredCell) {
+                        const toSculpture = hoveredCell.pos.clone().sub(vPos).normalize();
+                        vAcc.add(toSculpture.multiplyScalar(25.0));
                     }
-                    // Strong attraction toward the sculpture
-                    const toSculpture = nearestSculpturePos.clone().sub(vPos).normalize();
-                    vAcc.add(toSculpture.multiplyScalar(35.0));
                 }
             }
 
-            // 2. RECTANGULAR (OBB) COLLISIONS
             cellWorldData.forEach(cell => {
                 relPos.subVectors(vPos, cell.pos);
                 localPos.copy(relPos).applyQuaternion(cell.quat.clone().invert());
@@ -426,48 +395,29 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
                     const pushDirWorld = pushDirLocal.applyQuaternion(cell.quat);
                     const overlap = particleRadius - distLocal;
 
-                    // Softer collision and much higher energy loss (friction)
-                    vAcc.add(pushDirWorld.multiplyScalar(overlap * 50.0));
-                    vVel.multiplyScalar(0.4);
+                    vAcc.add(pushDirWorld.multiplyScalar(overlap * 40.0));
+                    vVel.multiplyScalar(0.5);
                 }
             });
 
-            // 3. SELF-REPULSION
-            for (let j = 0; j < count; j++) {
-                if (i === j) continue;
-                vOther.set(state.positions[j * 3], state.positions[j * 3 + 1], state.positions[j * 3 + 2]);
-                const d = vPos.distanceTo(vOther);
-                const minDist = (state.sizes[i] + state.sizes[j]) * 1.5;
-                if (d < minDist) {
-                    const push = vPos.clone().sub(vOther).normalize();
-                    // Lower repulsion force for stability
-                    vAcc.add(push.multiplyScalar((minDist - d) * 5.0));
-                }
-            }
-
-            // 5. MOUSE INTERACTION (Blowing effect)
-            // Map pointer (-1 to 1) to world space at z=0 approx
             const mouseX = (state_fiber.pointer.x * state_fiber.viewport.width) / 2;
             const mouseY = (state_fiber.pointer.y * state_fiber.viewport.height) / 2;
             const vMouse = vCellPos.set(mouseX, mouseY, 0);
             const distMouse = vPos.distanceTo(vMouse);
-            const interactionRadius = 1.5;
+            const interactionRadius = 1.2;
 
             if (distMouse < interactionRadius) {
                 const blowDir = vAttrack.subVectors(vPos, vMouse).normalize();
-                const blowStrength = Math.pow(1.0 - distMouse / interactionRadius, 2) * 300.0;
+                const blowStrength = Math.pow(1.0 - distMouse / interactionRadius, 2) * 200.0;
                 vAcc.add(blowDir.multiplyScalar(blowStrength));
             }
 
             vVel.add(vAcc.multiplyScalar(dt));
-
-            // 6. SMOOTHING: Adjusted damping and higher velocity cap for more energetic movement
-            vVel.multiplyScalar(0.85);
-            if (vVel.length() > 10.0) vVel.setLength(10.0);
+            vVel.multiplyScalar(0.88);
+            if (vVel.length() > 8.0) vVel.setLength(8.0);
 
             vPos.add(vVel);
 
-            // Save state
             state.positions[i * 3] = vPos.x;
             state.positions[i * 3 + 1] = vPos.y;
             state.positions[i * 3 + 2] = vPos.z;
@@ -486,17 +436,16 @@ const OrbitingParticles = ({ count = 60, colliders, hoveredPlaneIdx }: { count?:
 
     return (
         <group>
-            {/* Particles */}
             <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-                <sphereGeometry args={[1, 16, 16]} />
+                <sphereGeometry args={[1, 8, 8]} />
                 <meshPhysicalMaterial
-                    roughness={0.35}
-                    metalness={1.0}
+                    roughness={0.4}
+                    metalness={0.9}
                     color="#ffffff"
                     envMap={envMap}
-                    envMapIntensity={3.5}
-                    clearcoat={0.8}
-                    clearcoatRoughness={0.2}
+                    envMapIntensity={2.5}
+                    clearcoat={0.5}
+                    clearcoatRoughness={0.3}
                 />
             </instancedMesh>
         </group>
@@ -517,19 +466,15 @@ const Sculpture = ({ collidersRef, occluderMeshes }: {
                 meshes.push(child);
                 child.castShadow = true;
                 child.receiveShadow = true;
-                child.material = new THREE.MeshPhysicalMaterial({
+                child.material = new THREE.MeshStandardMaterial({
                     color: '#ffffff',
-                    metalness: 0.1,
-                    roughness: 0.8,
-                    clearcoat: 0.2,
-                    reflectivity: 0.5,
-                    envMapIntensity: 2.0,
+                    metalness: 0.05,
+                    roughness: 0.9,
                     side: THREE.DoubleSide
                 });
             }
         });
         collidersRef.current = meshes;
-        // Expose to ImageGallery as Html occluders
         occluderMeshes.current = meshes;
     }, [scene, collidersRef, occluderMeshes]);
 
@@ -568,41 +513,30 @@ const Section05Experience: React.FC = () => {
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none">
             <Canvas
-                shadows={!isMobile}
-                gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
-                dpr={isMobile ? [1, 1] : [1, 1.5]}
+                shadows={false}
+                gl={{ antialias: false, alpha: true, powerPreference: "high-performance", stencil: false, depth: true }}
+                dpr={isMobile ? [1, 1] : [1, 1.25]}
                 style={{ pointerEvents: 'auto' }}
             >
                 <color attach="background" args={['#040404']} />
-                <fog attach="fog" args={['#040404', 15, 55]} />
+                <fog attach="fog" args={['#040404', 18, 50]} />
                 <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
 
                 <Suspense fallback={null}>
-                    <NebulaBackground count={40} />
-                    <GlowingOrbs count={25} />
-                    <AmbientDust count={150} />
+                    <NebulaBackground count={15} />
+                    <GlowingOrbs count={10} />
+                    <AmbientDust count={50} />
 
-                    <OrbitingParticles count={300} colliders={[sculptureColliders, galleryColliders]} hoveredPlaneIdx={hoveredPlaneIdx} />
-                    {/* Sculpture renders first so its meshes are populated before ImageGallery uses them as occluders */}
+                    <OrbitingParticles count={80} colliders={[sculptureColliders, galleryColliders]} hoveredPlaneIdx={hoveredPlaneIdx} />
                     <Sculpture collidersRef={sculptureColliders} occluderMeshes={sculptureOccluderMeshes} />
                     <ImageGallery onSelect={setSelectedIdx} onHover={setHoveredPlaneIdx} collidersRef={galleryColliders} occluderMeshes={sculptureOccluderMeshes} />
 
                     <Environment files="/assets/3d/s05/moon_lab_1k.hdr" />
 
-                    {!isMobile && (
-                        <ContactShadows
-                            position={[0, -7, 0]}
-                            opacity={0.6}
-                            scale={20}
-                            blur={2}
-                            far={10}
-                        />
-                    )}
-
-                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={30} castShadow />
-                    <pointLight position={[0, -10, 0]} intensity={20} color="#ffffff" />
-                    <hemisphereLight intensity={0.4} color="#ffffff" groundColor="#444444" />
-                    <ambientLight intensity={0.15} />
+                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={15} />
+                    <pointLight position={[0, -8, 0]} intensity={10} color="#ffffff" />
+                    <hemisphereLight intensity={0.25} color="#ffffff" groundColor="#444444" />
+                    <ambientLight intensity={0.1} />
                 </Suspense>
             </Canvas>
 

@@ -57,11 +57,11 @@ const ControlsHandler = ({ handPos, handTrackingActive }: { handPos: any; handTr
             } else {
                 const dx = handPos.x - lastPos.current.x;
                 const dy = handPos.y - lastPos.current.y;
-                
+
                 // Optimized sensitivity for high-res panoramas
-                rotation.current.y -= dx * 3.5; 
+                rotation.current.y -= dx * 3.5;
                 rotation.current.x = Math.max(-1.2, Math.min(1.2, rotation.current.x + dy * 2.8));
-                
+
                 lastPos.current = { x: handPos.x, y: handPos.y };
             }
         } else {
@@ -138,64 +138,58 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
 
     return (
         <div className="absolute inset-0 z-[2500] pointer-events-none" style={{ background: '#040404' }}>
-            {/* Instructions Overlay */}
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ 
-                    opacity: 1, 
-                    y: 0,
-                    filter: isButtonHovered ? 'blur(10px)' : 'blur(0px)'
-                }}
-                className="absolute top-10 left-1/2 -translate-x-1/2 z-[3005] w-full flex justify-center px-6"
-            >
-                <div className={`
-                    bg-black/60 backdrop-blur-2xl border px-8 py-4 rounded-full flex items-center gap-5 shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-all duration-500
-                    ${handTrackingActive ? 'border-[#68F2EB]/40 shadow-[0_0_30px_rgba(104,242,235,0.2)]' : 'border-white/10'}
-                `}>
-                    {handTrackingActive ? (
-                        <>
+            {/* Mouse Instructions (Desktop only, top) */}
+            {!handTrackingActive && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                        filter: isButtonHovered ? 'blur(10px)' : 'blur(0px)'
+                    }}
+                    className="absolute top-10 left-1/2 -translate-x-1/2 z-[3005] w-full flex justify-center px-6"
+                >
+                    <div className="bg-black/60 backdrop-blur-2xl border border-white/10 px-8 py-4 rounded-full flex items-center gap-5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                        <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse" />
+                        <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase underline-offset-8 text-white/80">
+                            {sectionT.instructions.mouse}
+                        </span>
+                    </div>
+                </motion.div>
+            )}
+
+
+            {/* Hand-Tracking Toggle & Instructions */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto flex flex-col items-center gap-4 w-full">
+                <AnimatePresence>
+                    {handTrackingActive && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 5 }}
+                            className="bg-black/40 backdrop-blur-xl border border-[#68F2EB]/20 px-6 py-2 rounded-full flex items-center gap-3 shadow-[0_0_20px_rgba(104,242,235,0.1)] mb-1"
+                        >
                             {mediapipeStatus === 'loading' ? (
                                 <>
-                                    <div className="w-4 h-4 border-2 border-yellow-400/30 border-t-yellow-400 rounded-full animate-spin" />
-                                    <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase text-yellow-400">
-                                        {lang === 'EN' ? 'Loading Camera...' : 'A Carregar Câmara...'}
-                                    </span>
-                                </>
-                            ) : mediapipeStatus === 'ready' ? (
-                                <>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={handDetected ? "#68F2EB" : "#ffffff"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}>
-                                        <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                                    </svg>
-                                    <span className={`text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase ${handDetected ? 'text-[#68F2EB] font-bold' : 'text-white/60'}`}>
-                                        {handDetected ? (lang === 'EN' ? 'Hand Detected - Pinch to Rotate' : 'Mão Detectada - Aperte para Rodar') : (lang === 'EN' ? 'Show hand to track - Pinch to Rotate' : 'Mostre a mão para detetar - Aperte para Rodar')}
-                                    </span>
-                                </>
-                            ) : mediapipeStatus === 'error' ? (
-                                <>
-                                    <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-                                    <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase text-red-400">
-                                        {lang === 'EN' ? 'Camera Error' : 'Erro de Câmara'}
+                                    <div className="w-3 h-3 border-2 border-[#68F2EB]/30 border-t-[#68F2EB] rounded-full animate-spin" />
+                                    <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#68F2EB]/80">
+                                        {lang === 'EN' ? 'Initializing AI Engine...' : 'A Iniciar Motor IA...'}
                                     </span>
                                 </>
                             ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#68F2EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 animate-pulse">
-                                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                                </svg>
+                                <>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={handDetected ? "#68F2EB" : "#ffffff"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 ${handDetected ? 'animate-pulse' : ''}`}>
+                                        <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                                    </svg>
+                                    <span className={`text-[10px] font-mono tracking-[0.2em] uppercase ${handDetected ? 'text-[#68F2EB] font-bold' : 'text-white/60'}`}>
+                                        {handDetected ? (lang === 'EN' ? 'Pinch to Rotate • Open hand to click' : 'Aperte para Rodar • Mão aberta para clicar') : (lang === 'EN' ? 'Show hand to track' : 'Mostre a mão para detetar')}
+                                    </span>
+                                </>
                             )}
-                        </>
-                    ) : (
-                        <>
-                            <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse" />
-                            <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase underline-offset-8 text-white/80">
-                                {sectionT.instructions.mouse}
-                            </span>
-                        </>
+                        </motion.div>
                     )}
-                </div>
-            </motion.div>
+                </AnimatePresence>
 
-            {/* Hand-Tracking Toggle */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto">
                 <button
                     onClick={toggleHandTracking}
                     onMouseEnter={() => setIsButtonHovered(true)}
@@ -212,6 +206,16 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
                     </span>
                     {handTrackingActive && <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />}
                 </button>
+                
+                {!handTrackingActive && isButtonHovered && (
+                    <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[9px] font-mono tracking-[0.2em] text-white/40 uppercase"
+                    >
+                        {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
+                    </motion.p>
+                )}
             </div>
 
             {/* Virtual Cursor */}
@@ -239,8 +243,8 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
             {/* Environment Selection UI (replicated from Section.tsx for better MP integration) */}
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
-                animate={{ 
-                    opacity: 1, 
+                animate={{
+                    opacity: 1,
                     x: 0,
                     filter: isButtonHovered ? 'blur(10px)' : 'blur(0px)'
                 }}
@@ -288,7 +292,7 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
                 </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
                 className="absolute inset-0 z-[2499]"
                 animate={{
                     filter: isButtonHovered ? 'blur(15px)' : 'blur(0px)',

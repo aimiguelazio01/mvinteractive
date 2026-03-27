@@ -2,17 +2,21 @@
 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1000 1000">
   <!-- Generator: Adobe Illustrator 29.0.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 192)  -->
   <defs>
+    <linearGradient id="particleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#68F2EB" />
+      <stop offset="100%" stop-color="#8868F2" />
+    </linearGradient>
     <style>
       .st0 {
-        fill: #466e74;
+        fill: url(#particleGrad);
       }
 
       .st1 {
-        fill: #559196;
+        fill: #8868F2;
       }
 
       .st2 {
-        fill: #9ed8e2;
+        fill: #68F2EB;
       }
     </style>
   </defs>

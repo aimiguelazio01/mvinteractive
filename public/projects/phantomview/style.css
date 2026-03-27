@@ -89,7 +89,7 @@ header {
 
 #hero-video, #hero > div[style*="position:relative"] {
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     min-width: 100%;
     min-height: 100%;

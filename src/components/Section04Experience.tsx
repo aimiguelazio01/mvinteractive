@@ -429,79 +429,120 @@ const Section04Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
 
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none" style={{ background: '#040404' }}>
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto flex flex-col items-center gap-4 w-full">
             <AnimatePresence>
-                {handTrackingActive && (
+                {handTrackingActive && mediapipeStatus === 'loading' && (
                     <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 5 }}
-                        className="flex flex-col items-center gap-2 mb-2"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[4000] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center pointer-events-auto"
                     >
-                        {mediapipeStatus === 'loading' ? (
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
-                                        {lang === 'EN' ? `Loading AI Experience... ${mediapipeProgress}%` : `A Carregar Experiência... ${mediapipeProgress}%`}
-                                    </span>
-                                </div>
-                                <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
-                                    <motion.div 
-                                        className="h-full bg-white"
-                                        animate={{ width: `${mediapipeProgress}%` }}
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="flex flex-col items-center gap-10 max-w-sm w-full px-10 text-center"
+                        >
+                            <div className="relative w-32 h-32 flex items-center justify-center">
+                                <svg className="w-full h-full -rotate-90">
+                                    <circle cx="64" cy="64" r="62" fill="none" stroke="white" strokeWidth="1" className="opacity-10" />
+                                    <motion.circle 
+                                        cx="64" cy="64" r="62" fill="none" stroke="#68F2EB" strokeWidth="2" 
+                                        strokeDasharray="390"
+                                        animate={{ strokeDashoffset: 390 * (1 - mediapipeProgress / 100) }}
                                         transition={{ duration: 0.3 }}
                                     />
+                                </svg>
+                                <div className="absolute flex flex-col items-center">
+                                    <span className="text-4xl font-mono text-white font-light">{mediapipeProgress}%</span>
+                                    <span className="text-[9px] font-mono text-[#68F2EB] tracking-[0.3em] uppercase mt-1">Ready</span>
                                 </div>
                             </div>
-                        ) : (
-                            <div className="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}>
-                                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                                </svg>
-                                <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold whitespace-nowrap">
-                                    {handDetected ? (lang === 'EN' ? 'Move hand to attract • Pinch to repel' : 'Mova a mão para atrair • Aperte para repelir') : (lang === 'EN' ? 'Show hand to track • Setup Complete' : 'Mostre a mão para detetar • Configuração Concluída')}
-                                </span>
+
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <h3 className="text-[11px] font-mono tracking-[0.5em] uppercase text-white font-bold animate-pulse">
+                                        {lang === 'EN' ? 'Initializing AI Engine' : 'A Iniciar Motor IA'}
+                                    </h3>
+                                    <div className="w-8 h-[1px] bg-[#68F2EB] mx-auto" />
+                                </div>
+                                <p className="text-[10px] font-mono tracking-[0.2em] text-white/50 uppercase leading-relaxed">
+                                    {lang === 'EN' 
+                                        ? 'Simulating physical forces and vision tasks for pillar interaction' 
+                                        : 'A simular forças físicas e tarefas de visão para interação com pilares'}
+                                </p>
                             </div>
-                        )}
+
+                            <div className="w-full h-[1px] bg-white/10 rounded-full overflow-hidden">
+                                <motion.div 
+                                    className="h-full bg-[#68F2EB]"
+                                    animate={{ width: `${mediapipeProgress}%` }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </div>
+                        </motion.div>
+
+                        <div className="absolute bottom-16 flex flex-col items-center gap-3">
+                            <span className="text-[9px] font-mono tracking-[0.4em] text-white/20 uppercase">Powered by MediaPipe</span>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            <button
-                onClick={toggleHandTracking}
-                className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
-                    ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/80 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
-                    backdrop-blur-md`}
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={`w-5 h-5 transition-all duration-300 ${handTrackingActive ? 'text-[#68F2EB] animate-pulse' : 'text-white/60 group-hover:text-[#68F2EB]'}`}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3005] pointer-events-auto flex flex-col items-center gap-4 w-full px-4">
+                <AnimatePresence>
+                    {handTrackingActive && mediapipeStatus === 'ready' && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 5 }}
+                            className="flex flex-col items-center gap-2 mb-2"
+                        >
+                            <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 px-6 py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.4)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : 'text-white/40'}`}>
+                                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                                </svg>
+                                <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold whitespace-nowrap">
+                                    {handDetected ? (lang === 'EN' ? 'Move hand to attract • Pinch to repel' : 'Mova a mão para atrair • Aperte para repelir') : (lang === 'EN' ? 'Setup Complete • Show hand to track' : 'Configuração Concluída • Mostre a mão')}
+                                </span>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <button
+                    onClick={toggleHandTracking}
+                    className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
+                        ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/80 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
+                        backdrop-blur-md`}
                 >
-                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                </svg>
-                <span className={`text-xs uppercase font-mono tracking-[0.2em] transition-colors duration-300 ${handTrackingActive ? 'text-[#68F2EB]' : 'text-white/70 group-hover:text-[#68F2EB]'}`}>
-                    {handTrackingActive ? (lang === 'PT' ? 'Sair da Experiência' : 'Exit Experience') : (lang === 'PT' ? 'Entrar na Experiência' : 'Enter Experience')}
-                </span>
-                {handTrackingActive && <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />}
-            </button>
-            
-            {!handTrackingActive && (
-                <motion.p 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase mt-2 hidden md:block"
-                >
-                    {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
-                </motion.p>
-            )}
-        </div>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`w-5 h-5 transition-all duration-300 ${handTrackingActive ? 'text-[#68F2EB] animate-pulse' : 'text-white/60 group-hover:text-[#68F2EB]'}`}
+                    >
+                        <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                    </svg>
+                    <span className={`text-xs uppercase font-mono tracking-[0.2em] transition-colors duration-300 ${handTrackingActive ? 'text-[#68F2EB]' : 'text-white/70 group-hover:text-[#68F2EB]'}`}>
+                        {handTrackingActive ? (lang === 'PT' ? 'Sair da Experiência' : 'Exit Experience') : (lang === 'PT' ? 'Entrar na Experiência' : 'Enter Experience')}
+                    </span>
+                    {handTrackingActive && <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />}
+                </button>
+                
+                {!handTrackingActive && (
+                    <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase mt-2 hidden md:block"
+                    >
+                        {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
+                    </motion.p>
+                )}
+            </div>
 
         <Canvas shadows gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }} dpr={[1, 1.5]} camera={{ position: [0, 22, 34], fov: 48, near: 0.1, far: 500 }} style={{ pointerEvents: 'auto' }}>
             <fog attach="fog" args={['#040404', 80, 200]} />

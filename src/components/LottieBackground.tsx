@@ -11,24 +11,31 @@ interface LottieBackgroundProps {
 const LottieBackground: React.FC<LottieBackgroundProps> = ({ url, className, opacity = 0.5, progress }) => {
     const [animationData, setAnimationData] = useState<any>(null);
     const lottieRef = useRef<any>(null);
+    const lastFrameRef = useRef<number>(-1);
+    const isLoadedRef = useRef(false);
 
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
-            .then((data) => setAnimationData(data))
+            .then((data) => {
+                setAnimationData(data);
+                isLoadedRef.current = true;
+            })
             .catch((error) => console.error('Error loading lottie animation:', error));
     }, [url]);
 
     useEffect(() => {
-        if (lottieRef.current && progress !== undefined) {
-            // getDuration(true) returns total frames count
+        if (lottieRef.current && progress !== undefined && isLoadedRef.current) {
             const totalFrames = lottieRef.current.getDuration(true);
 
             if (totalFrames > 0) {
-                // Map 0-1 progress to 0 -> (totalFrames - 0.01)
-                // We use totalFrames - 0.01 to ensure we stay on the last visible frame 
-                // and never hit the 'empty' frame that follows the out-point.
                 const targetFrame = Math.max(0, Math.min(progress * totalFrames, totalFrames - 0.01));
+                
+                if (Math.abs(targetFrame - lastFrameRef.current) < 0.5) {
+                    return;
+                }
+                lastFrameRef.current = targetFrame;
+                
                 lottieRef.current.goToAndStop(targetFrame, true);
             }
         }

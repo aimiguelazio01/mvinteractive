@@ -160,31 +160,31 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
 
 
             {/* Hand-Tracking Toggle & Instructions */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto flex flex-col items-center gap-4 w-full">
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3005] pointer-events-auto flex flex-col items-center gap-2 w-full">
                 <AnimatePresence>
                     {handTrackingActive && (
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 5 }}
-                            className="bg-black/40 backdrop-blur-xl border border-[#68F2EB]/20 px-6 py-2 rounded-full flex items-center gap-3 shadow-[0_0_20px_rgba(104,242,235,0.1)] mb-1"
+                            className="flex items-center gap-3 mb-2"
                         >
                             {mediapipeStatus === 'loading' ? (
                                 <>
-                                    <div className="w-3 h-3 border-2 border-[#68F2EB]/30 border-t-[#68F2EB] rounded-full animate-spin" />
-                                    <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#68F2EB]/80">
+                                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
                                         {lang === 'EN' ? 'Initializing AI Engine...' : 'A Iniciar Motor IA...'}
                                     </span>
                                 </>
                             ) : (
-                                <>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={handDetected ? "#68F2EB" : "#ffffff"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 ${handDetected ? 'animate-pulse' : ''}`}>
+                                <div className="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}>
                                         <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
                                     </svg>
-                                    <span className={`text-[10px] font-mono tracking-[0.2em] uppercase ${handDetected ? 'text-[#68F2EB] font-bold' : 'text-white/60'}`}>
-                                        {handDetected ? (lang === 'EN' ? 'Pinch to Rotate • Open hand to click' : 'Aperte para Rodar • Mão aberta para clicar') : (lang === 'EN' ? 'Show hand to track' : 'Mostre a mão para detetar')}
+                                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold whitespace-nowrap">
+                                        {handDetected ? (lang === 'EN' ? 'Pinch to Rotate • Open hand to click' : 'Aperte para Rodar • Mão aberta para clicar') : (lang === 'EN' ? 'Show hand to track • Setup Complete' : 'Mostre a mão para detetar • Configuração Concluída')}
                                     </span>
-                                </>
+                                </div>
                             )}
                         </motion.div>
                     )}
@@ -195,7 +195,7 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
                     onMouseEnter={() => setIsButtonHovered(true)}
                     onMouseLeave={() => setIsButtonHovered(false)}
                     className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
-                        ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/50 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
+                        ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/80 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
                         backdrop-blur-md`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 transition-all duration-300 ${handTrackingActive ? 'text-[#68F2EB] animate-pulse' : 'text-white/60 group-hover:text-[#68F2EB]'}`}>
@@ -211,7 +211,7 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
                     <motion.p 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-[9px] font-mono tracking-[0.2em] text-white/40 uppercase"
+                        className="text-[10px] font-mono tracking-[0.3em] text-white font-bold uppercase mt-2"
                     >
                         {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
                     </motion.p>

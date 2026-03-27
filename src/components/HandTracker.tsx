@@ -5,9 +5,10 @@ import { HandLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 interface HandTrackerProps {
     onHandMove: (pos: { x: number; y: number; isPinching?: boolean }) => void;
     active: boolean;
+    onStatusChange?: (status: 'idle' | 'loading' | 'ready' | 'error', handDetected: boolean) => void;
 }
 
-const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active }) => {
+const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusChange }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const landmarkerRef = useRef<HandLandmarker | null>(null);
     const rafRef = useRef<number>(0);
@@ -19,6 +20,12 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active }) => {
     const [handDetected, setHandDetected] = useState(false);
 
     useEffect(() => { onHandMoveRef.current = onHandMove; }, [onHandMove]);
+
+    useEffect(() => {
+        if (onStatusChange) {
+            onStatusChange(status, handDetected);
+        }
+    }, [status, handDetected, onStatusChange]);
 
     const predict = useCallback(() => {
         const video = videoRef.current;

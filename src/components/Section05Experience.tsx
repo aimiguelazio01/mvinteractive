@@ -141,7 +141,6 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
         const positions = new Float32Array(count * 3);
         const velocities = new Float32Array(count * 3);
         const sizes = new Float32Array(count);
-        const colors = new Float32Array(count * 3);
 
         for (let i = 0; i < count; i++) {
             const theta = Math.random() * Math.PI * 2;
@@ -158,13 +157,8 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
             velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
 
             sizes[i] = 0.1 + Math.random() * 0.15;
-
-            const gray = 0.3 + Math.random() * 0.5;
-            colors[i * 3] = gray;
-            colors[i * 3 + 1] = gray;
-            colors[i * 3 + 2] = gray;
         }
-        return { positions, velocities, sizes, colors };
+        return { positions, velocities, sizes };
     }, [count]);
 
     const vPos = useMemo(() => new THREE.Vector3(), []);
@@ -223,7 +217,7 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
             });
 
             if (!initialized) {
-                const color = new THREE.Color();
+                const color = new THREE.Color('#88ccff');
                 for (let i = 0; i < count; i++) {
                     const cell = cellWorldData[i % cellWorldData.length];
                     const angle = Math.random() * Math.PI * 2;
@@ -232,7 +226,6 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
                     state.positions[i * 3 + 1] = cell.pos.y + (Math.random() - 0.5) * 4.0;
                     state.positions[i * 3 + 2] = cell.pos.z + Math.sin(angle) * r;
 
-                    color.setRGB(state.colors[i * 3], state.colors[i * 3 + 1], state.colors[i * 3 + 2]);
                     meshRef.current.setColorAt(i, color);
                 }
                 if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;

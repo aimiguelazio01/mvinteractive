@@ -356,7 +356,7 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
                 <meshPhysicalMaterial
                     roughness={0.4}
                     metalness={0.9}
-                    color="#ffffff"
+                    color="#88ccff"
                     envMap={envMap}
                     envMapIntensity={2.5}
                     clearcoat={0.5}

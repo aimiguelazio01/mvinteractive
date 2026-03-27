@@ -172,6 +172,7 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
     const vAcc = useMemo(() => new THREE.Vector3(), []);
     const vAttrack = useMemo(() => new THREE.Vector3(), []);
     const vCellPos = useMemo(() => new THREE.Vector3(), []);
+    const vOther = useMemo(() => new THREE.Vector3(), []);
     const center = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
     const cellWorldData = useMemo(() => [] as {
@@ -301,6 +302,18 @@ const OrbitingParticles = ({ count = 80, colliders, hoveredPlaneIdx }: { count?:
                     vVel.multiplyScalar(0.5);
                 }
             });
+
+            // Self-repulsion between particles
+            for (let j = 0; j < count; j++) {
+                if (i === j) continue;
+                vOther.set(state.positions[j * 3], state.positions[j * 3 + 1], state.positions[j * 3 + 2]);
+                const d = vPos.distanceTo(vOther);
+                const minDist = (state.sizes[i] + state.sizes[j]) * 1.2;
+                if (d < minDist && d > 0.001) {
+                    const push = vPos.clone().sub(vOther).normalize();
+                    vAcc.add(push.multiplyScalar((minDist - d) * 3.0));
+                }
+            }
 
             const mouseX = (state_fiber.pointer.x * state_fiber.viewport.width) / 2;
             const mouseY = (state_fiber.pointer.y * state_fiber.viewport.height) / 2;

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Greenhaven | Explore Architecture in a Living Environment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0e1511",
+                        "tertiary": "#c3c7c6",
+                        "secondary-fixed": "#ffdcc1",
+                        "on-secondary-container": "#e6a872",
+                        "on-tertiary-fixed": "#181c1c",
+                        "tertiary-fixed": "#dfe3e1",
+                        "inverse-surface": "#dde4dd",
+                        "on-surface": "#dde4dd",
+                        "error-container": "#93000a",
+                        "background": "#0e1511",
+                        "tertiary-container": "#0c100f",
+                        "secondary-fixed-dim": "#f9ba82",
+                        "primary-fixed-dim": "#c1c8c1",
+                        "outline": "#8e928d",
+                        "on-primary": "#2b322d",
+                        "tertiary-fixed-dim": "#c3c7c6",
+                        "surface-variant": "#2f3632",
+                        "on-secondary-fixed": "#2e1500",
+                        "error": "#ffb4ab",
+                        "primary": "#c1c8c1",
+                        "surface-tint": "#c1c8c1",
+                        "surface-container-low": "#161d19",
+                        "on-secondary-fixed-variant": "#683d0f",
+                        "surface-bright": "#333b36",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#787d7b",
+                        "on-surface-variant": "#c4c7c3",
+                        "inverse-primary": "#59605b",
+                        "surface-container-highest": "#2f3632",
+                        "inverse-on-surface": "#2b322d",
+                        "on-tertiary-fixed-variant": "#434847",
+                        "on-primary-container": "#767e78",
+                        "outline-variant": "#434844",
+                        "secondary-container": "#683d0f",
+                        "surface-dim": "#0e1511",
+                        "surface-container": "#1a211d",
+                        "on-background": "#dde4dd",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#09100c",
+                        "surface-container-high": "#242c27",
+                        "on-primary-fixed": "#161d19",
+                        "secondary": "#f9ba82"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(47, 54, 50, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #f9ba82 0%, #e6a872 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #f9ba82 0%, #e6a872 100%);
+        }
+        body {
+            background-color: #0e1511;
+            color: #dde4dd;
+            scroll-behavior: smooth;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* === Scroll-triggered Reveal Animations === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stagger delays for sequential items */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+
+        /* === Floating Glow Animation === */
+        @keyframes float-glow {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+            50% { transform: translateY(-12px) scale(1.03); opacity: 0.6; }
+        }
+        .float-glow {
+            animation: float-glow 6s ease-in-out infinite;
+        }
+
+        /* === Hero Parallax (subtle zoom) === */
+        @keyframes hero-drift {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.08); }
+        }
+        .hero-parallax {
+            animation: hero-drift 20s ease-in-out alternate infinite;
+        }
+
+        /* === Navbar slide-down on load === */
+        @keyframes slide-down {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .nav-animate {
+            animation: slide-down 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* === Pulse ring for interactive elements === */
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(249, 186, 130, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(249, 186, 130, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(249, 186, 130, 0); }
+        }
+        .pulse-hover:hover {
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+        /* === Scroll indicator bounce === */
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+        .bounce-indicator {
+            animation: bounce-down 2s ease-in-out infinite;
+        }
+
+        /* === Hero text entrance animations === */
+        @keyframes hero-text-rise {
+            from { opacity: 0; transform: translateY(50px); filter: blur(8px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .hero-title {
+            animation: hero-text-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+        .hero-subtitle {
+            animation: hero-text-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+        }
+
+        /* === Hero text hover effects === */
+        .hero-title {
+            transition: transform 0.4s ease, letter-spacing 0.4s ease;
+            cursor: default;
+        }
+        .hero-title:hover {
+            transform: scale(1.03);
+            letter-spacing: -0.01em;
+        }
+        .hero-title .text-gradient {
+            transition: filter 0.4s ease;
+        }
+        .hero-title:hover .text-gradient {
+            filter: brightness(1.3) drop-shadow(0 0 20px rgba(249, 186, 130, 0.4));
+        }
+        .hero-subtitle {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            cursor: default;
+        }
+        .hero-subtitle:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-secondary/30">
+<!-- Header / Logo Fixed -->
+<header class="fixed top-0 left-0 w-full px-8 md:px-[140px] py-6 z-50 mix-blend-difference pointer-events-none bg-neutral-800/80 backdrop-blur-md nav-animate" id="main-header">
+  <div class="flex justify-between items-center">
+    <a href="../../index.html" class="cursor-pointer pointer-events-auto group flex items-center gap-3">
+      <svg viewBox="0 0 1920 1080" class="h-10 md:h-12 w-auto" fill="#808080">
+        <path d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z"/>
+        <path d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z"/>
+        <path d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z"/>
+        <path d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z"/>
+      </svg>
+      <span class="text-lg font-black font-sans tracking-[0.3em] text-[#808080] group-hover:opacity-80 transition-opacity">MIGUEL VIRGÍLIO</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex gap-8 pointer-events-auto items-center">
+      <a href="https://miguelvirgilio.com/#expertise" class="text-sm font-mono uppercase tracking-widest text-[#8e928d] hover:text-white cursor-pointer transition-colors relative group">
+        Expertise
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+      </a>
+      <a href="https://miguelvirgilio.com/#about" class="text-sm font-mono uppercase tracking-widest text-[#8e928d] hover:text-white cursor-pointer transition-colors relative group">
+        About
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+      </a>
+      <a href="https://miguelvirgilio.com/#contact" class="text-sm font-mono uppercase tracking-widest text-[#8e928d] hover:text-white cursor-pointer transition-colors relative group">
+        Contact
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+      </a>
+
+      <!-- Language Toggle -->
+      <span class="text-sm font-mono uppercase tracking-widest text-[#8e928d] hover:text-white cursor-pointer transition-colors relative group w-6 text-center lang-toggle" id="lang-toggle">
+        EN
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+      </span>
+    </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="md:hidden flex items-center gap-4 pointer-events-auto" id="mobile-menu-btn">
+      <span class="text-xs font-mono tracking-widest text-[#8e928d] uppercase" id="menu-text">Menu</span>
+      <div class="relative w-6 h-4 group cursor-pointer">
+        <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-0" id="hamburger-top"></span>
+        <span class="absolute left-0 w-full h-[1px] bg-white transition-opacity duration-300 top-2" id="hamburger-mid"></span>
+        <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-4" id="hamburger-bottom"></span>
+      </div>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div class="fixed inset-0 min-h-screen bg-black z-[45] flex flex-col justify-center p-8 md:hidden hidden" id="mobile-menu">
+  <div class="flex flex-col gap-12 max-w-sm mx-auto w-full">
+    <a href="https://miguelvirgilio.com/#expertise" class="text-5xl font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-6 group mobile-link">
+      <span class="text-xs font-mono text-[#8e928d] group-hover:text-white transition-colors">01</span>
+      Expertise
+    </a>
+    <a href="https://miguelvirgilio.com/#about" class="text-5xl font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-6 group mobile-link">
+      <span class="text-xs font-mono text-[#8e928d] group-hover:text-white transition-colors">02</span>
+      About
+    </a>
+    <a href="https://miguelvirgilio.com/#contact" class="text-5xl font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-6 group mobile-link">
+      <span class="text-xs font-mono text-[#8e928d] group-hover:text-white transition-colors">03</span>
+      Contact
+    </a>
+
+    <div class="mt-12 pt-12 border-t border-white/10 flex justify-between items-center">
+      <div class="text-[#8e928d] hover:text-white font-mono text-sm tracking-widest cursor-pointer flex items-center gap-3 transition-colors">
+        <span class="lang-pt" id="lang-pt">PT-BR</span>
+        <span class="text-[10px] opacity-20">/</span>
+        <span class="lang-en text-white" id="lang-en">ENGLISH</span>
+      </div>
+    </div>
+  </div>
+</div>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[65vh] w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover brightness-[0.6] hero-parallax" data-alt="Cinematic interior of a modern glass-walled architectural cabin nestled in a dense foggy forest at dusk" src="assets/greenhaven_hero_bg.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-surface/20 via-transparent to-surface"></div>
+</div>
+<div class="relative z-10 text-center px-4 max-w-4xl">
+<h1 class="font-headline text-4xl md:text-6xl font-extrabold tracking-tighter text-on-surface mb-4 leading-[1.0] hero-title">
+                Explore Architecture in a <span class="text-gradient">Living Environment</span>
+</h1>
+<p class="font-body text-base md:text-lg text-on-surface-variant max-w-xl mx-auto mb-8 leading-relaxed hero-subtitle">
+                Explore a forest house in an interactive, photorealistic 3D environment connecting architectural exploration with immersive nature.
+            </p>
+
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-50 bounce-indicator">
+<span class="text-[10px] font-label tracking-[0.2em] uppercase">Discover</span>
+<div class="w-px h-8 bg-gradient-to-b from-secondary to-transparent"></div>
+</div>
+</section>
+<!-- Combined Experience & Features Section -->
+<!-- Immersion Section Condenses -->
+<section class="relative py-24 overflow-hidden">
+
+<div class="relative z-10 max-w-7xl mx-auto px-8 text-center">
+<h2 class="font-headline text-3xl md:text-4xl font-bold mb-6 reveal">Unrivaled <span class="text-gradient">Atmosphere</span></h2>
+<p class="font-body text-base text-on-surface-variant mb-10 max-w-2xl mx-auto leading-relaxed reveal delay-1">
+                Experience how natural light and weather affect the mood of your architectural design with our real-time rendering engine.
+            </p>
+<div class="relative aspect-video max-w-7xl mx-auto rounded-xl overflow-hidden border border-outline-variant/20 shadow-2xl group reveal-scale delay-2">
+
+<video class="w-full h-full object-cover" autoplay loop muted playsinline>
+<source src="assets/forestHouse_interactive.mp4" type="video/mp4"/>
+</video>
+</div>
+</div>
+</section>
+
+<!-- Combined Experience & Features Section -->
+<section class="relative py-24 px-8 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="Architectural pavilion in dark forest" src="assets/greenhaven_video_bg.jpg"/>
+<div class="absolute inset-0 bg-surface/80 backdrop-blur-sm"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto">
+<div class="text-center mb-16 max-w-3xl mx-auto space-y-6">
+<div class="inline-block px-3 py-1 rounded-full bg-secondary-container/30 border border-secondary/20 text-secondary text-[10px] font-bold tracking-widest uppercase font-label reveal">The Experience</div>
+<h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-surface reveal delay-1">Precision in every pixel.</h2>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed reveal delay-2">
+        Walk through the space and adjust lights with intuitive controls. Dynamic daylight and natural forest surroundings bridge the gap between imagination and reality.
+    </p>
+</div>
+
+<div class="relative mb-20 reveal-scale delay-3">
+<div class="absolute -inset-8 bg-secondary-container/10 rounded-[3rem] blur-3xl opacity-50 float-glow"></div>
+<video class="relative rounded-[2rem] shadow-2xl border border-outline-variant/10 w-full aspect-video object-cover" autoplay loop muted playsinline>
+<source src="assets/forestHouse_movie.mp4" type="video/mp4"/>
+</video>
+</div>
+
+<div class="grid md:grid-cols-2 gap-12 items-start mb-20">
+<div class="space-y-8 reveal-left">
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+<li class="flex items-start gap-4">
+<div class="mt-1 w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-full bg-secondary/20 text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="check" data-weight="fill">check</span>
+</div>
+<div class="space-y-1">
+<span class="block font-headline font-bold text-lg text-on-surface">Walkthrough</span>
+<span class="text-on-surface-variant text-sm">First-person fluid movement in real-time.</span>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="mt-1 w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-full bg-secondary/20 text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="check" data-weight="fill">check</span>
+</div>
+<div class="space-y-1">
+<span class="block font-headline font-bold text-lg text-on-surface">Customization</span>
+<span class="text-on-surface-variant text-sm">Swap layouts and materials instantly.</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="glass-panel p-8 rounded-2xl border border-outline-variant/10 reveal-right delay-2">
+<p class="font-body text-on-surface-variant leading-relaxed italic">
+            "Our vision was to create a space where architecture serves as a lens for the environment. Every detail in this digital twin is calibrated to reflect the true soul of the Greenhaven project."
+        </p>
+</div>
+</div>
+
+<!-- Interactive Grid Tightened -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 glass-panel p-8 rounded-xl flex flex-col justify-between min-h-[300px] border border-outline-variant/10 group hover:border-secondary/30 transition-all reveal-left delay-1">
+<div>
+<span class="material-symbols-outlined text-3xl text-secondary mb-4" data-icon="edit_square">edit_square</span>
+<h3 class="font-headline text-2xl font-bold mb-3">Modify Interiors</h3>
+<p class="text-on-surface-variant text-sm max-w-md">Experiment with bespoke furniture and structural modifications in real-time. View changes from any angle with perfect fidelity.</p>
+</div>
+<div class="flex gap-3 mt-6">
+<div class="h-12 w-12 rounded-lg bg-surface flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-xl" data-icon="chair">chair</span>
+</div>
+<div class="h-12 w-12 rounded-lg bg-surface flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-xl" data-icon="table_restaurant">table_restaurant</span>
+</div>
+<div class="h-12 w-12 rounded-lg bg-surface flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-xl" data-icon="bed">bed</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-highest p-8 rounded-xl border border-outline-variant/10 flex flex-col justify-between reveal-right delay-2">
+<div>
+<span class="material-symbols-outlined text-3xl text-secondary mb-4" data-icon="dashboard">dashboard</span>
+<h3 class="font-headline text-xl font-bold mb-2">Layouts</h3>
+<p class="text-on-surface-variant text-xs">Toggle between open-plan and compartmentalized concepts instantly.</p>
+</div>
+<img class="mt-4 rounded-lg opacity-80 h-32 object-cover" data-alt="Architectural floor plan" src="assets/img_01.jpg"/>
+</div>
+</div>
+</section>
+
+<!-- Horizontal Swap Gallery Section -->
+<section class="py-24 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="inline-block px-3 py-1 rounded-full bg-secondary-container/30 border border-secondary/20 text-secondary text-[10px] font-bold tracking-widest uppercase font-label mb-4 reveal">Portfolio</div>
+<h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight text-on-surface reveal delay-1">A Closer Look</h2>
+</div>
+<p class="font-body text-on-surface-variant max-w-md text-sm leading-relaxed mb-2">
+                    Discover the synergy between sustainable architecture and the serenity of the wild.
+                </p>
+</div>
+</div>
+<div class="relative group">
+<div id="gallery-slider" class="flex overflow-x-auto hide-scrollbar gap-6 px-8 md:px-[calc((100vw-80rem)/2+2rem)] snap-x snap-mandatory">
+<!-- Gallery Item 1 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Forest house exterior" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_01.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">External Integration</p>
+<p class="text-white/70 text-sm font-body">Seamless transitions between indoor comfort and outdoor vitality.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Modern kitchen" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_02.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Modern Minimalism</p>
+<p class="text-white/70 text-sm font-body">Crafted interiors focusing on natural textures and light.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Interior design detail" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_03.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Sustainable Living</p>
+<p class="text-white/70 text-sm font-body">Eco-conscious materials meeting high-end architectural standards.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 4 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Architecture view" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_04.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Aerial Perspective</p>
+<p class="text-white/70 text-sm font-body">A sanctuary nestled deep within the living forest canopy.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 5 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Living space" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_07.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Nature Connection</p>
+<p class="text-white/70 text-sm font-body">Bringing the outside in with expansive glass facades.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 6 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Architectural detail" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_08.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Spatial Flow</p>
+<p class="text-white/70 text-sm font-body">Fluid layouts designed for modern living and comfort.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 7 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Evening view" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_09.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Atmospheric Dusk</p>
+<p class="text-white/70 text-sm font-body">Witness how artificial and natural light merge at twilight.</p>
+</div>
+</div>
+</div>
+<!-- Gallery Item 8 -->
+<div class="flex-none w-[60vw] md:w-[35vw] snap-center">
+<div class="relative group/item aspect-video rounded-2xl overflow-hidden border border-outline-variant/10 glass-panel shadow-2xl">
+<img alt="Panoramic view" class="w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-110" src="assets/img_11.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+<p class="font-headline font-bold text-xl text-white">Forest Sanctuary</p>
+<p class="text-white/70 text-sm font-body">An uncompromising commitment to architectural excellence.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Controls (Visible on Hover/Desktop) -->
+<div class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+<button id="gallery-prev" class="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-on-surface pointer-events-auto border border-outline-variant/20 hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button id="gallery-next" class="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-on-surface pointer-events-auto border border-outline-variant/20 hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Progress Indicator -->
+<div id="gallery-indicators" class="flex justify-center gap-2 mt-8">
+<div class="h-1 w-8 rounded-full bg-secondary transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+<div class="h-1 w-8 rounded-full bg-outline-variant/20 transition-colors duration-300 cursor-pointer indicator"></div>
+</div>
+</section>
+<!-- Industry Uses Tightened -->
+<section class="py-16 px-8 max-w-7xl mx-auto">
+<h2 class="font-headline text-2xl font-bold mb-10 text-center reveal">Built for Leaders</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-low p-6 rounded-lg flex flex-col items-center text-center group hover:bg-surface-container-high transition-colors reveal delay-1 pulse-hover">
+<span class="material-symbols-outlined text-2xl text-secondary/60 group-hover:text-secondary mb-3 transition-colors" data-icon="architecture">architecture</span>
+<span class="font-headline font-bold text-[11px] uppercase tracking-wider">Architecture</span>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg flex flex-col items-center text-center group hover:bg-surface-container-high transition-colors reveal delay-2 pulse-hover">
+<span class="material-symbols-outlined text-2xl text-secondary/60 group-hover:text-secondary mb-3 transition-colors" data-icon="real_estate_agent">real_estate_agent</span>
+<span class="font-headline font-bold text-[11px] uppercase tracking-wider">Real Estate</span>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg flex flex-col items-center text-center group hover:bg-surface-container-high transition-colors reveal delay-3 pulse-hover">
+<span class="material-symbols-outlined text-2xl text-secondary/60 group-hover:text-secondary mb-3 transition-colors" data-icon="psychology">psychology</span>
+<span class="font-headline font-bold text-[11px] uppercase tracking-wider">Decision Making</span>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg flex flex-col items-center text-center group hover:bg-surface-container-high transition-colors reveal delay-4 pulse-hover">
+<span class="material-symbols-outlined text-2xl text-secondary/60 group-hover:text-secondary mb-3 transition-colors" data-icon="museum">museum</span>
+<span class="font-headline font-bold text-[11px] uppercase tracking-wider">Exhibitions</span>
+</div>
+</div>
+</section>
+
+</main>
+<!-- Footer -->
+<footer class="w-full py-20 bg-[#0e1511] border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden reveal">
+  <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+  
+  <!-- Social Media Links -->
+  <div class="flex gap-8 mb-8 relative z-10">
+    <a href="https://linkedin.com/in/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+      </svg>
+    </a>
+    <a href="https://instagram.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+    <a href="https://x.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
+    <a href="https://facebook.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+      </svg>
+    </a>
+    <a href="https://youtube.com/@miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+      </svg>
+    </a>
+    <a href="https://vimeo.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-[#8e928d] hover:text-white transition-all hover:scale-110">
+      <svg class="w-8 h-8 opacity-60 hover:opacity-100 transition-all" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22.396 7.164c-.093 2.026-1.507 4.8-4.245 8.32C15.322 19.161 12.93 21 10.97 21c-1.214 0-2.24-1.12-3.08-3.361l-1.458-5.021c-.571-1.896-1.174-2.844-1.808-2.844-.135 0-.609.282-1.423.844L3 9.875c.896-.783 1.764-1.585 2.604-2.408 1.152-1.096 2.015-1.673 2.588-1.731 1.355-.13 2.196.792 2.522 2.322.365 1.696.623 2.756.775 3.178.442 1.457.927 2.186 1.457 2.186.408 0 1.012-.641 1.814-1.922.801-1.282 1.229-2.246 1.282-2.893.106-1.074-.312-1.611-1.252-1.611-.448 0-.913.106-1.393.317.922-3.014 2.675-4.48 5.258-4.4 1.875.066 2.761 1.273 2.655 3.628z"/>
+      </svg>
+    </a>
+  </div>
+
+  <p class="font-mono text-xs tracking-[0.2em] text-[#8e928d] uppercase mb-2 relative z-10">
+    © 2024 MVFX Interactive Systems
+  </p>
+  <p class="font-mono text-[10px] text-[#8e928d]/40 relative z-10">
+    Designed for Performance & Precision
+  </p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('gallery-slider');
+        const prevBtn = document.getElementById('gallery-prev');
+        const nextBtn = document.getElementById('gallery-next');
+        const indicators = document.querySelectorAll('#gallery-indicators .indicator');
+        
+        if (!slider || !prevBtn || !nextBtn || !indicators.length) return;
+
+        let currentIndex = 0;
+        const items = Array.from(slider.children);
+
+        // Update indicators visually using inline styles
+        const updateIndicators = (index) => {
+            indicators.forEach((ind, i) => {
+                if (i === index) {
+                    ind.style.backgroundColor = '';
+                    ind.className = ind.className.replace(/bg-outline-variant\/20/g, '').replace(/bg-secondary/g, '') + ' bg-secondary';
+                } else {
+                    ind.style.backgroundColor = '';
+                    ind.className = ind.className.replace(/bg-secondary/g, '').replace(/bg-outline-variant\/20/g, '') + ' bg-outline-variant/20';
+                }
+            });
+        };
+
+        // Scroll to specific index using slider.scrollTo
+        const scrollToIndex = (index) => {
+            if (index < 0 || index >= items.length) return;
+            const item = items[index];
+            const sliderRect = slider.getBoundingClientRect();
+            const itemRect = item.getBoundingClientRect();
+            const scrollLeft = slider.scrollLeft + (itemRect.left - sliderRect.left) - (sliderRect.width / 2) + (itemRect.width / 2);
+            slider.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        };
+
+        // Button clicks
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex > 0) {
+                currentIndex--;
+                scrollToIndex(currentIndex);
+                updateIndicators(currentIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex < items.length - 1) {
+                currentIndex++;
+                scrollToIndex(currentIndex);
+                updateIndicators(currentIndex);
+            }
+        });
+
+        // Indicator clicks
+        indicators.forEach((ind, i) => {
+            ind.addEventListener('click', () => {
+                currentIndex = i;
+                scrollToIndex(i);
+                updateIndicators(i);
+            });
+        });
+
+        // Sync current index on manual scroll
+        let scrollTimeout;
+        slider.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const sliderCenter = slider.scrollLeft + slider.offsetWidth / 2;
+                let closestIndex = 0;
+                let closestDistance = Infinity;
+                items.forEach((item, i) => {
+                    const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+                    const distance = Math.abs(sliderCenter - itemCenter);
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = i;
+                    }
+                });
+                if (closestIndex !== currentIndex) {
+                    currentIndex = closestIndex;
+                    updateIndicators(currentIndex);
+                }
+            }, 100);
+        });
+    });
+
+    // === Scroll-triggered Reveal Animations ===
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                entry.target.classList.remove('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -60px 0px'
+    });
+
+    document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right').forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // === Mobile menu toggle with hamburger animation ===
+    let isMenuOpen = false;
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuText = document.getElementById('menu-text');
+    const hamburgerTop = document.getElementById('hamburger-top');
+    const hamburgerMid = document.getElementById('hamburger-mid');
+    const hamburgerBottom = document.getElementById('hamburger-bottom');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    if (mobileMenuBtn && mobileMenu && menuText) {
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuText.textContent = 'Close';
+                hamburgerTop.style.top = '8px';
+                hamburgerTop.style.transform = 'rotate(45deg)';
+                hamburgerMid.style.opacity = '0';
+                hamburgerBottom.style.top = '8px';
+                hamburgerBottom.style.transform = 'rotate(-45deg)';
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuText.textContent = 'Menu';
+                hamburgerTop.style.top = '0';
+                hamburgerTop.style.transform = '';
+                hamburgerMid.style.opacity = '1';
+                hamburgerBottom.style.top = '16px';
+                hamburgerBottom.style.transform = '';
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                isMenuOpen = false;
+                mobileMenu.classList.add('hidden');
+                menuText.textContent = 'Menu';
+                hamburgerTop.style.top = '0';
+                hamburgerTop.style.transform = '';
+                hamburgerMid.style.opacity = '1';
+                hamburgerBottom.style.top = '16px';
+                hamburgerBottom.style.transform = '';
+            });
+        });
+    }
+
+    // === Language toggle ===
+    let currentLang = 'EN';
+    const langToggle = document.getElementById('lang-toggle');
+    const langPt = document.getElementById('lang-pt');
+    const langEn = document.getElementById('lang-en');
+
+    if (langToggle) {
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'EN' ? 'PT' : 'EN';
+            langToggle.textContent = currentLang;
+            if (langPt && langEn) {
+                if (currentLang === 'PT') {
+                    langPt.classList.add('text-white');
+                    langEn.classList.remove('text-white');
+                } else {
+                    langEn.classList.add('text-white');
+                    langPt.classList.remove('text-white');
+                }
+            }
+        });
+    }
+
+    // === Header background on scroll ===
+    const header = document.getElementById('main-header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                header.style.background = 'rgba(14, 21, 17, 0.95)';
+            } else {
+                header.style.background = '';
+            }
+        }, { passive: true });
+    }
+</script>
+</body></html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MONOLITH | Architectural Visualization</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f9f9f9",
+                        "on-primary-fixed": "#3e3f42",
+                        "surface-container-highest": "#dde4e5",
+                        "tertiary-fixed-dim": "#3292e9",
+                        "on-surface-variant": "#5a6061",
+                        "on-surface": "#2d3435",
+                        "error-container": "#fe8983",
+                        "primary-fixed-dim": "#d4d4d7",
+                        "on-primary": "#f7f7fa",
+                        "secondary-fixed-dim": "#ffcaa2",
+                        "primary-dim": "#515255",
+                        "on-tertiary-fixed": "#000000",
+                        "secondary-fixed": "#ffdcc3",
+                        "on-background": "#2d3435",
+                        "surface-container-high": "#e4e9ea",
+                        "on-primary-container": "#505254",
+                        "surface-container": "#ebeeef",
+                        "outline": "#757c7d",
+                        "on-tertiary-fixed-variant": "#00284a",
+                        "on-error": "#fff7f6",
+                        "primary": "#5d5e61",
+                        "error-dim": "#4e0309",
+                        "secondary": "#805633",
+                        "tertiary": "#0062a7",
+                        "surface-container-low": "#f2f4f4",
+                        "secondary-container": "#ffdcc3",
+                        "primary-fixed": "#e2e2e5",
+                        "surface-tint": "#5d5e61",
+                        "on-tertiary-container": "#001e3a",
+                        "on-tertiary": "#f7f9ff",
+                        "tertiary-container": "#449ff8",
+                        "on-secondary": "#fff7f4",
+                        "tertiary-fixed": "#449ff8",
+                        "on-secondary-fixed-variant": "#7c5230",
+                        "tertiary-dim": "#005593",
+                        "on-secondary-container": "#714927",
+                        "on-error-container": "#752121",
+                        "error": "#9f403d",
+                        "on-primary-fixed-variant": "#5a5c5e",
+                        "inverse-primary": "#f9f9fc",
+                        "on-secondary-fixed": "#5b3717",
+                        "surface-bright": "#f9f9f9",
+                        "background": "#f9f9f9",
+                        "primary-container": "#e2e2e5",
+                        "secondary-dim": "#724a28",
+                        "surface-dim": "#d4dbdd",
+                        "inverse-on-surface": "#9c9d9d",
+                        "inverse-surface": "#0c0f0f",
+                        "outline-variant": "#adb3b4",
+                        "surface-variant": "#dde4e5"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(249, 249, 249, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        @keyframes scroll-right {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .infinite-scroll {
+            animation: scroll-right 40s linear infinite;
+        }
+        .scroll-container {
+            mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        .image-item {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+        .image-item:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-tertiary/30">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full py-6 z-50 mix-blend-difference pointer-events-none bg-neutral-800/80 backdrop-blur-md grayscale-[10%]" style="padding-left: 3.5rem; padding-right: 3.5rem;">
+<div class="flex justify-between items-center">
+<div class="cursor-pointer pointer-events-auto group" onclick="window.location.href='/index.html'">
+    <div class="flex items-center gap-3">
+        <svg viewBox="0 0 1920 1080" class="h-10 md:h-12 w-auto">
+            <g fill="#808080" class="transition-opacity group-hover:opacity-80">
+                <path d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                <path d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                <path d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                <path d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+            </g>
+        </svg>
+        <span class="text-lg font-black font-sans tracking-[0.3em] text-[#808080] group-hover:opacity-80 transition-opacity">MIGUEL VIRGÍLIO</span>
+    </div>
+</div>
+<div class="hidden md:flex gap-8 pointer-events-auto items-center">
+    <span class="text-sm font-mono uppercase tracking-widest text-neutral-400 hover:text-white cursor-pointer transition-colors relative group">
+        Expertise
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+    </span>
+    <span class="text-sm font-mono uppercase tracking-widest text-neutral-400 hover:text-white cursor-pointer transition-colors relative group">
+        About
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+    </span>
+    <span class="text-sm font-mono uppercase tracking-widest text-neutral-400 hover:text-white cursor-pointer transition-colors relative group">
+        Contact
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+    </span>
+    <span class="text-sm font-mono uppercase tracking-widest text-neutral-400 hover:text-white cursor-pointer transition-colors relative group w-6 text-center" onclick="document.body.classList.toggle('lang-pt'); this.textContent = document.body.classList.contains('lang-pt') ? 'PT' : 'EN'">
+        EN
+        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+    </span>
+</div>
+<div class="md:hidden flex items-center gap-4 pointer-events-auto">
+    <div class="text-xs font-mono tracking-widest text-neutral-400 uppercase">Menu</div>
+    <div class="relative w-6 h-4 group cursor-pointer transition-transform duration-300 active:scale-90">
+        <span class="absolute left-0 w-full h-[1px] bg-white"></span>
+        <span class="absolute left-0 w-full h-[1px] bg-white top-2"></span>
+        <span class="absolute left-0 w-full h-[1px] bg-white top-4"></span>
+    </div>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center overflow-hidden bg-on-surface">
+<div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/625906/1e2a6a70-9cf0-406c-a7ef-aa9e080f4e95?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
+</div>
+<div class="relative z-20 px-8 md:px-20 max-w-5xl">
+<h1 class="font-headline text-5xl md:text-[5rem] leading-[0.95] text-white tracking-tighter mb-8">
+                    Bring architectural <br/> design to life.
+                </h1>
+<p class="font-body text-lg md:text-xl text-white/80 max-w-xl mb-12 leading-relaxed">
+                    An immersive 3D visualization where you freely walk through every space. Precision modeling meets real-time light physics.
+                </p>
+
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20">
+<span class="text-[10px] font-headline uppercase tracking-[0.3em] text-white/40">Scroll to Explore</span>
+<div class="w-[1px] h-12 bg-white/20 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1/2 bg-white"></div>
+</div>
+</div>
+</section>
+<!-- Features Grid -->
+<section class="py-28 px-8 md:px-20 bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-0 border-t border-outline-variant/20">
+<!-- Column 1: Explore -->
+<div class="p-10 border-r border-outline-variant/20 group hover:bg-surface-container-low transition-colors bg-stone-100">
+<span class="material-symbols-outlined text-primary mb-8 text-3xl" data-icon="directions_walk">directions_walk</span>
+<h3 class="font-headline text-xl mb-4 tracking-tight uppercase">Explore</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        Navigate through architectural spaces with total freedom. No pre-rendered paths, just pure exploration.
+                    </p>
+</div>
+<!-- Column 2: Customize -->
+<div class="p-10 border-r border-outline-variant/20 group hover:bg-surface-container-low transition-colors bg-stone-200">
+<span class="material-symbols-outlined text-primary mb-8 text-3xl" data-icon="palette">palette</span>
+<h3 class="font-headline text-xl mb-4 tracking-tight uppercase">Customize</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        Swap materials in real-time. Change furniture layouts, floor textures, and wall finishes instantly.
+                    </p>
+</div>
+<!-- Column 3: Interact -->
+<div class="p-10 border-r border-outline-variant/20 group hover:bg-surface-container-low transition-colors bg-stone-300">
+<span class="material-symbols-outlined text-primary mb-8 text-3xl" data-icon="sensors">sensors</span>
+<h3 class="font-headline text-xl mb-4 tracking-tight uppercase">Interact</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        Open doors, trigger smart lighting, and test spatial ergonomics through interactive touchpoints.
+                    </p>
+</div>
+<!-- Column 4: Environment -->
+<div class="p-10 group hover:bg-surface-container-low transition-colors bg-stone-400">
+<span class="material-symbols-outlined text-primary mb-8 text-3xl" data-icon="wb_sunny">wb_sunny</span>
+<h3 class="font-headline text-xl mb-4 tracking-tight uppercase">Environment</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        Simulate exact daylight conditions based on GPS coordinates and explore seasonal weather shifts.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Interactive Video Demo -->
+<section class="flex flex-col lg:flex-row bg-on-surface min-h-[819px]">
+<!-- Left Content -->
+<div class="w-full lg:w-1/3 p-12 md:p-20 flex flex-col justify-center">
+<span class="text-tertiary font-headline text-[10px] uppercase tracking-[0.4em] mb-6">Real-Time Engine</span>
+<h2 class="font-headline text-3xl md:text-5xl text-white mb-8 tracking-tighter">Unprecedented fidelity at your fingertips.</h2>
+<p class="text-white/60 font-body text-lg leading-relaxed mb-10">
+                    Our proprietary rendering engine allows for instantaneous material swaps and lighting adjustments without the need for lengthy export times.
+                </p>
+<div class="space-y-6">
+<div class="flex items-center gap-4 p-4 border border-white/10 hover:border-white/30 transition-colors cursor-pointer">
+<div class="w-2 h-2 bg-tertiary"></div>
+<span class="text-white text-xs uppercase tracking-widest font-bold">Material Intelligence</span>
+</div>
+<div class="flex items-center gap-4 p-4 border border-white/10 hover:border-white/30 transition-colors cursor-pointer">
+<div class="w-2 h-2 bg-white/20"></div>
+<span class="text-white text-xs uppercase tracking-widest font-bold">Physics-Based Lighting</span>
+</div>
+</div>
+</div>
+<!-- Right Visual (Mock Interactive Player) -->
+<div class="w-full lg:w-2/3 relative h-[500px] lg:h-auto overflow-hidden">
+<div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/625906/9d366200-056b-4240-ae8a-c7f449382cbb?autoplay=true&loop=true&muted=true&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
+
+</div>
+</section>
+<!-- Architectural Image Gallery (Integrated Infinite Slider) -->
+<section class="py-28 px-8 md:px-20 overflow-hidden shadow-[0_-20px_40px_rgba(0,0,0,0.5)]" style="background-color: #081a09;">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-end mb-16">
+            <div>
+                <span class="text-gray-500 font-headline text-[10px] uppercase tracking-[0.4em] mb-4 block">Render Gallery</span>
+                <h2 class="font-headline text-4xl tracking-tighter uppercase text-gray-400">Project Studies</h2>
+            </div>
+            
+        </div>
+
+        <div class="relative w-full overflow-hidden">
+            <div class="scroll-container w-full">
+                <div class="infinite-scroll flex gap-8 w-max py-4">
+                    <!-- First Set of Images -->
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_05.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_02.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_03.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_04.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_07.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <!-- Duplicate Set for Loop -->
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_05.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_02.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_03.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_04.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="image-item group relative flex-shrink-0 w-80 h-80 md:w-[500px] md:h-[500px] rounded-sm overflow-hidden shadow-sm bg-stone-200">
+                        <img src="public/img_07.jpg" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Success Banner / CTA Section -->
+<section class="py-32 px-8 md:px-20 bg-stone-100 overflow-hidden relative">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-surface-container-high -skew-x-12 translate-x-32 z-0"></div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
+<h2 class="font-headline text-5xl md:text-7xl mb-12 tracking-tighter uppercase leading-none">Ready to step inside?</h2>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-24 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+
+<div class="flex gap-10 mb-8 relative z-10">
+    <a href="https://linkedin.com/in/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+    </a>
+    <a href="https://instagram.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://x.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://facebook.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+    <a href="https://youtube.com/@miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+    <a href="https://vimeo.com/miguelvirgilio" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+        <svg class="w-10 h-10 opacity-60 hover:opacity-100 transition-all" fill="currentColor" viewBox="0 0 24 24"><path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.797l-.013.01z"/></svg>
+    </a>
+</div>
+
+<p class="text-xs tracking-[0.2em] text-gray-400 uppercase mb-2 relative z-10">
+    © 2026 MVFX INTERACTIVE SYSTEMS
+</p>
+<p class="text-[10px] text-gray-400/40 relative z-10">
+    DIGITAL EXPERIENCES & VISUALIZATION
+</p>
+</footer>
+</body></html>

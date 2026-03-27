@@ -611,7 +611,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             className="absolute inset-0 pointer-events-none select-none z-0"
           >
             {/* Base Layer */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center opacity-[0.12]">
+            <div className="absolute inset-0 flex flex-col justify-center items-center opacity-[0.08]">
               {sectionT.backgroundText.map((text, i) => (
                 <motion.h2
                   key={`base-${i}`}
@@ -637,7 +637,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       ? { duration: 1, delay: 0.2 + i * 0.1, ease: 'easeOut' } : {}
                   }
                   viewport={{ once: false }}
-                  className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-white/40 whitespace-nowrap"
+                  className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-white/25 whitespace-nowrap"
                 >
                   {text}
                 </motion.h2>
@@ -646,7 +646,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
 
             {/* Glow Layer (Masked) */}
             <motion.div
-              className={`absolute inset-0 hidden md:flex flex-col justify-center items-center opacity-40`}
+              className={`absolute inset-0 hidden md:flex flex-col justify-center items-center opacity-25`}
               style={{
                 WebkitMaskImage: maskImage,
                 maskImage: maskImage

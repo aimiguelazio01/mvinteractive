@@ -6,104 +6,6 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { useLoader } from '@react-three/fiber';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const GALLERY_IFRAMES = [
-    "https://player.mediadelivery.net/embed/625906/c4f7268d-51fe-4779-9adb-45bccb8447bd?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false",
-    "https://player.mediadelivery.net/embed/625906/83fad43c-984c-43e5-b3bc-82ce27c79387?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false",
-    "https://player.mediadelivery.net/embed/625906/7b5e168d-de03-46c4-9d8e-dcc4b20fdcbe?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false",
-    "https://player.mediadelivery.net/embed/625906/bf93b238-80ea-4fa2-bc70-6251862943b1?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false",
-    "https://player.mediadelivery.net/embed/625906/115ccb02-3030-449e-9b6e-a3bc8f6ce89f?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false"
-];
-
-const ImageGallery = ({ onSelect, onHover, collidersRef, occluderMeshes }: {
-    onSelect: (index: number | null) => void,
-    onHover: (index: number | null) => void,
-    collidersRef: React.MutableRefObject<THREE.Mesh[]>,
-    occluderMeshes: React.MutableRefObject<THREE.Mesh[]>
-}) => {
-    const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
-
-    useEffect(() => {
-        // Filter out nulls and update the colliders ref
-        const activeMeshes = meshRefs.current.filter((m): m is THREE.Mesh => m !== null);
-        collidersRef.current = activeMeshes;
-    }, []);
-    const count = 6;
-
-    const items = useMemo(() => {
-        const spiralHeight = 8;
-        return Array.from({ length: count }, (_, i) => ({
-            iframeUrl: GALLERY_IFRAMES[i % GALLERY_IFRAMES.length],
-            angleOffset: (i / count) * Math.PI * 2,
-            radius: 3.5,
-            height: -spiralHeight / 2 + (i / (count - 1)) * spiralHeight,
-            rotationSpeed: 0.12,
-            scale: 1.3
-        }));
-    }, [count]);
-
-    const groupRefs = useRef<(THREE.Group | null)[]>([]);
-
-    useFrame((state, delta) => {
-        items.forEach((item, i) => {
-            const group = groupRefs.current[i];
-            if (group) {
-                const time = state.clock.elapsedTime * item.rotationSpeed;
-                const angle = item.angleOffset + time;
-                group.position.x = Math.cos(angle) * item.radius;
-                group.position.z = Math.sin(angle) * item.radius;
-                group.position.y = item.height + Math.sin(time * 0.5) * 0.5;
-                group.lookAt(0, group.position.y, 0); // Face the center
-            }
-        });
-    });
-
-    const [hovered, setHoveredLocal] = useState<number | null>(null);
-    const setHovered = (idx: number | null) => {
-        setHoveredLocal(idx);
-        onHover(idx);
-    };
-
-    return (
-        <group>
-            {items.map((item, i) => (
-                <group key={i} ref={(el) => { groupRefs.current[i] = el; }}>
-                    <mesh
-                        ref={(el) => { meshRefs.current[i] = el; }}
-                        scale={[item.scale, item.scale, 1]}
-                    >
-                        <planeGeometry args={[1, 1]} />
-                        <meshBasicMaterial
-                            transparent
-                            opacity={0.08}
-                            color="#444444"
-                            side={THREE.DoubleSide}
-                        />
-                        <Html
-                            transform
-                            distanceFactor={2.0}
-                            position={[0, 0, 0.01]}
-                            pointerEvents="none"
-                            occlude="raycast"
-                            style={{ transition: 'opacity 0.15s ease' }}
-                        >
-                            <div style={{ width: '300px', pointerEvents: 'none', opacity: 0.8 }}>
-                                <div style={{ position: 'relative', paddingTop: '56.25%', overflow: 'hidden', borderRadius: '4px' }}>
-                                    <iframe
-                                        src={item.iframeUrl}
-                                        loading="lazy"
-                                        style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%', pointerEvents: 'none' }}
-                                        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
-                                    />
-                                </div>
-                            </div>
-                        </Html>
-                    </mesh>
-                </group>
-            ))}
-        </group>
-    );
-};
-
 // Flowing nebula dust clouds
 const NebulaBackground = ({ count = 20 }: { count?: number }) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -504,9 +406,6 @@ const LoadingSection05 = () => (
 const Section05Experience: React.FC = () => {
     const sculptureColliders = useRef<THREE.Mesh[]>([]);
     const sculptureOccluderMeshes = useRef<THREE.Mesh[]>([]);
-    const galleryColliders = useRef<THREE.Mesh[]>([]);
-    const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-    const [hoveredPlaneIdx, setHoveredPlaneIdx] = useState<number | null>(null);
 
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
@@ -527,9 +426,8 @@ const Section05Experience: React.FC = () => {
                     <GlowingOrbs count={10} />
                     <AmbientDust count={50} />
 
-                    <OrbitingParticles count={80} colliders={[sculptureColliders, galleryColliders]} hoveredPlaneIdx={hoveredPlaneIdx} />
+                    <OrbitingParticles count={80} colliders={[sculptureColliders]} hoveredPlaneIdx={null} />
                     <Sculpture collidersRef={sculptureColliders} occluderMeshes={sculptureOccluderMeshes} />
-                    <ImageGallery onSelect={setSelectedIdx} onHover={setHoveredPlaneIdx} collidersRef={galleryColliders} occluderMeshes={sculptureOccluderMeshes} />
 
                     <Environment files="/assets/3d/s05/moon_lab_1k.hdr" />
 

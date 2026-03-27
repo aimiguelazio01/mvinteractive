@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { HandLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
+import { motion } from 'framer-motion';
 
 interface HandTrackerProps {
     onHandMove: (pos: { x: number; y: number; isPinching?: boolean }) => void;
     active: boolean;
-    onStatusChange?: (status: 'idle' | 'loading' | 'ready' | 'error', handDetected: boolean) => void;
+    onStatusChange?: (status: 'idle' | 'loading' | 'ready' | 'error', handDetected: boolean, progress: number) => void;
 }
 
 const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusChange }) => {
@@ -18,14 +19,15 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusC
 
     const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
     const [handDetected, setHandDetected] = useState(false);
+    const [loadProgress, setLoadProgress] = useState(0);
 
     useEffect(() => { onHandMoveRef.current = onHandMove; }, [onHandMove]);
 
     useEffect(() => {
         if (onStatusChange) {
-            onStatusChange(status, handDetected);
+            onStatusChange(status, handDetected, loadProgress);
         }
-    }, [status, handDetected, onStatusChange]);
+    }, [status, handDetected, loadProgress, onStatusChange]);
 
     const predict = useCallback(() => {
         const video = videoRef.current;
@@ -65,18 +67,50 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusC
             landmarkerRef.current = null;
             setStatus('idle');
             setHandDetected(false);
+            setLoadProgress(0);
             return;
         }
 
         let cancelled = false;
         async function bootstrap() {
             setStatus('loading');
+            setLoadProgress(0);
             try {
+                // Fetch vision wasm fileset
                 const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm');
+                if (cancelled) return;
+                setLoadProgress(20);
+
+                // Fetch model with progress
+                const response = await fetch('https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task');
+                const contentLength = +(response.headers.get('Content-Length') || 0);
+                const reader = response.body?.getReader();
+                if (!reader) throw new Error('Failed to read model body');
+
+                let receivedLength = 0;
+                const chunks = [];
+                while(true) {
+                    const {done, value} = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    receivedLength += value.length;
+                    if (contentLength) {
+                        setLoadProgress(20 + Math.round((receivedLength / contentLength) * 60)); // 20% to 80% range for model download
+                    }
+                }
+                if (cancelled) return;
+
+                const modelBuffer = new Uint8Array(receivedLength);
+                let position = 0;
+                for(let chunk of chunks) {
+                    modelBuffer.set(chunk, position);
+                    position += chunk.length;
+                }
+
                 const landmarker = await HandLandmarker.createFromOptions(vision, {
                     baseOptions: {
-                        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
-                        delegate: 'CPU',
+                        modelAssetBuffer: modelBuffer,
+                        delegate: 'GPU',
                     },
                     runningMode: 'VIDEO',
                     numHands: 1,
@@ -85,6 +119,7 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusC
 
                 if (cancelled) { landmarker.close(); return; }
                 landmarkerRef.current = landmarker;
+                setLoadProgress(85);
 
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: { width: 640, height: 480, facingMode: 'user' },
@@ -98,8 +133,13 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusC
                     await videoRef.current.play();
                 }
 
-                setStatus('ready');
-                rafRef.current = requestAnimationFrame(predict);
+                setLoadProgress(100);
+                setTimeout(() => {
+                    if (!cancelled) {
+                        setStatus('ready');
+                        rafRef.current = requestAnimationFrame(predict);
+                    }
+                }, 500);
             } catch (err) {
                 console.error('[HandTracker] init failed:', err);
                 if (!cancelled) setStatus('error');
@@ -130,9 +170,31 @@ const HandTracker: React.FC<HandTrackerProps> = ({ onHandMove, active, onStatusC
                 <span className="text-[10px] font-mono tracking-widest uppercase" style={{ color: statusColor }}>{statusLabel}</span>
             </div>
             {status === 'loading' && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60">
-                    <div className="w-6 h-6 border-2 border-[#68F2EB]/30 border-t-[#68F2EB] rounded-full animate-spin" />
-                    <span className="text-[10px] font-mono text-[#68F2EB]/60 uppercase tracking-wider">Loading AI Model</span>
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/80 backdrop-blur-md">
+                    <div className="relative w-16 h-16 flex items-center justify-center">
+                        <svg className="w-full h-full -rotate-90">
+                            <circle cx="32" cy="32" r="28" fill="none" stroke="white" strokeWidth="2" className="opacity-10" />
+                            <motion.circle 
+                                cx="32" cy="32" r="28" fill="none" stroke="#68F2EB" strokeWidth="2" 
+                                strokeDasharray="175.9"
+                                animate={{ strokeDashoffset: 175.9 * (1 - loadProgress / 100) }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </svg>
+                        <span className="absolute text-[10px] font-mono text-[#68F2EB] font-bold">{loadProgress}%</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                        <span className="text-[10px] font-mono text-white/60 uppercase tracking-widest animate-pulse">
+                            {loadProgress < 85 ? 'Downloading Model' : 'Starting Camera'}
+                        </span>
+                        <div className="w-32 h-[1px] bg-white/10 overflow-hidden rounded-full">
+                            <motion.div 
+                                className="h-full bg-[#68F2EB]"
+                                animate={{ width: `${loadProgress}%` }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </div>
+                    </div>
                 </div>
             )}
             {status === 'error' && (

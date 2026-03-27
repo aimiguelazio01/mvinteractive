@@ -1,4 +1,5 @@
 import React, { useRef, useMemo, useEffect, createContext, useContext, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import HandTracker from './HandTracker';
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
@@ -616,6 +617,9 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
   
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [handPos, setHandPos] = useState<{ x: number; y: number; isPinching?: boolean } | null>(null);
+  const [mediapipeStatus, setMediapipeStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [mediapipeProgress, setMediapipeProgress] = useState(0);
+  const [handDetected, setHandDetected] = useState(false);
   const [activeButtonIdx, setActiveButtonIdx] = useState(() => Math.floor(Math.random() * 6));
   const [handTrackingActive, setHandTrackingActive] = useState(false);
   const lastPinchRef = useRef(false);
@@ -629,9 +633,17 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
         setHandPos(null);
         setHoveredButton(null);
         lastPinchRef.current = false;
+        setMediapipeStatus('idle');
+        setMediapipeProgress(0);
       }
       return next;
     });
+  }, []);
+
+  const handleMediapipeStatus = useCallback((status: 'idle' | 'loading' | 'ready' | 'error', detected: boolean, progress: number) => {
+    setMediapipeStatus(status);
+    setHandDetected(detected);
+    setMediapipeProgress(progress);
   }, []);
 
   // Map hand position to particle attraction
@@ -681,56 +693,99 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
         </Canvas>
 
         {/* --- Button Row --- */}
-        <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-[2510] pointer-events-auto flex flex-col items-center gap-4">
-
-          {/* Guide hint — shown only when hand tracking is NOT active */}
-          {!handTrackingActive && (
-            <div className="flex flex-col items-center gap-3">
-              <div
-                className="group relative flex items-center justify-center cursor-pointer"
-                onMouseEnter={() => {
-                  const next = Math.floor(Math.random() * 6);
-                  setHoveredButton(next + 1);
-                }}
-                onMouseLeave={() => setHoveredButton(null)}
-                onClick={() => {
-                  const next = Math.floor(Math.random() * 6);
-                  setHoveredButton(next + 1);
-                }}
+        {/* --- Unified Interaction Layer (Mouse & Hand) --- */}
+        <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-[2510] pointer-events-auto flex flex-col items-center gap-6 w-full max-w-2xl px-4">
+          
+          <AnimatePresence mode="wait">
+            {!handTrackingActive ? (
+              /* Mouse Mode Instructions & Morph Button */
+              <motion.div
+                key="mouse-ui"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="flex flex-col items-center gap-4"
               >
-                <div className="absolute inset-0 bg-[#68F2EB]/20 blur-xl rounded-full scale-50 group-hover:scale-150 transition-transform duration-500" />
-                <img
-                  src="/assets/images/s01_button_01.svg"
-                  alt="Morph Particles"
-                  className="w-14 h-14 md:w-20 md:h-20 object-contain relative z-10 animate-pulse group-hover:animate-none group-hover:scale-110 group-active:scale-95 transition-all duration-300 filter drop-shadow-[0_0_15px_rgba(104,242,235,0.4)]"
-                />
-              </div>
-              
-              <p className="text-sm md:text-base font-mono tracking-widest text-white/40 uppercase animate-pulse">
-                {sectionT.instructions?.mouse || "Move cursor to attract • Hover button to form shapes • Click to rotate"}
-              </p>
-            </div>
-          )}
+                <div
+                  className="group relative flex items-center justify-center cursor-pointer"
+                  onMouseEnter={() => {
+                    const next = Math.floor(Math.random() * 6);
+                    setHoveredButton(next + 1);
+                  }}
+                  onMouseLeave={() => setHoveredButton(null)}
+                >
+                  <div className="absolute inset-0 bg-[#68F2EB]/20 blur-xl rounded-full scale-50 group-hover:scale-150 transition-transform duration-500" />
+                  <img
+                    src="/assets/images/s01_button_01.svg"
+                    alt="Morph Particles"
+                    className="w-14 h-14 md:w-20 md:h-20 object-contain relative z-10 animate-pulse group-hover:animate-none group-hover:scale-110 transition-all duration-300 filter drop-shadow-[0_0_15px_rgba(104,242,235,0.4)]"
+                  />
+                </div>
+                <p className="text-sm md:text-base font-mono tracking-widest text-white/40 uppercase animate-pulse text-center max-w-md">
+                  {sectionT.instructions?.mouse || "Move cursor to attract • Hover button to form shapes"}
+                </p>
+              </motion.div>
+            ) : (
+              /* Hand Tracking Mode Status & Instructions */
+              <motion.div
+                key="hand-ui"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="flex flex-col items-center gap-4"
+              >
+                {mediapipeStatus === 'loading' ? (
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
+                        {lang === 'EN' ? `Hand Tracking Setup... ${mediapipeProgress}%` : `Conf. Rastreamento... ${mediapipeProgress}%`}
+                      </span>
+                    </div>
+                    <div className="w-56 h-[2px] bg-white/10 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-white"
+                        animate={{ width: `${mediapipeProgress}%` }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}
+                    >
+                      <path d="M18 11V6a2 2 0 0 0-4 0v5" />
+                      <path d="M14 10V4a2 2 0 0 0-4 0v6" />
+                      <path d="M10 10.5V6a2 2 0 0 0-4 0v8" />
+                      <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                    </svg>
+                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold whitespace-nowrap">
+                      {handDetected 
+                        ? (lang === 'EN' ? 'Sculpt with your palm • Pinch to morph' : 'Esculpir com a palma • Aperte para transformar')
+                        : (lang === 'EN' ? 'Setup Complete • Show hand to track' : 'Configuração Concluída • Mostre a mão')}
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Hand-tracking instructions (shows only when active, replaces the standard morph button) */}
-          {handTrackingActive && (
-            <div className="flex flex-col items-center gap-2 mb-2">
-              <p className="text-sm md:text-base font-mono tracking-widest text-[#68F2EB]/60 uppercase animate-pulse text-center">
-                {sectionT.instructions?.hand || "Sculpt with your palm • Pinch to morph"}
-              </p>
-            </div>
-          )}
-
-          {/* Enter Experience / Hand-Tracking Toggle */}
           <button
             onClick={toggleHandTracking}
             className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
               ${handTrackingActive
                 ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]'
-                : 'bg-black/50 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10 hover:shadow-[0_0_20px_rgba(104,242,235,0.15)]'}
+                : 'bg-black/80 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10' }
               backdrop-blur-md`}
           >
-            {/* Hand icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -755,18 +810,27 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
               {handTrackingActive ? t.ui.exitExperience : t.ui.enterExperience}
             </span>
 
-            {/* Active pulse ring */}
             {handTrackingActive && (
               <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />
             )}
           </button>
-
+          
+          {!handTrackingActive && (
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase"
+            >
+              {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
+            </motion.p>
+          )}
         </div>
 
         {/* MediaPipe Hand Tracker — webcam overlay bottom-right */}
         <HandTracker
           active={handTrackingActive}
           onHandMove={handleHandMove}
+          onStatusChange={handleMediapipeStatus}
         />
       </MorphContext.Provider>
     </div>

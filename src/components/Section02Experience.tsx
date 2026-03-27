@@ -91,11 +91,13 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
     const [activeTexture, setActiveTexture] = useState(initialTexture);
     const [isButtonHovered, setIsButtonHovered] = useState(false);
     const [mediapipeStatus, setMediapipeStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+    const [mediapipeProgress, setMediapipeProgress] = useState(0);
     const [handDetected, setHandDetected] = useState(false);
 
-    const handleMediapipeStatus = (status: 'idle' | 'loading' | 'ready' | 'error', detected: boolean) => {
+    const handleMediapipeStatus = (status: 'idle' | 'loading' | 'ready' | 'error', detected: boolean, progress: number) => {
         setMediapipeStatus(status);
         setHandDetected(detected);
+        setMediapipeProgress(progress);
     };
 
     const toggleHandTracking = () => {
@@ -170,12 +172,21 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
                             className="flex items-center gap-3 mb-2"
                         >
                             {mediapipeStatus === 'loading' ? (
-                                <>
-                                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
-                                        {lang === 'EN' ? 'Initializing AI Engine...' : 'A Iniciar Motor IA...'}
-                                    </span>
-                                </>
+                                <div className="flex flex-col items-center gap-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
+                                            {lang === 'EN' ? `Loading AI Experience... ${mediapipeProgress}%` : `A Carregar Experiência... ${mediapipeProgress}%`}
+                                        </span>
+                                    </div>
+                                    <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                        <motion.div 
+                                            className="h-full bg-white"
+                                            animate={{ width: `${mediapipeProgress}%` }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    </div>
+                                </div>
                             ) : (
                                 <div className="flex items-center gap-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}>

@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Grid } from '@react-three/drei';
 import { Physics, RigidBody, CuboidCollider, RapierRigidBody } from '@react-three/rapier';
+import { motion, AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
 import { TRANSLATIONS } from '../data/translations';
 import HandTracker from './HandTracker';
@@ -404,62 +405,126 @@ const DynamicBounds = () => {
 const Section04Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) => {
     const [handTrackingActive, setHandTrackingActive] = useState(false);
     const [handPos, setHandPos] = useState<{ x: number; y: number; isPinching?: boolean } | null>(null);
+    const [mediapipeStatus, setMediapipeStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+    const [mediapipeProgress, setMediapipeProgress] = useState(0);
+    const [handDetected, setHandDetected] = useState(false);
+
+    const handleMediapipeStatus = (status: 'idle' | 'loading' | 'ready' | 'error', detected: boolean, progress: number) => {
+        setMediapipeStatus(status);
+        setHandDetected(detected);
+        setMediapipeProgress(progress);
+    };
 
     const toggleHandTracking = () => {
-        setHandTrackingActive(v => !v);
-        if (!handTrackingActive) setHandPos(null);
+        setHandTrackingActive(v => {
+            const next = !v;
+            if (!next) {
+                setHandPos(null);
+                setMediapipeStatus('idle');
+                setMediapipeProgress(0);
+            }
+            return next;
+        });
     };
 
     return (
         <div className="absolute inset-0 z-[50] pointer-events-none" style={{ background: '#040404' }}>
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto">
-                <button
-                    onClick={toggleHandTracking}
-                    className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
-                        ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/50 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
-                        backdrop-blur-md`}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={`w-5 h-5 transition-all duration-300 ${handTrackingActive ? 'text-[#68F2EB] animate-pulse' : 'text-white/60 group-hover:text-[#68F2EB]'}`}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3001] pointer-events-auto flex flex-col items-center gap-4 w-full">
+            <AnimatePresence>
+                {handTrackingActive && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 5 }}
+                        className="flex flex-col items-center gap-2 mb-2"
                     >
-                        <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                    </svg>
-                    <span className={`text-xs uppercase font-mono tracking-[0.2em] transition-colors duration-300 ${handTrackingActive ? 'text-[#68F2EB]' : 'text-white/70 group-hover:text-[#68F2EB]'}`}>
-                        {handTrackingActive ? (lang === 'PT' ? 'Sair da Experiência' : 'Exit Experience') : (lang === 'PT' ? 'Entrar na Experiência' : 'Enter Experience')}
-                    </span>
-                    {handTrackingActive && <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />}
-                </button>
-            </div>
+                        {mediapipeStatus === 'loading' ? (
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold">
+                                        {lang === 'EN' ? `Loading AI Experience... ${mediapipeProgress}%` : `A Carregar Experiência... ${mediapipeProgress}%`}
+                                    </span>
+                                </div>
+                                <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                    <motion.div 
+                                        className="h-full bg-white"
+                                        animate={{ width: `${mediapipeProgress}%` }}
+                                        transition={{ duration: 0.3 }}
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${handDetected ? 'animate-pulse' : ''}`}>
+                                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                                </svg>
+                                <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white font-bold whitespace-nowrap">
+                                    {handDetected ? (lang === 'EN' ? 'Move hand to attract • Pinch to repel' : 'Mova a mão para atrair • Aperte para repelir') : (lang === 'EN' ? 'Show hand to track • Setup Complete' : 'Mostre a mão para detetar • Configuração Concluída')}
+                                </span>
+                            </div>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            <Canvas shadows gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }} dpr={[1, 1.5]} camera={{ position: [0, 22, 34], fov: 48, near: 0.1, far: 500 }} style={{ pointerEvents: 'auto' }}>
-                <fog attach="fog" args={['#040404', 80, 200]} />
-                <ambientLight intensity={0.6} />
-                <directionalLight position={[10, 35, 10]} intensity={3.5} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-40} shadow-camera-right={40} shadow-camera-top={40} shadow-camera-bottom={-40} />
-                <pointLight position={[0, 25, 0]} intensity={8} color="#40e0d0" />
-                <pointLight position={[-22, 10, -22]} intensity={5} color="#4488ff" />
-                <pointLight position={[22, 10, -22]} intensity={5} color="#ffcc33" />
-                <Grid position={[0, 0, 0]} args={[200, 200]} cellSize={SPACING} cellThickness={0.5} cellColor="#2a3a5a" sectionSize={SPACING * 5} sectionThickness={1.0} sectionColor="#3a5080" fadeDistance={90} infiniteGrid />
-                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
-                    <planeGeometry args={[300, 300]} />
-                    <meshPhysicalMaterial color="#000000" roughness={0.0} metalness={1.0} reflectivity={1.0} envMapIntensity={2.0} />
-                </mesh>
-                <Physics gravity={[0, -30, 0]}>
-                    <SphereSpawner />
-                    <PhysicsColumns />
-                    <CuboidCollider args={[150, 0.5, 150]} position={[0, -0.5, 0]} restitution={1.5} />
-                    <DynamicBounds />
-                </Physics>
-                <ColumnGrid handPos={handPos} handTrackingActive={handTrackingActive} />
-            </Canvas>
-            <HandTracker onHandMove={setHandPos} active={handTrackingActive} />
+            <button
+                onClick={toggleHandTracking}
+                className={`group relative flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 cursor-pointer
+                    ${handTrackingActive ? 'bg-[#68F2EB]/15 border-[#68F2EB]/60 shadow-[0_0_30px_rgba(104,242,235,0.3)]' : 'bg-black/80 border-white/20 hover:border-[#68F2EB]/40 hover:bg-[#68F2EB]/10'}
+                    backdrop-blur-md`}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={`w-5 h-5 transition-all duration-300 ${handTrackingActive ? 'text-[#68F2EB] animate-pulse' : 'text-white/60 group-hover:text-[#68F2EB]'}`}
+                >
+                    <path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                </svg>
+                <span className={`text-xs uppercase font-mono tracking-[0.2em] transition-colors duration-300 ${handTrackingActive ? 'text-[#68F2EB]' : 'text-white/70 group-hover:text-[#68F2EB]'}`}>
+                    {handTrackingActive ? (lang === 'PT' ? 'Sair da Experiência' : 'Exit Experience') : (lang === 'PT' ? 'Entrar na Experiência' : 'Enter Experience')}
+                </span>
+                {handTrackingActive && <span className="absolute inset-0 rounded-full border border-[#68F2EB]/40 animate-ping" />}
+            </button>
+            
+            {!handTrackingActive && (
+                <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase mt-2 hidden md:block"
+                >
+                    {lang === 'EN' ? 'Uses MediaPipe AI Hand Tracking' : 'Usa Rastreamento de Mãos MediaPipe IA'}
+                </motion.p>
+            )}
         </div>
+
+        <Canvas shadows gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }} dpr={[1, 1.5]} camera={{ position: [0, 22, 34], fov: 48, near: 0.1, far: 500 }} style={{ pointerEvents: 'auto' }}>
+            <fog attach="fog" args={['#040404', 80, 200]} />
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[10, 35, 10]} intensity={3.5} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-40} shadow-camera-right={40} shadow-camera-top={40} shadow-camera-bottom={-40} />
+            <pointLight position={[0, 25, 0]} intensity={8} color="#40e0d0" />
+            <pointLight position={[-22, 10, -22]} intensity={5} color="#4488ff" />
+            <pointLight position={[22, 10, -22]} intensity={5} color="#ffcc33" />
+            <Grid position={[0, 0, 0]} args={[200, 200]} cellSize={SPACING} cellThickness={0.5} cellColor="#2a3a5a" sectionSize={SPACING * 5} sectionThickness={1.0} sectionColor="#3a5080" fadeDistance={90} infiniteGrid />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+                <planeGeometry args={[300, 300]} />
+                <meshPhysicalMaterial color="#000000" roughness={0.0} metalness={1.0} reflectivity={1.0} envMapIntensity={2.0} />
+            </mesh>
+            <Physics gravity={[0, -30, 0]}>
+                <SphereSpawner />
+                <PhysicsColumns />
+                <CuboidCollider args={[150, 0.5, 150]} position={[0, -0.5, 0]} restitution={1.5} />
+                <DynamicBounds />
+            </Physics>
+            <ColumnGrid handPos={handPos} handTrackingActive={handTrackingActive} />
+        </Canvas>
+        <HandTracker onHandMove={setHandPos} active={handTrackingActive} onStatusChange={handleMediapipeStatus} />
+    </div>
     );
 };
 

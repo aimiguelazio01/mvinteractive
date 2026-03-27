@@ -189,8 +189,6 @@ const WorkModal: React.FC<WorkModalProps> = ({ work, onClose, lang }) => {
                     {activeWork.externalLink && (
                         <a
                             href={activeWork.externalLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="group/btn relative inline-flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 hover:border-accent/50 transition-all duration-500 mb-16 self-start overflow-hidden"
                         >
                             <span className="relative z-10 text-[11px] font-bold tracking-[0.3em] text-white/70 group-hover/btn:text-accent transition-colors duration-500 uppercase">

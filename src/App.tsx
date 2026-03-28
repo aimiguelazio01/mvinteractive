@@ -63,14 +63,14 @@ const App: React.FC = () => {
 
       {/* Header / Logo Fixed */}
       <motion.header
-        className="fixed top-0 left-0 w-full px-35 py-6 z-50 mix-blend-difference pointer-events-none bg-neutral-800/80 backdrop-blur-md grayscale-[10%]"
+        className="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-4 md:py-6 z-50 mix-blend-difference pointer-events-none bg-neutral-800/80 backdrop-blur-md grayscale-[10%]"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
       >
         <div className="flex justify-between items-center">
           <div className="cursor-pointer pointer-events-auto group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <motion.svg
                 viewBox="0 0 1920 1080"
                 className="h-10 md:h-12 w-auto"
@@ -86,7 +86,7 @@ const App: React.FC = () => {
                   <path d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
                 </g>
               </motion.svg>
-              <span className="text-lg font-black font-sans tracking-[0.3em] text-[#808080] group-hover:opacity-80 transition-opacity">MIGUEL VIRGÍLIO</span>
+              <span className="text-[10px] sm:text-sm md:text-lg font-black font-sans tracking-[0.1em] md:tracking-[0.3em] text-[#808080] group-hover:opacity-80 transition-opacity hidden min-[400px]:block">MIGUEL VIRGÍLIO</span>
             </div>
           </div>
 
@@ -124,10 +124,10 @@ const App: React.FC = () => {
 
           {/* Mobile Menu Toggle */}
           <div
-            className="md:hidden flex items-center gap-4 pointer-events-auto"
+            className="md:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <div className="text-xs font-mono tracking-widest text-concrete uppercase">
+            <div className="text-[10px] sm:text-xs font-mono tracking-widest text-concrete uppercase">
               {isMenuOpen ? (lang === 'EN' ? 'Close' : 'Fechar') : (lang === 'EN' ? 'Menu' : 'Menu')}
             </div>
             <div className="relative w-6 h-4 group cursor-pointer transition-transform duration-300 active:scale-90">
@@ -203,11 +203,11 @@ const App: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <footer className="w-full py-24 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <footer className="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
           
           {/* Social Media Links */}
-          <div className="flex gap-10 mb-8 relative z-10">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10">
             {[
               { icon: '/assets/images/social/linkedin.svg', url: 'https://linkedin.com/in/miguelvirgilio', label: 'LinkedIn' },
               { icon: '/assets/images/social/instagram.svg', url: 'https://instagram.com/miguelvirgilio', label: 'Instagram' },
@@ -227,7 +227,7 @@ const App: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 className="text-concrete hover:text-white transition-colors"
               >
-                <img src={social.icon} alt={social.label}                 className="w-10 h-10 opacity-60 hover:opacity-100 transition-all" />
+                <img src={social.icon} alt={social.label}                 className="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
               </motion.a>
             ))}
           </div>
@@ -236,7 +236,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="font-tech text-xs tracking-[0.2em] text-concrete uppercase mb-2 relative z-10"
+            className="font-tech text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.2em] text-concrete uppercase mb-2 relative z-10 px-4 md:px-0"
           >
             © {new Date().getFullYear()} {t.footer.copyright}
           </motion.p>
@@ -244,7 +244,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-mono text-[10px] text-concrete/40 relative z-10"
+            className="font-mono text-[8.5px] md:text-[10px] text-concrete/40 relative z-10 max-w-[90%] md:max-w-full mx-auto"
           >
             {t.footer.tagline}
           </motion.p>

@@ -2,6 +2,7 @@ import React, { useRef, useMemo, useEffect, createContext, useContext, useState,
 import { motion, AnimatePresence } from 'framer-motion';
 import HandTracker from './HandTracker';
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
+import { useProgress } from '@react-three/drei';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 import * as THREE from 'three';
 import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer.js';
@@ -609,6 +610,38 @@ const Particles = () => {
 
 import { TRANSLATIONS } from '../data/translations';
 
+const ParticleLoaderUI = ({ lang, onActiveChange }: { lang: 'EN' | 'PT', onActiveChange?: (active: boolean) => void }) => {
+  const { progress, active } = useProgress();
+  
+  useEffect(() => {
+    if (onActiveChange) {
+      onActiveChange(active);
+    }
+  }, [active, onActiveChange]);
+
+  if (!active && progress >= 100) return null;
+  // If not active but progress is 0, it means it hasn't started yet. Or if it's active.
+  if (!active && progress === 0) return null; // Only show when actively loading
+
+  return (
+    <div className="w-full mt-6 space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="text-[9px] font-mono tracking-[0.3em] uppercase text-white/50">
+          {lang === 'EN' ? 'Loading Assets' : 'A Carregar Elementos 3D'}
+        </span>
+        <span className="text-[10px] font-mono text-[#68F2EB]">{Math.round(progress)}%</span>
+      </div>
+      <div className="w-full h-[1px] bg-white/10 rounded-full overflow-hidden">
+        <motion.div 
+          className="h-full bg-[#68F2EB]"
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.3 }}
+        />
+      </div>
+    </div>
+  );
+};
+
 // ... (previous imports and simulation logic) ...
 
 const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) => {
@@ -622,6 +655,7 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
   const [handDetected, setHandDetected] = useState(false);
   const [activeButtonIdx, setActiveButtonIdx] = useState(() => Math.floor(Math.random() * 6));
   const [handTrackingActive, setHandTrackingActive] = useState(false);
+  const [isAssetsLoading, setIsAssetsLoading] = useState(false);
   const lastPinchRef = useRef(false);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
@@ -694,7 +728,7 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
 
         {/* --- Button Row --- */}
       <AnimatePresence>
-        {handTrackingActive && mediapipeStatus === 'loading' && (
+        {handTrackingActive && (mediapipeStatus === 'loading' || isAssetsLoading) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -734,6 +768,7 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
                     ? 'Creating particle grid and vision tasks for finger interaction' 
                     : 'A criar grelha de partículas e tarefas de visão para interação digital'}
                 </p>
+                <ParticleLoaderUI lang={lang} onActiveChange={setIsAssetsLoading} />
               </div>
 
               <div className="w-full h-[1px] bg-white/10 rounded-full overflow-hidden">
@@ -785,7 +820,7 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
             </motion.div>
           ) : (
             /* Hand Tracking Mode Status & Instructions */
-            mediapipeStatus === 'ready' && (
+            mediapipeStatus === 'ready' && !isAssetsLoading && (
               <motion.div
                 key="hand-ui"
                 initial={{ opacity: 0, y: 10 }}

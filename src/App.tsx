@@ -149,7 +149,7 @@ const App: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed inset-0 min-h-screen bg-black z-[45] flex flex-col justify-center p-8 md:hidden"
           >
-            <div className="flex flex-col gap-12 max-w-sm mx-auto w-full">
+            <div className="flex flex-col gap-8 min-[400px]:gap-12 max-w-sm mx-auto w-full">
               {[
                 { label: t.nav.expertise, key: 'expertise' },
                 { label: t.nav.about, key: 'about' },
@@ -160,7 +160,7 @@ const App: React.FC = () => {
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + (i * 0.1), ease: "easeOut" }}
-                  className="text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-6 group"
+                  className="text-2xl min-[400px]:text-3xl sm:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-4 sm:gap-6 group"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span className="text-xs font-mono text-concrete group-hover:text-white transition-colors">0{i + 1}</span>

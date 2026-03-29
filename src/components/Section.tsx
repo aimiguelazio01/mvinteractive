@@ -484,7 +484,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
       {/* Section Background Video */}
       <motion.div
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
-        animate={{ opacity: isExpanded ? 0 : 0.3 }}
+        animate={{ opacity: isExpanded ? 0 : 0.5 }}
         transition={{ duration: 0.8 }}
       >
         {(() => {

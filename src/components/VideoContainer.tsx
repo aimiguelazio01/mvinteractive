@@ -87,7 +87,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ poster, videoUrl }) => 
           ref={videoRef}
           className={`w-full h-full object-cover opacity-100`}
           style={{
-            opacity: isHovered ? 1 : 0.3,
+            opacity: isHovered ? 1 : 0.5,
             transition: 'opacity 0.7s ease-out'
           }}
           muted

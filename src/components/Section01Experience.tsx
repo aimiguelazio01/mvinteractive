@@ -788,7 +788,7 @@ const Section01Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
       </AnimatePresence>
 
       {/* --- Unified Interaction Layer (Mouse & Hand) --- */}
-      <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-[3000] pointer-events-auto flex flex-col items-center gap-6 w-full max-w-2xl px-4">
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-[3000] pointer-events-auto flex flex-col items-center gap-6 w-full max-w-2xl px-4">
         <AnimatePresence mode="wait">
           {!handTrackingActive ? (
             /* Mouse Mode Instructions & Morph Button */

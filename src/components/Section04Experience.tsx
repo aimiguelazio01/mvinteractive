@@ -488,7 +488,7 @@ const Section04Experience: React.FC<{ lang?: 'EN' | 'PT' }> = ({ lang = 'EN' }) 
                 )}
             </AnimatePresence>
 
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3005] pointer-events-auto flex flex-col items-center gap-4 w-full px-4">
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-[3005] pointer-events-auto flex flex-col items-center gap-4 w-full px-4">
                 <AnimatePresence>
                     {handTrackingActive && mediapipeStatus === 'ready' && (
                         <motion.div

@@ -140,27 +140,6 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
 
     return (
         <div className="absolute inset-0 z-[2500] pointer-events-none" style={{ background: '#040404' }}>
-            {/* Mouse Instructions (Desktop only, top) */}
-            {!handTrackingActive && (
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                        filter: isButtonHovered ? 'blur(10px)' : 'blur(0px)'
-                    }}
-                    className="absolute top-10 left-1/2 -translate-x-1/2 z-[3005] w-full flex justify-center px-6"
-                >
-                    <div className="bg-black/60 backdrop-blur-2xl border border-white/10 px-8 py-4 rounded-full flex items-center gap-5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse" />
-                        <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase underline-offset-8 text-white/80">
-                            {sectionT.instructions.mouse}
-                        </span>
-                    </div>
-                </motion.div>
-            )}
-
-
             <AnimatePresence>
                 {handTrackingActive && mediapipeStatus === 'loading' && (
                     <motion.div
@@ -222,6 +201,26 @@ const Section02Experience: React.FC<Section02ExperienceProps> = ({ textureUrl: i
 
             {/* Hand-Tracking Toggle & Instructions */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3005] pointer-events-auto flex flex-col items-center gap-4 w-full px-4">
+                {/* Mouse Instructions (Desktop only) */}
+                {!handTrackingActive && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            filter: isButtonHovered ? 'blur(10px)' : 'blur(0px)'
+                        }}
+                        className="flex justify-center w-full"
+                    >
+                        <div className="bg-black/60 backdrop-blur-2xl border border-white/10 px-8 py-4 rounded-full flex items-center gap-5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                            <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse" />
+                            <span className="text-[11px] md:text-sm font-mono tracking-[0.3em] uppercase underline-offset-8 text-white/80">
+                                {sectionT.instructions.mouse}
+                            </span>
+                        </div>
+                    </motion.div>
+                )}
+
                 <AnimatePresence>
                     {handTrackingActive && mediapipeStatus === 'ready' && (
                         <motion.div

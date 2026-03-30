@@ -16,13 +16,17 @@
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.2.0",
     "@types/three": "^0.182.0",
-    "framer-motion": "^12.23.26",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
     "lottie-react": "^2.4.1",
+    "lucide-react": "^1.7.0",
+    "next": "^16.2.1",
     "postprocessing": "^6.38.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "simplex-noise": "^4.0.3",
+    "tailwind-merge": "^3.5.0",
     "three": "^0.182.0"
   },
   "devDependencies": {

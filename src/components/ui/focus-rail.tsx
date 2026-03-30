@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+
 import { cn } from "@/lib/utils";
 
 export type FocusRailItem = {
@@ -37,7 +37,7 @@ function wrap(min: number, max: number, v: number) {
  * Base spring for spatial movement (x/z)
  */
 const BASE_SPRING = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 300,
   damping: 30,
   mass: 1,
@@ -48,7 +48,7 @@ const BASE_SPRING = {
  * Bouncier spring specifically for the visual "Click/Tap" feedback on the center card
  */
 const TAP_SPRING = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 450,
   damping: 18, // Lower damping = subtle overshoot/wobble "tap"
   mass: 1,
@@ -215,10 +215,9 @@ export function FocusRail({
                   opacity: opacity,
                   filter: `blur(${blur}px) brightness(${brightness})`,
                 }}
-                transition={(val) => {
-                    // Use bouncier spring for scale to create the "Tap" effect
-                    if (val === "scale") return TAP_SPRING;
-                    return BASE_SPRING;
+                transition={{
+                  default: BASE_SPRING,
+                  scale: TAP_SPRING,
                 }}
                 style={{
                   transformStyle: "preserve-3d",
@@ -292,13 +291,13 @@ export function FocusRail({
             </div>
 
             {activeItem.href && (
-              <Link
+              <a
                 href={activeItem.href}
                 className="group flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition-transform hover:scale-105 active:scale-95"
               >
                 Explore
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Link>
+              </a>
             )}
           </div>
         </div>

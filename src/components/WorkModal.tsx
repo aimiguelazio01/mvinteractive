@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { WorkItem } from '../types';
 import gsap from 'gsap';
 import { TRANSLATIONS } from '../data/translations';
+import { FocusRail, type FocusRailItem } from './ui/focus-rail';
+import { WORKS_INDEX } from '../data/constants';
 
 interface WorkModalProps {
     work: WorkItem | null;
@@ -16,12 +18,44 @@ const WorkModal: React.FC<WorkModalProps> = ({ work, onClose, lang }) => {
     const mediaContainerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [activeWork, setActiveWork] = useState<WorkItem | null>(null);
+    const [showRail, setShowRail] = useState(false);
+
+    const railItems: FocusRailItem[] = WORKS_INDEX.map((w) => ({
+        id: w.id,
+        title: t.worksIndex[w.id as keyof typeof t.worksIndex]?.title || w.title,
+        description: t.worksIndex[w.id as keyof typeof t.worksIndex]?.description || w.description,
+        imageSrc: w.mediaType === 'video' 
+            ? 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop'
+            : w.mediaUrl,
+        href: w.externalLink || '#',
+        meta: w.mediaType === 'video' ? 'Video' : w.mediaType === 'iframe' ? 'Interactive' : 'Image',
+    }));
+
+    const handleRailSelect = useCallback((item: FocusRailItem) => {
+        const selectedWork = WORKS_INDEX.find((w) => w.id === item.id);
+        if (selectedWork) {
+            gsap.to(contentRef.current, {
+                opacity: 0,
+                y: -20,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    setActiveWork(selectedWork);
+                    gsap.fromTo(contentRef.current, 
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+                    );
+                }
+            });
+        }
+    }, []);
 
     useEffect(() => {
         if (work) {
             setActiveWork(work);
             document.body.style.overflow = 'hidden';
             document.documentElement.classList.add('modal-open');
+            setTimeout(() => setShowRail(true), 1500);
         }
     }, [work]);
 
@@ -118,7 +152,7 @@ const WorkModal: React.FC<WorkModalProps> = ({ work, onClose, lang }) => {
         >
             <div
                 ref={modalContainerRef}
-                className="relative w-full max-w-7xl h-full max-h-[100vh] bg-[#050505] border border-white/10 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden shadow-[0_0_100px_rgba(255,255,255,0.05)] z-10 custom-scrollbar"
+                className={`relative w-full max-w-7xl h-full max-h-[100vh] bg-[#050505] border border-white/10 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden shadow-[0_0_100px_rgba(255,255,255,0.05)] z-10 custom-scrollbar ${showRail ? 'pb-[300px]' : ''}`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Close Interaction */}
@@ -132,7 +166,7 @@ const WorkModal: React.FC<WorkModalProps> = ({ work, onClose, lang }) => {
                 </button>
 
                 {/* Left Side: Media */}
-                <div ref={mediaContainerRef} className="w-full md:w-[60%] h-[50vh] md:h-full relative bg-black overflow-hidden shrink-0">
+                <div ref={mediaContainerRef} className={`w-full md:w-[60%] ${showRail ? 'h-[40vh] md:h-[60vh]' : 'h-[50vh] md:h-full'} relative bg-black overflow-hidden shrink-0`}>
                     {activeWork.mediaType === 'iframe' ? (
                         <iframe
                             src={activeWork.mediaUrl}
@@ -205,6 +239,20 @@ const WorkModal: React.FC<WorkModalProps> = ({ work, onClose, lang }) => {
                         <span className="text-[11px] uppercase tracking-[0.2em]">{lang === 'EN' ? 'Real-time Systems' : 'Sistemas de Tempo Real'}</span>
                     </div>
                 </div>
+
+                {/* FocusRail Gallery */}
+                {showRail && (
+                    <div className="absolute bottom-0 left-0 right-0 h-[320px] z-50">
+                        <FocusRail
+                            items={railItems}
+                            initialIndex={WORKS_INDEX.findIndex(w => w.id === activeWork.id)}
+                            autoPlay={false}
+                            loop={true}
+                            onSelect={handleRailSelect}
+                            className="h-full"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

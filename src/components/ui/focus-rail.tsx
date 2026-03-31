@@ -22,6 +22,7 @@ interface FocusRailProps {
   autoPlay?: boolean;
   interval?: number;
   className?: string;
+  onSelect?: (item: FocusRailItem) => void;
 }
 
 /**
@@ -61,6 +62,7 @@ export function FocusRail({
   autoPlay = false,
   interval = 4000,
   className,
+  onSelect,
 }: FocusRailProps) {
   const [active, setActive] = React.useState(initialIndex);
   const [isHovering, setIsHovering] = React.useState(false);
@@ -223,7 +225,11 @@ export function FocusRail({
                   transformStyle: "preserve-3d",
                 }}
                 onClick={() => {
-                  if (offset !== 0) setActive((p) => p + offset);
+                  if (offset !== 0) {
+                    setActive((p) => p + offset);
+                  } else if (onSelect) {
+                    onSelect(item);
+                  }
                 }}
               >
                 <img

@@ -17,6 +17,9 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const t = TRANSLATIONS[lang];
 
+  // Sections 01, 03, 05 -> right side; Sections 02, 04, 06 -> left side
+  const isRightSide = !activeSectionId || ['section_01', 'section_03', 'section_05'].includes(activeSectionId);
+
   const linkableItems: Record<string, string[]> = {
     'section_01': [
       'APPLE HARMONICS',
@@ -74,10 +77,10 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
         <motion.div
           key={work.id}
           variants={{
-            hidden: { opacity: 0, x: 20 },
+            hidden: { opacity: 0, x: isRightSide ? 20 : -20 },
             visible: { opacity: 1, x: 0 }
           }}
-          className={`${isLinkable ? 'group cursor-pointer' : ''} flex items-center ${mobile ? 'justify-center py-2' : 'justify-end'} transition-all duration-300`}
+          className={`${isLinkable ? 'group cursor-pointer' : ''} flex items-center ${mobile ? 'justify-center py-2' : isRightSide ? 'justify-end' : 'justify-start'} transition-all duration-300`}
           onClick={() => {
             if (isLinkable) {
               setSelectedWork(work);
@@ -87,16 +90,26 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
         >
           <motion.span
             className={`font-tech tracking-widest transition-all duration-300 ${isLinkable
-              ? `${mobile ? 'text-xl font-bold text-gray-900' : 'text-[15px] text-white'} group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
-              : `${mobile ? 'text-base text-gray-400' : 'text-[13px] text-gray-500'}`
+              ? `${mobile ? 'text-xl font-bold text-gray-900' : 'text-[13px] text-white'} group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
+              : `${mobile ? 'text-base text-gray-400' : 'text-[11px] text-gray-500'}`
               }`}
-            whileHover={isLinkable && !mobile ? { x: -10 } : {}}
+            whileHover={isLinkable && !mobile ? { x: isRightSide ? -10 : 10 } : {}}
           >
             {t.worksIndex[work.id as keyof typeof t.worksIndex]?.title || work.title}
           </motion.span>
-          {!mobile && (
+          {!mobile && isRightSide && (
             <motion.div
               className={`w-1 h-1 ml-3 rounded-full transition-all duration-300 ${isLinkable ? 'bg-white group-hover:bg-accent' : 'bg-gray-500'
+                }`}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: isLinkable ? 0.6 : 0.3, scale: 1 }}
+              whileHover={isLinkable ? { opacity: 1, scale: 2 } : {}}
+              transition={{ duration: 0.2 }}
+            />
+          )}
+          {!mobile && !isRightSide && (
+            <motion.div
+              className={`w-1 h-1 mr-3 rounded-full transition-all duration-300 order-first ${isLinkable ? 'bg-white group-hover:bg-accent' : 'bg-gray-500'
                 }`}
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: isLinkable ? 0.6 : 0.3, scale: 1 }}
@@ -150,27 +163,21 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
       </AnimatePresence>
 
       {/* Desktop Sidebar */}
-      <AnimatePresence>
-        {isVisible && (
+      <AnimatePresence mode="wait">
+        {isVisible && activeSectionId && (
           <motion.div
-            className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-end gap-3 mix-blend-difference px-4 py-6 rounded-xl"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{
-              opacity: 1,
-              x: 0,
-              transition: {
-                staggerChildren: 0.05,
-                delayChildren: 0.2
-              }
-            }}
-            exit={{ opacity: 0, x: 20, transition: { duration: 0.3 } }}
+            key={activeSectionId}
+            className={`absolute top-[10vh] z-50 hidden lg:flex flex-col gap-3 mix-blend-difference px-4 py-6 rounded-xl ${isRightSide ? 'items-end' : 'items-start'}`}
+            style={isRightSide ? { right: 32, left: 'auto' } : { left: 32, right: 'auto' }}
+            initial={{ opacity: 0, x: isRightSide ? 20 : -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isRightSide ? 20 : -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             <motion.div
-              className="mb-4 border-b border-white/20 pb-2 w-full text-right pr-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              className={`mb-4 border-b border-white/20 pb-2 w-full ${isRightSide ? 'text-right pr-4' : 'text-left pl-4'}`}
             >
-              <span className="font-tech text-xs tracking-[0.4em] text-white uppercase font-bold">
+              <span className="font-tech text-[10px] tracking-[0.4em] text-white uppercase font-bold">
                 {t.works.title}
               </span>
             </motion.div>

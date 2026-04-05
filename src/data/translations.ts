@@ -49,7 +49,7 @@ export const TRANSLATIONS = {
             section_05: {
                 title: '3D GENERALIST',
                 titleLines: ['3D GENERALIST'],
-                backgroundText: ['FORM', 'MOTION', 'AND', 'SIMULATION'],
+                backgroundText: ['FORM', 'MOTION', 'SIMULATION'],
             },
             section_06: {
                 title: '3D PRINTING & FABRICATION',
@@ -261,7 +261,7 @@ export const TRANSLATIONS = {
             section_05: {
                 title: 'GENERALISTA 3D',
                 titleLines: ['GENERALISTA 3D'],
-                backgroundText: ['FORMA', 'MOVIMENTO', 'E', 'SIMULAÇÃO'],
+                backgroundText: ['FORMA', 'MOVIMENTO', 'SIMULAÇÃO'],
             },
             section_06: {
                 title: 'IMPRESSÃO 3D E FABRICO',

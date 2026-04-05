@@ -15,6 +15,27 @@
 
     --background-image-dark-gradient: linear-gradient(to bottom, #0a0a0a, #000000);
     --background-image-hero-gradient: radial-gradient(circle at center, #111111 0%, #000000 100%);
+
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 html,

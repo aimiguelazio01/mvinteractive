@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hero from './components/Hero';
 import StackedSections from './components/StackedSections';
 import WorksIndex from './components/WorksIndex';
@@ -18,25 +19,24 @@ const App: React.FC = () => {
   const t = TRANSLATIONS[lang];
 
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-50% 0px -50% 0px',
-      threshold: 0
-    };
-
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSectionId(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    // Standard IntersectionObserver doesn't work well with GSAP-pinned stacked sections
+    // because pinned sections stay 'intersecting' even when visually covered.
+    const triggers: ScrollTrigger[] = [];
 
     SECTIONS.forEach((section) => {
       const element = document.getElementById(section.id);
-      if (element) observer.observe(element);
+      if (element) {
+        const st = ScrollTrigger.create({
+          trigger: element,
+          start: 'top 30%',
+          end: 'bottom 70%',
+          onEnter: () => setActiveSectionId(section.id),
+          onEnterBack: () => setActiveSectionId(section.id),
+          onLeave: () => setActiveSectionId(null),
+          onLeaveBack: () => setActiveSectionId(null),
+        });
+        triggers.push(st);
+      }
     });
 
     const handleScroll = () => {
@@ -48,7 +48,7 @@ const App: React.FC = () => {
     handleScroll();
 
     return () => {
-      observer.disconnect();
+      triggers.forEach((st) => st.kill());
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -59,7 +59,6 @@ const App: React.FC = () => {
       <CustomCursor />
 
       {/* Fixed UI - Hidden on Hero or when a section is expanded */}
-      <WorksIndex isVisible={isIndexVisible && !isAnySectionExpanded} activeSectionId={activeSectionId} lang={lang} />
 
       {/* Header / Logo Fixed */}
       <motion.header
@@ -205,7 +204,7 @@ const App: React.FC = () => {
         {/* Footer */}
         <footer className="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
-          
+
           {/* Social Media Links */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10">
             {[
@@ -227,7 +226,7 @@ const App: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 className="text-concrete hover:text-white transition-colors"
               >
-                <img src={social.icon} alt={social.label}                 className="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+                <img src={social.icon} alt={social.label} className="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
               </motion.a>
             ))}
           </div>

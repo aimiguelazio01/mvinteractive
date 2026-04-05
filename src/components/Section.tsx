@@ -11,8 +11,20 @@ import Section04Experience from './Section04Experience';
 import Section05Experience from './Section05Experience';
 import Section06Experience from './Section06Experience';
 import LottieBackground from './LottieBackground';
+import { Accordion05 } from './ui/accordion-05';
+import WorksIndex from './WorksIndex';
 
 const PALETTE = ["#141211", "#080a0f", "#130f0c", "#0a0d14", "#0e0a12", "#12110c"];
+
+// Subtle per-section accent colors — warm/cool alternation for visual rhythm
+const SECTION_ACCENTS: Record<string, { rgb: string; hex: string; hoverHex: string }> = {
+  'section_01': { rgb: '180,140,80', hex: '#b48c50', hoverHex: '#d4a860' },  // warm amber
+  'section_02': { rgb: '80,130,190', hex: '#5282be', hoverHex: '#6a9ad6' },  // cool steel blue
+  'section_03': { rgb: '70,170,140', hex: '#46aa8c', hoverHex: '#5cc4a4' },  // teal green
+  'section_04': { rgb: '130,90,180', hex: '#825ab4', hoverHex: '#9a72cc' },  // deep violet
+  'section_05': { rgb: '60,160,110', hex: '#3ca06e', hoverHex: '#50b880' },  // emerald
+  'section_06': { rgb: '180,100,100', hex: '#b46464', hoverHex: '#cc7c7c' },  // warm rose
+};
 
 const SECTION_02_VARIANTS = {
   bedroom: [
@@ -49,8 +61,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
       <div className="w-full overflow-visible" style={{ maxWidth: isMobile ? '100%' : '75vw' }}>
         {data.id === 'section_01' ? (
           <motion.h3
-            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-1`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4rem)' } : undefined}
+            className={`${isSmall ? 'text-xl' : 'text-2xl md:text-3xl lg:text-3xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-1`}
+            style={!isSmall ? { fontSize: 'clamp(1rem, min(6.5vw, 8.5vh), 2.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
               <motion.div
@@ -67,8 +79,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_02' ? (
           <motion.h3
-            className={`${isSmall ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-5xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4.5rem)' } : undefined}
+            className={`${isSmall ? 'text-xl' : 'text-2xl md:text-3xl lg:text-3xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-end gap-2`}
+            style={!isSmall ? { fontSize: 'clamp(1rem, min(6.5vw, 8.5vh), 3rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
               <motion.div
@@ -85,8 +97,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_03' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-col items-start gap-0`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5rem)' } : undefined}
+            className={`${isSmall ? 'text-2xl' : 'text-2xl md:text-3xl lg:text-4xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-col items-start gap-0`}
+            style={!isSmall ? { fontSize: 'clamp(1.1rem, min(7vw, 9vh), 3.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
               <div key={wordIndex} className="block relative group/word py-2">
@@ -129,8 +141,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_05' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-6xl lg:text-6xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.1] tracking-tighter uppercase cursor-pointer flex flex-wrap items-start`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5.5rem)' } : undefined}
+            className={`${isSmall ? 'text-2xl' : 'text-2xl md:text-3xl lg:text-5xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[0.85] tracking-tighter uppercase cursor-pointer group flex flex-wrap items-start`}
+            style={!isSmall ? { fontSize: 'clamp(1.1rem, min(6.5vw, 8.5vh), 3.75rem)' } : undefined}
           >
             {sectionT.titleLines.map((word, wordIndex) => (
               <div key={wordIndex} className="inline-flex mr-[0.3em] py-2">
@@ -167,8 +179,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_06' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(8vw, 10vh), 5rem)' } : undefined}
+            className={`${isSmall ? 'text-2xl' : 'text-2xl md:text-3xl lg:text-4xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.2] tracking-tight uppercase cursor-pointer flex flex-col items-end gap-2`}
+            style={!isSmall ? { fontSize: 'clamp(1rem, min(6.5vw, 8.5vh), 3.5rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
               <div key={lineIndex} className="block whitespace-nowrap overflow-visible relative">
@@ -209,8 +221,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : data.id === 'section_04' ? (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.1] tracking-tight uppercase cursor-pointer flex flex-col items-start gap-2`}
-            style={!isSmall ? { fontSize: 'clamp(1.5rem, min(7vw, 9vh), 4.5rem)' } : undefined}
+            className={`${isSmall ? 'text-2xl' : 'text-2xl md:text-3xl lg:text-4xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[1.1] tracking-tight uppercase cursor-pointer flex flex-col items-end gap-2`}
+            style={!isSmall ? { fontSize: 'clamp(1rem, min(6vw, 8vh), 3rem)' } : undefined}
           >
             {sectionT.titleLines.map((line, lineIndex) => (
               <motion.div
@@ -227,7 +239,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           </motion.h3>
         ) : (
           <motion.h3
-            className={`${isSmall ? 'text-4xl' : 'text-5xl md:text-7xl lg:text-9xl'} font-display font-semibold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-tight tracking-tight uppercase cursor-pointer transition-all duration-300 ${theme === 'glitch' ? 'hover:skew-x-12' : 'hover:tracking-widest'}`}
+            className={`${isSmall ? 'text-2xl' : 'text-3xl md:text-4xl lg:text-6xl'} font-display font-bold ${isSmall ? 'text-gray-300' : 'text-gray-200'} leading-[0.85] tracking-tight uppercase cursor-pointer transition-all duration-300 ${theme === 'glitch' ? 'hover:skew-x-12' : 'hover:tracking-widest'}`}
           >
             {sectionT.title.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-[0.3em] overflow-hidden">
@@ -330,6 +342,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
   const THEMES = ['architect', 'glitch', 'liquid', 'cinematic'];
   const theme = THEMES[index % THEMES.length];
   const bgColor = PALETTE[index % PALETTE.length];
+  const accent = SECTION_ACCENTS[data.id] || SECTION_ACCENTS['section_01'];
 
   // Derive pseudo-random values based on index to ensure consistency across renders
   const animConfig = useMemo(() => {
@@ -397,6 +410,11 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
   const rotateContentRaw = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -0.5 : 0.5, index % 2 === 0 ? 0.5 : -0.5]);
   const rotateContent = useSpring(rotateContentRaw, springConfig);
 
+  const btnOpacityRaw = useTransform(scrollYProgress, [0, 0.4, 0.55], [0, 0, 1]);
+  const btnOpacity = useSpring(btnOpacityRaw, { stiffness: 50, damping: 25 });
+  const btnYRaw = useTransform(scrollYProgress, [0.4, 0.55], [40, 0]);
+  const btnY = useSpring(btnYRaw, { stiffness: 50, damping: 25 });
+
   // Mouse tracking for glow effect (Optimized for minimal latency)
   const mConfig = { damping: 50, stiffness: 4000, mass: 0.02 };
   const mouseX = useSpring(useMotionValue(0), mConfig);
@@ -412,7 +430,9 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
     vMouseY.set(clientY);
   }
 
-  const maskImage = useMotionTemplate`radial-gradient(${theme === 'glitch' ? '150px' : '350px'} circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const maskImage = useMotionTemplate`radial-gradient(350px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+                    
+  const meshSpotlight = useMotionTemplate`radial-gradient(350px circle at ${mouseX}px ${mouseY}px, rgba(0,0,0,0.12) 0%, transparent 100%)`;
 
   // Variants for content containers
   const containerVariants: Variants = {
@@ -480,6 +500,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
       ref={containerRef}
       className={`relative w-full ${(data.id === 'section_06' && isExpanded) ? 'md:min-h-[400vh] min-h-screen' : 'min-h-screen md:h-screen'} border-t border-white/5`}
       style={{ backgroundColor: bgColor }}
+      onMouseMove={handleMouseMove}
     >
       {/* Section Background Video */}
       <motion.div
@@ -502,18 +523,18 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           if (embedUrl) {
             return (
               <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-                <iframe 
-                  src={`${embedUrl}?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false`} 
-                  loading="lazy" 
+                <iframe
+                  src={`${embedUrl}?autoplay=true&loop=true&muted=true&preload=true&responsive=true&controls=false`}
+                  loading="lazy"
                   className="absolute pointer-events-none border-0"
-                  style={{ 
+                  style={{
                     top: '50%',
                     left: '50%',
-                    width: '100vw', 
-                    height: '100vh', 
-                    minWidth: '177.77vh', 
-                    minHeight: '56.25vw', 
-                    transform: 'translate(-50%, -50%) scale(1.1)' 
+                    width: '100vw',
+                    height: '100vh',
+                    minWidth: '177.77vh',
+                    minHeight: '56.25vw',
+                    transform: 'translate(-50%, -50%) scale(1.1)'
                   }}
                   allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
                 />
@@ -535,6 +556,33 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-[var(--bg)]" style={{ '--bg': bgColor } as React.CSSProperties} />
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-transparent to-transparent" style={{ '--bg': bgColor } as React.CSSProperties} />
       </motion.div>
+
+      {/* Content-side gradient overlay for text readability */}
+      <motion.div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        animate={{ opacity: isExpanded ? 0 : 1 }}
+        transition={{ duration: 0.8 }}
+        style={{
+          background: isAlternate
+            ? `linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)`
+            : `linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)`
+        }}
+      />
+
+      {/* Subtle ambient accent glow */}
+      <motion.div
+        className="absolute z-[1] pointer-events-none"
+        animate={{ opacity: isExpanded ? 0 : 0.4 }}
+        transition={{ duration: 0.8 }}
+        style={{
+          width: '50%',
+          height: '60%',
+          top: '20%',
+          [isAlternate ? 'right' : 'left']: '-5%',
+          background: `radial-gradient(ellipse at center, rgba(${accent.rgb}, 0.08) 0%, transparent 70%)`,
+          filter: 'blur(60px)'
+        }}
+      />
 
       <div className={`w-full ${(data.id === 'section_06' && isExpanded) ? 'md:sticky md:top-0 md:h-screen relative min-h-screen' : 'relative h-full'} flex flex-col overflow-hidden ${isAlternate ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
         {/* Lottie Background - Section 06 specific (Global Background) */}
@@ -599,19 +647,13 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
           )}
         </AnimatePresence>
 
-        <div
-          className={`w-full md:w-[60%] pt-16 md:pt-[3vh] lg:pt-[5vh] pb-8 md:pb-[2vh] lg:pb-[3vh] flex flex-col justify-center relative ${isAlternate ? 'md:justify-center' : 'md:justify-start'} overflow-visible group`}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => handleIntelHover(null)}
-        >
-
-          {/* BACKGROUND TEXT CONTAINER */}
+          {/* BACKGROUND TEXT CONTAINER (Relocated for true centering) */}
           <motion.div
             style={{ y: yBg }}
-            className="absolute inset-0 pointer-events-none select-none z-0"
+            className="absolute inset-0 pointer-events-none select-none z-[2]"
           >
             {/* Base Layer */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center opacity-[0.08]">
+            <div className="absolute inset-0 flex flex-col justify-center items-center opacity-[0.04]">
               {sectionT.backgroundText.map((text, i) => (
                 <motion.h2
                   key={`base-${i}`}
@@ -637,7 +679,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       ? { duration: 1, delay: 0.2 + i * 0.1, ease: 'easeOut' } : {}
                   }
                   viewport={{ once: false }}
-                  className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-white/25 whitespace-nowrap"
+                  className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-white/25 whitespace-nowrap`}
                 >
                   {text}
                 </motion.h2>
@@ -646,7 +688,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
 
             {/* Glow Layer (Masked) */}
             <motion.div
-              className={`absolute inset-0 hidden md:flex flex-col justify-center items-center opacity-25`}
+              className={`absolute inset-0 hidden md:flex flex-col justify-center items-center opacity-12`}
               style={{
                 WebkitMaskImage: maskImage,
                 maskImage: maskImage
@@ -677,7 +719,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       ? { duration: 1, delay: 0.2 + i * 0.1, ease: 'easeOut' } : {}
                   }
                   viewport={{ once: false }}
-                  className={`text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-white whitespace-nowrap ${theme === 'glitch' ? 'drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]' : 'drop-shadow-[0_0_25px_rgba(255,255,255,0.1)]'}`}
+                  className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-white whitespace-nowrap ${theme === 'glitch' ? 'drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]' : 'drop-shadow-[0_0_25px_rgba(255,255,255,0.1)]'}`}
                 >
                   {text}
                 </motion.h2>
@@ -690,8 +732,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                 {sectionT.backgroundText.map((text, i) => (
                   <div key={`light-wrap-${i}`} className="relative">
                     {/* Base Text with Gradient Sweep */}
-                    <motion.h2
-                      className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/20 to-transparent bg-[length:300%_100%]"
+                      <motion.h2
+                        className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/20 to-transparent bg-[length:300%_100%]`}
                       animate={{
                         backgroundPosition: ["150% 0", "-150% 0"]
                       }}
@@ -720,7 +762,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                     <motion.h2
                       initial={{ opacity: 0, x: 100 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/40 to-transparent bg-[length:200%_100%]"
+                      className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/40 to-transparent bg-[length:200%_100%]`}
                       animate={{
                         backgroundPosition: ["-100% 0", "100% 0"]
                       }}
@@ -748,7 +790,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                         repeat: Infinity,
                         repeatDelay: 5,
                       }}
-                      className="absolute inset-0 text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-gray-800/10 whitespace-nowrap pointer-events-none"
+                      className={`absolute inset-0 text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-gray-800/10 whitespace-nowrap pointer-events-none`}
                     >
                       {text}
                     </motion.h2>
@@ -779,7 +821,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                     <motion.h2
                       initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
                       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                      className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/20 to-transparent bg-[length:200%_100%]"
+                      className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-transparent whitespace-nowrap bg-clip-text bg-gradient-to-r from-transparent via-black/20 to-transparent bg-[length:200%_100%]`}
                       animate={{
                         backgroundPosition: ["0% 0", "200% 0"],
                         opacity: [0.3, 0.6, 0.3]
@@ -809,7 +851,7 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       animate={{ opacity: [0.1, 0.3, 0.1] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                     >
-                      <h2 className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-gray-800/10 whitespace-nowrap pointer-events-none">
+                      <h2 className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-gray-800/10 whitespace-nowrap pointer-events-none`}>
                         {text}
                       </h2>
                     </motion.div>
@@ -826,7 +868,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                     <motion.h2
                       initial={{ opacity: 0, scale: 1.2 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-transparent whitespace-nowrap bg-clip-text bg-[radial-gradient(circle_at_var(--x,_50%)_var(--y,_50%),_rgba(0,0,0,0.3)_0%,_transparent_50%)] bg-[length:200%_200%]"
+                      className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-transparent whitespace-nowrap bg-clip-text bg-[length:200%_200%]`}
+                      style={{ backgroundImage: meshSpotlight }}
                       animate={{
                         backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
                       }}
@@ -878,7 +921,8 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                       <motion.h2
                         initial={{ opacity: 0, scale: 1.2 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="text-[12vw] md:text-[8vw] lg:text-[10vw] font-tech font-bold leading-[0.85] tracking-tight text-transparent whitespace-nowrap bg-clip-text bg-[radial-gradient(circle_at_var(--x,_50%)_var(--y,_50%),_rgba(0,0,0,0.3)_0%,_transparent_50%)] bg-[length:200%_200%]"
+                        className={`text-[18vw] md:text-[13vw] lg:text-[15vw] font-tech font-bold leading-[1.2] tracking-tighter text-transparent whitespace-nowrap bg-clip-text bg-[length:200%_200%]`}
+                        style={{ backgroundImage: meshSpotlight }}
                         animate={{
                           backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
                         }}
@@ -942,6 +986,11 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             )}
           </motion.div>
 
+
+        <div
+          className={`w-full md:w-[60%] pt-16 md:pt-[2vh] lg:pt-[4vh] pb-8 md:pb-[2vh] lg:pb-[3vh] flex flex-col justify-start relative overflow-visible group`}
+          onMouseLeave={() => handleIntelHover(null)}
+        >
           {/* FOREGROUND CONTENT */}
           <motion.div
             style={{ y: yContent, rotate: theme === 'architect' ? 0 : rotateContent }}
@@ -949,33 +998,23 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, margin: isMobile ? "-5%" : "-15%" }}
-            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]' : 'max-w-2xl md:pl-20 md:pr-12'} px-8 flex flex-col gap-2 md:gap-[1.5vh] mt-4 md:mt-0`}
+            className={`relative z-20 w-full ${isAlternate ? 'max-w-3xl md:pl-12 md:pr-12 lg:pr-[80px] items-end self-end' : 'max-w-3xl md:pl-12 md:pr-20 lg:pr-[280px]'} px-8 flex flex-col gap-2 md:gap-[1.5vh] mt-4 md:mt-0`}
           >
             {/* Main Title / Section Index Transition Block */}
             {!isExpanded ? (
               <motion.div
                 layoutId={`section-title-${data.id}`}
-                className="w-full origin-left flex flex-col gap-1 md:gap-[0.5vh]"
-                animate={{ 
-                  opacity: isBtnHovered ? 0.3 : 1, 
-                  filter: isBtnHovered ? 'blur(4px)' : 'blur(0px)' 
+                className={`w-full sticky top-[80px] md:top-[100px] z-30 ${isAlternate ? 'origin-right px-4 md:px-8' : 'origin-left px-4 md:px-8'} flex items-start gap-4 ${isAlternate ? 'flex-row-reverse' : ''}`}
+                animate={{
+                  opacity: isBtnHovered ? 0.3 : 1,
+                  filter: isBtnHovered ? 'blur(4px)' : 'blur(0px)'
                 }}
                 transition={{ duration: 0.4 }}
               >
-                {/* Section Index Indicator */}
-                <motion.div
-                  variants={itemVariants}
-                  className="flex items-center gap-4"
-                >
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: animConfig.lineSize }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-[1px] bg-white/20"
-                  />
-                  <span className="text-xs font-mono text-gray-400/60">0{index + 1}</span>
-                </motion.div>
-                <div className="w-full">
+                {/* Section Index Indicator (Now inline like accordion ID) */}
+                <span className="text-sm md:text-base font-mono mt-2 shrink-0 font-bold" style={{ color: `rgba(${accent.rgb}, 0.75)` }}>0{index + 1}</span>
+                
+                <div className={`flex-1 ${isAlternate ? 'text-right' : 'text-left'}`}>
                   {renderTitle()}
                 </div>
               </motion.div>
@@ -983,40 +1022,73 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
               <div className="h-32 w-full" />
             )}
 
-            {/* Interaction Toggle Button - Moved UP and Enlarged */}
+            {/* Capability List */}
+            <motion.div
+              animate={{
+                opacity: isExpanded ? 0 : (isBtnHovered ? 0.3 : 1),
+                x: isExpanded ? -20 : 0,
+                pointerEvents: isExpanded ? 'none' : 'auto',
+                filter: isBtnHovered ? 'blur(4px)' : 'blur(0px)'
+              }}
+              transition={{ duration: 0.4 }}
+              className="flex flex-col mt-8 md:mt-12 w-full"
+            >
+              <Accordion05
+                items={data.description.map((item, i) => ({
+                  id: String(i + 1).padStart(2, '0'),
+                  title: t.intel[item as keyof typeof t.intel]?.title || item,
+                  content: t.intel[item as keyof typeof t.intel]?.description || ""
+                }))}
+                align={isAlternate ? 'right' : 'left'}
+                accentRgb={accent.rgb}
+              />
+            </motion.div>
+
+            {/* Interaction Toggle Button */}
             {!isExpanded && (
               <motion.div
                 layoutId={`interaction-button-${data.id}`}
+                style={{ 
+                  opacity: btnOpacity,
+                  y: btnY,
+                }}
                 onClick={() => setIsExpanded(true)}
                 onHoverStart={() => setIsBtnHovered(true)}
                 onHoverEnd={() => setIsBtnHovered(false)}
-                className="mt-6 md:mt-[6vh] mb-8 md:mb-[10vh] pointer-events-auto flex items-center gap-6 md:gap-8 group cursor-pointer w-fit relative"
+                className={`mt-6 md:mt-[6vh] mb-8 md:mb-[10vh] pointer-events-auto flex items-center gap-6 md:gap-8 group cursor-pointer w-fit relative ${isAlternate ? 'self-end flex-row-reverse' : ''}`}
               >
                 {/* Icon Wrapper with enhanced Glow */}
                 <motion.div
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-white/50 flex items-center justify-center opacity-100 bg-white/10 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.15)] transition-all duration-300 relative z-10"
-                  whileHover={{ 
-                    scale: 1.1, 
-                    rotate: 90, 
-                    borderColor: 'rgba(255,255,255,0.8)',
-                    boxShadow: "0 0 50px rgba(255,255,255,0.3)" 
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 flex items-center justify-center opacity-100 backdrop-blur-md transition-all duration-300 relative z-10"
+                  style={{
+                    borderColor: `rgba(${accent.rgb}, 0.55)`,
+                    backgroundColor: `rgba(${accent.rgb}, 0.1)`,
+                    boxShadow: `0 0 35px rgba(${accent.rgb}, 0.2)`
+                  }}
+                  whileHover={{
+                    scale: 1.1,
+                    rotate: 90,
+                    borderColor: accent.hoverHex,
+                    boxShadow: `0 0 60px rgba(${accent.rgb}, 0.4)`
                   }}
                   whileTap={{ scale: 0.9 }}
                 >
                   <motion.div
-                    className={`bg-white rounded-full ${theme === 'glitch' ? 'w-full h-[1px]' : 'w-2.5 h-2.5'} relative z-20`}
+                    className={`rounded-full ${theme === 'glitch' ? 'w-full h-[1px]' : 'w-2.5 h-2.5'} relative z-20`}
+                    style={{ backgroundColor: accent.hoverHex }}
                     animate={theme === 'glitch' ? { opacity: [0, 1, 0] } : { scale: [1, 1.4, 1], opacity: [0.8, 1, 0.8] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                   />
                   {/* Additional Scan Ring on Hover */}
-                  <motion.div 
-                    className="absolute inset-0 rounded-full border border-white opacity-0"
+                  <motion.div
+                    className="absolute inset-0 rounded-full border opacity-0"
+                    style={{ borderColor: accent.hoverHex }}
                     whileHover={{ scale: 1.4, opacity: [0, 0.5, 0], transition: { duration: 1, repeat: Infinity } }}
                   />
                 </motion.div>
 
                 {/* Connecting Laser Line on Hover */}
-                <motion.div 
+                <motion.div
                   className="absolute left-10 md:left-12 h-[1px] bg-gradient-to-r from-white to-transparent opacity-0 z-0 origin-left"
                   variants={{
                     hover: { width: isMobile ? '80px' : '150px', opacity: 0.8, x: 20 },
@@ -1030,42 +1102,15 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
                 <motion.span
                   initial={{ opacity: 0, x: -10 }}
                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                  whileHover={!isMobile ? { x: 15, letterSpacing: '0.7em', color: '#fff' } : {}}
+                  whileHover={!isMobile ? { x: 15, letterSpacing: '0.7em' } : {}}
                   transition={{ duration: 0.8 }}
-                  className="text-[12px] md:text-base font-mono tracking-[0.5em] text-white uppercase pointer-events-none font-bold drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)] relative z-10"
+                  className="text-[12px] md:text-base font-mono tracking-[0.5em] uppercase pointer-events-none font-bold drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)] relative z-10 whitespace-nowrap"
+                  style={{ color: accent.hoverHex }}
                 >
                   {t.ui?.enterExperience || "ENTER EXPERIENCE"}
                 </motion.span>
               </motion.div>
             )}
-
-            {/* Capability List */}
-            <motion.ul
-              animate={{ 
-                opacity: isExpanded ? 0 : (isBtnHovered ? 0.3 : 1), 
-                x: isExpanded ? -20 : 0, 
-                pointerEvents: isExpanded ? 'none' : 'auto',
-                filter: isBtnHovered ? 'blur(4px)' : 'blur(0px)'
-              }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col gap-2 md:gap-[1vh] lg:gap-[1.5vh] border-l-2 border-white/10 pl-6 md:pl-8 max-w-2xl"
-            >
-              {data.description.map((item, i) => (
-                <motion.li
-                  key={i}
-                  variants={itemVariants}
-                  whileHover={{ x: 10, transition: { duration: 0.2 } }}
-                  className="flex flex-col md:gap-0.5 lg:gap-1 group cursor-default"
-                >
-                  <span className="text-[13px] md:text-[clamp(11px,1.5vh,1rem)] lg:text-base font-tech font-bold tracking-widest text-gray-300 uppercase group-hover:text-white transition-colors duration-300">
-                    {t.intel[item as keyof typeof t.intel]?.title || item}
-                  </span>
-                  <p className="text-[10px] md:text-[clamp(9px,1.2vh,0.75rem)] lg:text-xs font-sans text-gray-400/70 leading-tight md:leading-snug tracking-wide normal-case opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                    {t.intel[item as keyof typeof t.intel]?.description}
-                  </p>
-                </motion.li>
-              ))}
-            </motion.ul>
           </motion.div>
 
           {/* Grid Overlay */}
@@ -1073,6 +1118,15 @@ const Section: React.FC<SectionProps> = ({ data, index, lang, onExpandChange }) 
             <div className={`absolute inset-0 z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay pointer-events-none ${theme === 'glitch' ? 'opacity-[0.25]' : 'opacity-[0.1]'}`}></div>
           )}
         </div>
+
+        {/* Section-Specific Works Sidebar */}
+        {!isExpanded && (
+          <WorksIndex 
+            isVisible={isInView && !isExpanded} 
+            activeSectionId={data.id} 
+            lang={lang} 
+          />
+        )}
 
         {/* Corner Overlay - Outside of transforms for Title and Button */}
         <AnimatePresence mode="wait">

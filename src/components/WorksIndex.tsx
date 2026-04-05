@@ -90,8 +90,8 @@ const WorksIndex: React.FC<WorksIndexProps> = ({ isVisible, activeSectionId, lan
         >
           <motion.span
             className={`font-tech tracking-widest transition-all duration-300 ${isLinkable
-              ? `${mobile ? 'text-xl font-bold text-gray-900' : 'text-[13px] text-white'} group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
-              : `${mobile ? 'text-base text-gray-400' : 'text-[11px] text-gray-500'}`
+              ? `${mobile ? 'text-xl font-bold text-gray-900' : 'text-[15px] text-white'} group-hover:text-accent group-hover:tracking-[0.3em] group-hover:opacity-100`
+              : `${mobile ? 'text-base text-gray-400' : 'text-[13px] text-gray-500'}`
               }`}
             whileHover={isLinkable && !mobile ? { x: isRightSide ? -10 : 10 } : {}}
           >

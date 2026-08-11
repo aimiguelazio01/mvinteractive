@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en" class="dark selection:bg-amber-500/30">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="keywords"
+        content="miguel, virgilio, virgílio, miguel virgilio, miguel virgílio, miguel vfx, miguel virgilio studio, miguel virgílio studio, miguel studio, virgílio studio, virgilio studio, immersive, interactive, archviz, 3d animation, web creative coding, ai, 3D Modeling, Animation, 3D Tracking &amp; VFX, Video/Image Composition, Web &amp; Creative Coding, m virgil, mvirgil, virgil, virgil studio, studio, m virgil studio, mvirgil studio, alcobaça, alcobaca" />
+    <meta name="description"
+        content="MVs VaseMotion | 3D Printed Prototype Fluidity - A creative exploration of 3D printing, form, and animation by MIGUEL VIRGÍLIO Studio." />
+    <meta name="author" content="Miguel Virgílio" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/mvfx_logo.svg">
+    <title>MVs VaseMotion | 3D Printed Prototype Fluidity</title>
+
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#131313",
+                        surface: "#1a1a1a",
+                        primary: "#ffb400",
+                        secondary: "#eebd8e",
+                        concrete: "#b0b0b0",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        display: ["Outfit", "sans-serif"],
+                        orbitron: ["Orbitron", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"],
+                    },
+                },
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #080808;
+            --text-color: #e5e2e1;
+            --accent-color: #ffb400;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif {
+            font-family: 'DM Serif Display', serif !important;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #080808;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        .text-reveal {
+            display: block;
+            padding: 0.3em 0.2em;
+        }
+
+        .scroll-text-reveal {
+            display: block;
+            padding: 0.3em 0.2em;
+            transform: translateY(100%);
+        }
+
+        canvas#three-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        #lottie-scroll-container {
+            filter: drop-shadow(0 0 50px rgba(255, 180, 0, 0.1));
+        }
+
+        #lottie-loop-container {
+            width: 150px;
+            height: 150px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 12vw, 10rem);
+            line-height: 0.85;
+            padding: 0;
+            overflow: visible !important;
+        }
+
+        #vase-canvas-container {
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: radial-gradient(circle at center, rgba(255, 180, 0, 0.05) 0%, transparent 70%);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #080808;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffb400;
+        }
+
+        /* Navbar entry animation */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-down {
+            animation: slideDown 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        header {
+            transform: translateY(-100%);
+        }
+
+        #mobile-menu {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-background">
+    <!-- Loader -->
+    <div id="loader">
+        <div class="mb-4 overflow-hidden">
+            <div id="loader-percentage" class="font-mono text-[10px] tracking-[0.5em] text-primary">000%</div>
+        </div>
+        <div class="w-40 h-[1px] bg-white/10 relative overflow-hidden">
+            <div id="loader-bar" class="absolute inset-0 bg-primary origin-left scale-x-0"></div>
+        </div>
+    </div>
+
+    <div class="grain"></div>
+    <canvas id="three-bg"></canvas>
+
+    <!-- Fixed Lottie Container -->
+    <div id="fixed-lottie-container"
+        class="fixed inset-0 z-[15] pointer-events-none hidden lg:flex items-center justify-center overflow-hidden">
+        <div id="lottie-scroll-container" class="h-[85vh] aspect-square"></div>
+    </div>
+
+    <!-- Navigation -->
+    <!-- Main Portfolio Integration Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-3 md:py-5 z-[500] pointer-events-none mix-blend-difference bg-neutral-800/80 backdrop-blur-md grayscale-[10%] animate-slide-down"
+        id="main-header">
+        <div class="flex justify-between items-center w-full">
+            <div class="cursor-pointer pointer-events-auto group" onclick="window.location.href='/'">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <svg viewBox="0 0 1920 1080" class="h-8 md:h-[38.4px] w-auto">
+                        <g fill="#b0b0b0" class="transition-opacity group-hover:opacity-80">
+                            <path
+                                d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                            <path
+                                d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                            <path
+                                d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                            <path
+                                d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                        </g>
+                    </svg>
+                    <span
+                        class="text-[9px] min-[380px]:text-[10px] sm:text-sm md:text-base xl:text-lg font-medium font-orbitron tracking-[0.1em] md:tracking-[0.2em] xl:tracking-[0.3em] text-concrete group-hover:opacity-80 transition-opacity block whitespace-nowrap flex-shrink-0 uppercase">MIGUEL
+                        VIRGÍLIO <span class="opacity-60 font-light text-[0.85em]">STUDIO</span></span>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex gap-6 xl:gap-8 pointer-events-auto items-center">
+                <a href="/#about"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    data-t="nav.about">
+                    SOBRE
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#contact"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    data-t="nav.contact">
+                    CONTACTO
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <span
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer relative group w-6 text-center pointer-events-auto"
+                    onclick="toggleLang()" id="lang-toggle">
+                    EN
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </nav>
+
+            <button class="lg:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto" id="mobile-menu-btn"
+                onclick="toggleMenu()">
+                <span class="text-[10px] sm:text-xs font-mono tracking-widest text-concrete uppercase" id="menu-text"
+                    data-t="nav.menu">Menu</span>
+                <div class="relative w-6 h-4 group cursor-pointer">
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-0"
+                        id="hamburger-top"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-opacity duration-300 top-2"
+                        id="hamburger-mid"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-4"
+                        id="hamburger-bottom"></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 min-h-screen bg-black z-[45] flex flex-col justify-center p-8 lg:hidden pointer-events-none opacity-0 transition-all duration-500 translate-x-full">
+        <div class="flex flex-col gap-6 sm:gap-8 min-[400px]:gap-12 max-w-sm mx-auto w-full pointer-events-auto">
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">01</span>
+                <span data-t="nav.about">SOBRE</span>
+            </div>
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">02</span>
+                <span data-t="nav.contact">CONTACTO</span>
+            </div>
+
+            <!-- Mobile Language Switcher -->
+            <div class="mt-8 flex gap-4 font-mono text-sm tracking-widest pointer-events-auto">
+                <span class="text-white cursor-pointer" id="lang-pt-mobile" onclick="toggleLang('pt')">PT</span>
+                <span class="text-white/20">/</span>
+                <span class="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" id="lang-en-mobile"
+                    onclick="toggleLang('en')">EN</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative">
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0 scale-110 pointer-events-none" id="hero-media-container">
+                <div
+                    style="position:absolute; top:50%; left:50%; width:100vw; height:56.25vw; min-height:100vh; min-width:177.77vh; transform: translate(-50%, -50%);">
+                    <iframe
+                        src="https://player.mediadelivery.net/embed/625906/d25a835d-db29-4376-bff9-b0144c236ec0?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        loading="lazy" style="border:0; width:100%; height:100%;"
+                        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                        allowfullscreen="true">
+                    </iframe>
+                </div>
+                <!-- Sophisticated Overlays -->
+                <div class="absolute inset-0 bg-background/20"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
+            </div>
+
+            <div class="relative z-20 text-left px-12 md:px-24 w-full max-w-[1400px] mx-auto">
+                <div class="overflow-hidden mb-6">
+                    <span class="block font-serif text-[11px] tracking-[0.4em] uppercase text-primary/60 stagger-item"
+                        data-t="hero.subtitle">3D
+                        Printing • Motion Graphics • Form Exploration</span>
+                </div>
+                <h1 class="hero-title font-serif italic mb-10">
+                    <div class="overflow-hidden">
+                        <span class="block text-reveal font-serif" data-t="hero.title1">VaseMotion</span>
+                    </div>
+                    <div class="overflow-hidden -mt-[0.5em]">
+                        <span class="block text-reveal text-primary font-serif" data-t="hero.title2">Prototype</span>
+                    </div>
+                </h1>
+                <div class="max-w-xl overflow-hidden">
+                    <p class="font-sans text-xs md:text-sm text-neutral-500 leading-relaxed uppercase tracking-widest stagger-item"
+                        data-t="hero.desc">
+                        A unique 3D-printed vase with its own dedicated animated presentation. A creative exploration of
+                        3D printing, form, and animation.
+                    </p>
+                </div>
+                <div class="mt-20 flex flex-col items-start gap-4 stagger-item">
+                    <div class="font-mono text-[8px] uppercase tracking-[0.4em] text-white/20" data-t="hero.scroll">
+                        Scroll to Initiate</div>
+                    <div class="w-[1px] h-24 bg-gradient-to-b from-primary/50 to-transparent"></div>
+                </div>
+        </section>
+
+        <!-- Lottie Section -->
+        <section id="lottie-section" class="relative min-h-[100vh] lg:overflow-hidden">
+            <!-- Section Background -->
+            <div class="absolute inset-0 z-0 bg-surface"></div>
+
+            <div class="relative lg:sticky lg:top-0 min-h-screen lg:h-screen flex flex-col items-center justify-center py-12 lg:py-0 px-6 sm:px-10 relative">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02] overflow-hidden">
+                    <h2 class="text-[25vw] font-serif font-black uppercase italic whitespace-nowrap -rotate-6"
+                        data-t="lottie.bg_text">Synthesis
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center w-full max-w-[1400px] mx-auto">
+                    <div class="space-y-12 relative z-30">
+                        <div class="space-y-px">
+                            <span class="font-serif text-[10px] text-primary/60 tracking-[0.3em] uppercase block mb-4"
+                                data-t="lottie.sequence">Sequence
+                                01.04_A</span>
+                            <h3 class="font-serif text-6xl md:text-8xl italic leading-[1.1] py-4 pr-6">
+                                <div class="overflow-hidden pr-4">
+                                    <span class="block scroll-text-reveal" data-delay="0"
+                                        data-t="lottie.title1">Tactile</span>
+                                </div>
+                                <div class="overflow-hidden -mt-2 md:-mt-4 pr-4">
+                                    <span class="block scroll-text-reveal text-white/20" data-delay="0.12"
+                                        data-t="lottie.title2">Design</span>
+                                </div>
+                                <div class="overflow-hidden -mt-2 md:-mt-4 pr-4">
+                                    <span class="block scroll-text-reveal" data-delay="0.24"
+                                        data-t="lottie.title3">Storytelling.</span>
+                                </div>
+                            </h3>
+                        </div>
+                        <p class="font-sans text-neutral-400 text-sm max-w-sm leading-relaxed tracking-wide"
+                            data-t="lottie.desc">
+                            A unique 3D-printed vase with its own dedicated animated presentation. Motion graphics
+                            reveal every angle, curve, and detail of the object. The project blends tactile design
+                            with dynamic visual storytelling.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-10">
+                            <div>
+                                <div class="font-mono text-[8px] text-neutral-500 uppercase mb-2 tracking-widest"
+                                    data-t="lottie.res_label">
+                                    Resolution</div>
+                                <div class="text-xl font-serif">0.02 μm</div>
+                            </div>
+                            <div>
+                                <div class="font-mono text-[8px] text-neutral-500 uppercase mb-2 tracking-widest"
+                                    data-t="lottie.nodes_label">Nodes
+                                    </div>
+                                <div class="text-xl font-serif">1.284.901</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Showcase Column -->
+                    <div
+                        class="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] mx-auto lg:mr-0 glass overflow-hidden shadow-2xl rounded-2xl relative z-10">
+                        <div style="position:relative;padding-top:177.78%;">
+                            <iframe
+                                src="https://player.mediadelivery.net/embed/625906/68c561ae-ad75-407c-9106-1944ac15799b?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                                loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;"
+                                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;"
+                                allowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Floating Data -->
+            <div
+                class="absolute top-10 left-10 z-20 font-mono text-[8px] text-primary/40 space-y-1 hidden lg:block uppercase">
+                <div>XYZ_TRANSFORM(8.331)</div>
+                <div>VECTOR_ALIGN(9.002)</div>
+                <div>DENSITY_VULNERABILITY: 0.0%</div>
+            </div>
+            <div
+                class="absolute bottom-10 right-10 z-20 font-mono text-[8px] text-primary/40 text-right hidden lg:block uppercase">
+                <div>FLUID_SYNTH: DONE</div>
+                <div>MESH_STABILITY: 100%</div>
+                <div>BUFFER_WRITE_0xFF2</div>
+            </div>
+        </section>
+
+        <!-- Cinematic Presentation Section -->
+        <section id="cinematic" class="relative py-20 bg-[#050505] z-10">
+            <div class="max-w-[1400px] mx-auto px-10">
+                <div class="relative w-full glass border border-white/5 overflow-hidden shadow-2xl">
+                    <div style="position:relative;padding-top:56.25%;"><iframe
+                            src="https://player.mediadelivery.net/embed/625906/d25a835d-db29-4376-bff9-b0144c236ec0?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;"
+                            allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;"
+                            allowfullscreen="true"></iframe></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D Technical Section -->
+        <section id="details" class="relative py-40 overflow-hidden min-h-screen flex items-center">
+            <!-- Section Background -->
+            <div class="absolute inset-0 z-0 bg-background"></div>
+
+            <div class="max-w-[1400px] mx-auto px-10 w-full relative z-20">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-stretch">
+                    <div class="lg:col-span-8 flex flex-col gap-6">
+                        <div class="relative glass group overflow-hidden" id="vase-canvas-container"
+                            style="height: 600px; background-color: rgba(0, 0, 0, 0.8);">
+                            <!-- Three.js will inject here -->
+                            <div
+                                class="absolute top-8 left-8 p-4 border border-white/10 bg-black/40 backdrop-blur-sm z-20">
+                                <div class="font-mono text-xs uppercase tracking-[0.2em] text-primary"
+                                    data-t="tech.preview">Technical
+                                    Preview</div>
+                            </div>
+
+                            <!-- Dynamic HUD Dimensions Overlay -->
+                            <div class="absolute inset-0 pointer-events-none z-10 flex items-center justify-center p-8 select-none"
+                                id="tech-hud-overlay">
+                                <svg class="absolute inset-0 w-full h-full text-primary/30"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <line id="hud-height-line" x1="12%" y1="25%" x2="12%" y2="75%" stroke="currentColor"
+                                        stroke-width="1" stroke-dasharray="3,3" style="opacity: 0;" />
+                                    <line id="hud-height-top-tick" x1="10%" y1="25%" x2="14%" y2="25%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                    <line id="hud-height-bottom-tick" x1="10%" y1="75%" x2="14%" y2="75%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                    <line id="hud-top-line" x1="35%" y1="25%" x2="65%" y2="25%" stroke="currentColor"
+                                        stroke-width="1" stroke-dasharray="3,3" style="opacity: 0;" />
+                                    <line id="hud-top-left-tick" x1="35%" y1="23%" x2="35%" y2="27%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                    <line id="hud-top-right-tick" x1="65%" y1="23%" x2="65%" y2="27%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                    <line id="hud-bottom-line" x1="42%" y1="75%" x2="58%" y2="75%" stroke="currentColor"
+                                        stroke-width="1" stroke-dasharray="3,3" style="opacity: 0;" />
+                                    <line id="hud-bottom-left-tick" x1="42%" y1="73%" x2="42%" y2="77%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                    <line id="hud-bottom-right-tick" x1="58%" y1="73%" x2="58%" y2="77%"
+                                        stroke="currentColor" stroke-width="1.5" style="opacity: 0;" />
+                                </svg>
+                                <div id="hud-height-label"
+                                    class="absolute left-[15%] top-[50%] -translate-y-1/2 flex items-center gap-2 font-mono text-[10px] tracking-widest text-primary bg-black/60 px-2.5 py-1.5 border border-white/5 backdrop-blur-[2px] opacity-0">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                                    <span>H: <span id="hud-val-height">0.0</span> cm</span>
+                                </div>
+                                <div id="hud-top-label"
+                                    class="absolute left-[50%] top-[17%] -translate-x-1/2 flex flex-col items-center gap-0.5 font-mono text-[9px] tracking-widest text-primary bg-black/60 px-2.5 py-1.5 border border-white/5 backdrop-blur-[2px] opacity-0">
+                                    <span>TOP RAD: <span id="hud-val-top">0.0</span> cm</span>
+                                    <span class="text-[7px] text-neutral-500">DIAM: 15.0 cm</span>
+                                </div>
+                                <div id="hud-bottom-label"
+                                    class="absolute left-[50%] top-[83%] -translate-x-1/2 flex flex-col items-center gap-0.5 font-mono text-[9px] tracking-widest text-primary bg-black/60 px-2.5 py-1.5 border border-white/5 backdrop-blur-[2px] opacity-0">
+                                    <span>BASE RAD: <span id="hud-val-bottom">0.0</span> cm</span>
+                                    <span class="text-[7px] text-neutral-500">DIAM: 8.0 cm</span>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute bottom-8 right-8 p-3 border border-white/5 bg-black/40 backdrop-blur-sm z-20">
+                                <div
+                                    class="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 space-y-1">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse"></span>
+                                        <span data-t="tech.rotate">Left Click — Rotate</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                                        <span data-t="tech.pan">Right Click — Pan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <div class="p-6 glass border border-white/5 space-y-4">
+                                <h4 class="font-serif italic text-primary" data-t="tech.layer_title">Layer Precision
+                                </h4>
+                                <p class="text-[9px] text-neutral-500 uppercase leading-relaxed tracking-widest"
+                                    data-t="tech.layer_desc">
+                                    0.2mm adaptive height resolution.</p>
+                            </div>
+                            <div class="p-6 glass border border-white/5 space-y-4">
+                                <h4 class="font-serif italic text-primary" data-t="tech.infill_title">Gyroid Infill</h4>
+                                <p class="text-[9px] text-neutral-500 uppercase leading-relaxed tracking-widest"
+                                    data-t="tech.infill_desc">
+                                    15% density for structural integrity.</p>
+                            </div>
+                            <div class="p-6 glass border border-white/5 space-y-4">
+                                <h4 class="font-serif italic text-primary" data-t="tech.material_title">Eco PLA+</h4>
+                                <p class="text-[9px] text-neutral-500 uppercase leading-relaxed tracking-widest"
+                                    data-t="tech.material_desc">
+                                    Recycled high-impact filament.</p>
+                            </div>
+                            <div
+                                class="p-6 glass border border-white/5 space-y-4 hidden lg:flex items-center justify-center group transition-all cursor-pointer">
+                                <div id="lottie-loop-container"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 flex flex-col justify-center space-y-8">
+                        <div class="space-y-4">
+                            <span class="font-serif text-[10px] text-primary/60 tracking-widest uppercase block"
+                                data-t="tech.proto_label">Prototype_01</span>
+                            <h3 class="font-serif text-4xl italic leading-relaxed py-2">
+                                <div class="overflow-hidden pr-4">
+                                    <span class="block scroll-text-reveal" data-delay="0"
+                                        data-t="tech.showcase_title1">Physical & Digital</span>
+                                </div>
+                                <div class="overflow-hidden pr-4">
+                                    <span class="block scroll-text-reveal" data-delay="0.12"
+                                        data-t="tech.showcase_title2">Showcase.</span>
+                                </div>
+                            </h3>
+                        </div>
+                        <p class="font-sans text-neutral-400 text-xs leading-relaxed tracking-wide uppercase"
+                            data-t="tech.desc">
+                            Physical and digital representations create a cohesive showcase experience. A creative
+                            exploration of 3D printing, form, and animation focusing on the FDM prototype workflow.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Final CTA -->
+        <section id="contact" class="h-screen flex items-center justify-center bg-[#050505] relative overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="assets/img_01.png" class="w-full h-full object-cover opacity-10 grayscale brightness-50">
+                <div class="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background"></div>
+            </div>
+
+            <div class="relative z-30 w-full max-w-[1400px] mx-auto px-10 grid grid-cols-1 lg:grid-cols-2 items-center">
+                <div class="lg:col-start-2 space-y-16 text-center lg:text-right">
+                    <div class="space-y-4">
+                        <span class="font-serif text-[11px] tracking-[0.3em] uppercase text-primary/40 block"
+                            data-t="cta.availability">Drop Availability: Q2 2024</span>
+                        <h2 class="font-serif text-6xl md:text-8xl lg:text-9xl italic leading-[1.1] py-4 inline-block">
+                            <div class="overflow-hidden pr-4">
+                                <span class="block scroll-text-reveal" data-delay="0" data-t="cta.title1">Command</span>
+                            </div>
+                            <div class="overflow-hidden -mt-2 md:-mt-6 pr-4">
+                                <span class="block scroll-text-reveal text-primary" data-delay="0.12"
+                                    data-t="cta.title2">Succession.</span>
+                            </div>
+                        </h2>
+                    </div>
+                    <div class="flex flex-col items-center lg:items-end gap-12">
+                        <p class="font-sans text-xs uppercase tracking-[0.3em] text-neutral-500 max-w-sm"
+                            data-t="cta.desc">Join the Inner Circle for priority allocation of the first limited batch.
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden z-20">
+        <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10">
+            <a href="https://www.linkedin.com/in/mvirgilstudio/" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/linkedin.svg" alt="LinkedIn"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.instagram.com/vfxmiguel/?hl=en" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/instagram.svg" alt="Instagram"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://x.com/miguelvfx" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/X.svg" alt="X"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.facebook.com/people/Miguel-Virg%C3%ADlio/pfbid09js7CsAkcMYDbvRmVMBC4KxGc5s36iGhv2GRVQqWS87DwrwM4UrBeDQUjAM7Wavbl/" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/facebook.svg" alt="Facebook"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.youtube.com/@MVirgilStudio" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/youtube.svg" alt="YouTube"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://vimeo.com/user261754571?fl=pp&fe=sh" target="_blank" rel="noopener noreferrer"
+                class="text-neutral-400 hover:text-white transition-all transform hover:scale-110">
+                <img src="/assets/images/social/vimeo.svg" alt="Vimeo"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+        </div>
+
+        <p class="font-sans text-[10px] md:text-xs tracking-[0.2em] text-neutral-400 uppercase mb-2 relative z-10 px-4">
+            © 2026 MV Interactive Systems
+        </p>
+        <p class="font-mono text-[8.5px] md:text-[10px] text-neutral-600 relative z-10 max-w-[90%] mx-auto"
+            data-t="footer.slogan">
+            Designed for Performance & Precision
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Logic -->
+    <script>
+        // Init Lenis
+        const lenis = new Lenis({ lerp: 0.1 });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Loader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const tlLoader = gsap.timeline();
+            tlLoader.to("#loader-percentage", {
+                innerHTML: 100,
+                duration: 2,
+                snap: { innerHTML: 1 },
+                onUpdate: function () {
+                    const p = Math.round(this.targets()[0].innerHTML);
+                    document.getElementById('loader-bar').style.transform = `scaleX(${p / 100})`;
+                    document.getElementById('loader-percentage').innerHTML = p.toString().padStart(3, '0') + '%';
+                }
+            })
+                .to("#loader", {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        document.getElementById('loader').style.display = 'none';
+                        initAnimations();
+                    }
+                });
+        });
+
+        function initAnimations() {
+            // Hero Reveal
+            const tlHero = gsap.timeline();
+            tlHero.from(".text-reveal", {
+                y: 120,
+                duration: 1.8,
+                ease: "power4.out",
+                stagger: 0.15
+            })
+                .to(".stagger-item", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    stagger: 0.2
+                }, "-=1.2")
+                .to("#hero-media-container", {
+                    scale: 1,
+                    duration: 4,
+                    ease: "power2.out"
+                }, "0");
+
+            // Hero Video Parallax
+            gsap.to("#hero-media-container", {
+                scrollTrigger: {
+                    trigger: "#hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                },
+                y: 100,
+                scale: 1.1
+            });
+
+            // Lottie Animations (Desktop only)
+            if (window.innerWidth >= 1024) {
+                // Lottie Scroll
+                const lottieScroll = lottie.loadAnimation({
+                    container: document.getElementById('lottie-scroll-container'),
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: false,
+                    path: 'assets/vase_anim/vase_anim.json'
+                });
+
+                lottieScroll.addEventListener('DOMLoaded', () => {
+                    // Pin/Visibility Logic
+                    ScrollTrigger.create({
+                        trigger: "body",
+                        start: "top top",
+                        end: "bottom bottom",
+                        onUpdate: (self) => {
+                            gsap.to("#fixed-lottie-container", {
+                                opacity: 1,
+                                duration: 0.5,
+                                overwrite: "auto"
+                            });
+                        }
+                    });
+
+                    // Initialize Position
+                    gsap.set("#lottie-scroll-container", { x: 0 });
+
+                    // Unified Position Transition Logic
+                    const lottiePosTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: "body",
+                            start: "top top",
+                            end: "bottom bottom",
+                            scrub: 1
+                        }
+                    });
+
+                    // Ensure it moves based on section transitions: Center -> Right -> Stay Right -> Left
+                    lottiePosTl
+                        .to("#lottie-scroll-container", { x: 0, duration: 0.1 }) // Hero (Center)
+                        .to("#lottie-scroll-container", {
+                            x: "25vw",
+                            duration: 0.3,
+                            ease: "power2.inOut"
+                        }) // Move to Right for Dynamics
+                        .to("#lottie-scroll-container", {
+                            x: "25vw",
+                            duration: 0.3,
+                            ease: "power2.inOut"
+                        }) // Move to Right for Technical (middle-right anchor)
+                        .to("#lottie-scroll-container", {
+                            x: "-25vw",
+                            duration: 0.3,
+                            ease: "none"
+                        }); // Stay on Left for Command Succession (Final section)
+
+                    // Frame Sequence Logic with Lag Effect
+                    const playhead = { frame: 0 };
+                    gsap.to(playhead, {
+                        frame: lottieScroll.totalFrames - 1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: "body",
+                            start: "top top",
+                            end: "bottom bottom",
+                            scrub: 1.5
+                        },
+                        onUpdate: () => {
+                            lottieScroll.goToAndStop(playhead.frame, true);
+                        }
+                    });
+                });
+
+                // Lottie Loop
+                lottie.loadAnimation({
+                    container: document.getElementById('lottie-loop-container'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'assets/vase_rot/vase_rot.json'
+                });
+            }
+
+            // Three.js Abstract Background
+            setupAbstractBG();
+
+            // Three.js Technical Vase Preview
+            setupVasePreview();
+
+
+            // General Section Reveals
+            gsap.utils.toArray('section:not(#hero) > div').forEach(container => {
+                gsap.from(container.children, {
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    stagger: {
+                        amount: 0.4
+                    }
+                });
+            });
+
+            // Heading Specific Scrolled Reveal
+            gsap.utils.toArray('h2, h3, h4').forEach(heading => {
+                // Already covered by general container reveal if inside div, but adding specific logic for nested/lonely headings
+                if (!heading.closest('div')) {
+                    gsap.from(heading, {
+                        scrollTrigger: {
+                            trigger: heading,
+                            start: "top 90%",
+                        },
+                        y: 40,
+                        opacity: 0,
+                        duration: 1.5,
+                        ease: "power4.out"
+                    });
+                }
+            });
+
+            // Section Title Scroll Reveals (cinematic clip-path reveal)
+            document.querySelectorAll('.scroll-text-reveal').forEach(el => {
+                const section = el.closest('section');
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 65%",
+                        toggleActions: "restart none restart reset"
+                    },
+                    y: 0,
+                    duration: 1.4,
+                    ease: "power4.out",
+                    delay: parseFloat(el.dataset.delay || 0)
+                });
+            });
+
+            // HUD Animation on Scroll into the Technical section
+            const hudTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#vase-canvas-container",
+                    start: "top 75%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            hudTl.to(["#hud-height-line", "#hud-height-top-tick", "#hud-height-bottom-tick"], { opacity: 1, duration: 0.5, stagger: 0.1 })
+                .to("#hud-height-label", { opacity: 1, x: "+=10", duration: 0.4 }, "-=0.3")
+                .to(["#hud-top-line", "#hud-top-left-tick", "#hud-top-right-tick"], { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.2")
+                .to("#hud-top-label", { opacity: 1, y: "+=5", duration: 0.4 }, "-=0.3")
+                .to(["#hud-bottom-line", "#hud-bottom-left-tick", "#hud-bottom-right-tick"], { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.2")
+                .to("#hud-bottom-label", { opacity: 1, y: "-=5", duration: 0.4 }, "-=0.3");
+
+            // Odometer style counter animation
+            const counters = { height: 0, top: 0, bottom: 0 };
+            gsap.to(counters, {
+                height: 17.0,
+                top: 7.5,
+                bottom: 4.0,
+                duration: 2.0,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#vase-canvas-container",
+                    start: "top 75%"
+                },
+                onUpdate: () => {
+                    const hEl = document.getElementById('hud-val-height');
+                    const tEl = document.getElementById('hud-val-top');
+                    const bEl = document.getElementById('hud-val-bottom');
+                    if (hEl) hEl.innerText = counters.height.toFixed(1);
+                    if (tEl) tEl.innerText = counters.top.toFixed(1);
+                    if (bEl) bEl.innerText = counters.bottom.toFixed(1);
+                }
+            });
+        }
+
+        function setupAbstractBG() {
+            const canvas = document.querySelector('#three-bg');
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 2.5;
+
+            const geometry = new THREE.IcosahedronGeometry(1.8, 4);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xffb400,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.03,
+                side: THREE.DoubleSide
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const light = new THREE.PointLight(0xffb400, 1, 100);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+
+            const resize = () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            };
+            window.addEventListener('resize', resize);
+            resize();
+
+            const animate = () => {
+                mesh.rotation.y += 0.0005;
+                mesh.rotation.x += 0.0002;
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            };
+            animate();
+
+            gsap.to(mesh.rotation, {
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 2
+                },
+                z: Math.PI,
+                y: Math.PI * 0.5
+            });
+        }
+
+        function setupVasePreview() {
+            const container = document.getElementById('vase-canvas-container');
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0.5, 3);
+
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = '0';
+            renderer.domElement.style.left = '0';
+            renderer.domElement.style.width = '100%';
+            renderer.domElement.style.height = '100%';
+
+            // Orbit Controls
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = false;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+
+            // HDRI Ambient Lighting
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+
+            new THREE.RGBELoader()
+                .setDataType(THREE.UnsignedByteType)
+                .load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/equirectangular/royal_esplanade_1k.hdr', function (texture) {
+                    const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+                    scene.environment = envMap;
+                    texture.dispose();
+                    pmremGenerator.dispose();
+                });
+
+            const loader = new THREE.GLTFLoader();
+            let model;
+
+            loader.load('assets/vase.gltf', (gltf) => {
+                model = gltf.scene;
+
+                const material = new THREE.MeshPhysicalMaterial({
+                    color: 0xffffff,
+                    metalness: 0,
+                    roughness: 0.05,
+                    clearcoat: 1.0,
+                    clearcoatRoughness: 0.1,
+                    reflectivity: 0.5
+                });
+
+                model.traverse((node) => {
+                    if (node.isMesh) {
+                        node.material = material;
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                    }
+                });
+
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.sub(center);
+
+                scene.add(model);
+                gsap.from(model.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "elastic.out(1, 0.5)" });
+            });
+
+            // Lights to complement HDRI
+            const lightSide = new THREE.DirectionalLight(0xffffff, 0.5);
+            lightSide.position.set(-5, 5, 5);
+            scene.add(lightSide);
+
+            const handleResize = () => {
+                const width = container.clientWidth || 800;
+                const height = container.clientHeight || 600;
+                if (camera.aspect !== width / height) {
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(width, height);
+                }
+            };
+            window.addEventListener('resize', handleResize);
+
+            // Force initial resize
+            handleResize();
+
+            function updateHUDDimensions() {
+                if (!model) return;
+
+                const container = document.getElementById('vase-canvas-container');
+                if (!container) return;
+
+                const size = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+                const topY = size.y / 2;
+                const bottomY = -size.y / 2;
+
+                // Get camera right vector in world space
+                const cameraRight = new THREE.Vector3();
+                cameraRight.setFromMatrixColumn(camera.matrixWorld, 0);
+
+                // Proportional radii based on real dimension values (17cm height)
+                const topRadUnits = size.y * (7.5 / 17);
+                const bottomRadUnits = size.y * (4.0 / 17);
+
+                // Define 3D positions
+                const pTopCenter = new THREE.Vector3(0, topY, 0);
+                const pBottomCenter = new THREE.Vector3(0, bottomY, 0);
+
+                const pTopLeft = pTopCenter.clone().addScaledVector(cameraRight, -topRadUnits);
+                const pTopRight = pTopCenter.clone().addScaledVector(cameraRight, topRadUnits);
+
+                const pBottomLeft = pBottomCenter.clone().addScaledVector(cameraRight, -bottomRadUnits);
+                const pBottomRight = pBottomCenter.clone().addScaledVector(cameraRight, bottomRadUnits);
+
+                // Offset vertical height dimension axis to the left
+                const heightOffset = topRadUnits * 1.5;
+                const pHeightTop = pTopCenter.clone().addScaledVector(cameraRight, -heightOffset);
+                const pHeightBottom = pBottomCenter.clone().addScaledVector(cameraRight, -heightOffset);
+
+                // Helper to project 3D coordinate to container pixels
+                const project = (pos) => {
+                    const vector = pos.clone().project(camera);
+                    const x = (vector.x * 0.5 + 0.5) * container.clientWidth;
+                    const y = (-(vector.y * 0.5) + 0.5) * container.clientHeight;
+                    return { x, y };
+                };
+
+                // Project points
+                const sTopLeft = project(pTopLeft);
+                const sTopRight = project(pTopRight);
+                const sBottomLeft = project(pBottomLeft);
+                const sBottomRight = project(pBottomRight);
+                const sHeightTop = project(pHeightTop);
+                const sHeightBottom = project(pHeightBottom);
+
+                // Project center points for height axis ticks
+                const sTopCenter = project(pTopCenter);
+                const sBottomCenter = project(pBottomCenter);
+
+                // Update SVG elements directly
+                const setLine = (id, p1, p2) => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.setAttribute('x1', p1.x);
+                        el.setAttribute('y1', p1.y);
+                        el.setAttribute('x2', p2.x);
+                        el.setAttribute('y2', p2.y);
+                    }
+                };
+
+                // Top Radius Lines
+                setLine('hud-top-line', sTopLeft, sTopRight);
+                setLine('hud-top-left-tick', { x: sTopLeft.x, y: sTopLeft.y - 6 }, { x: sTopLeft.x, y: sTopLeft.y + 6 });
+                setLine('hud-top-right-tick', { x: sTopRight.x, y: sTopRight.y - 6 }, { x: sTopRight.x, y: sTopRight.y + 6 });
+
+                // Bottom Radius Lines
+                setLine('hud-bottom-line', sBottomLeft, sBottomRight);
+                setLine('hud-bottom-left-tick', { x: sBottomLeft.x, y: sBottomLeft.y - 6 }, { x: sBottomLeft.x, y: sBottomLeft.y + 6 });
+                setLine('hud-bottom-right-tick', { x: sBottomRight.x, y: sBottomRight.y - 6 }, { x: sBottomRight.x, y: sBottomRight.y + 6 });
+
+                // Height Lines
+                setLine('hud-height-line', sHeightTop, sHeightBottom);
+                setLine('hud-height-top-tick', { x: sHeightTop.x - 6, y: sHeightTop.y }, { x: sHeightTop.x + 6, y: sHeightTop.y });
+                setLine('hud-height-bottom-tick', { x: sHeightBottom.x - 6, y: sHeightBottom.y }, { x: sHeightBottom.x + 6, y: sHeightBottom.y });
+
+                // Update HTML labels position
+                const setLabelPos = (id, pos) => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.style.left = `${pos.x}px`;
+                        el.style.top = `${pos.y}px`;
+                        el.style.transform = 'translate(-50%, -50%)';
+                    }
+                };
+
+                // Position top label centered above top rim
+                setLabelPos('hud-top-label', { x: sTopCenter.x, y: sTopCenter.y - 25 });
+
+                // Position bottom label centered below base
+                setLabelPos('hud-bottom-label', { x: sBottomCenter.x, y: sBottomCenter.y + 25 });
+
+                // Position height label on the left offset axis
+                setLabelPos('hud-height-label', { x: sHeightTop.x - 45, y: (sHeightTop.y + sHeightBottom.y) / 2 });
+            }
+
+            const animate = () => {
+                handleResize(); // Check size every frame just in case
+                controls.update();
+
+                // Track HUD Dimensions in 3D Space
+                updateHUDDimensions();
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            };
+            animate();
+        }
+    </script>
+    <script>
+        // Language content
+        const translations = {
+            pt: {
+                "nav.expertise": "ESPECIALIDADE",
+                "nav.about": "SOBRE",
+                "nav.contact": "CONTACTO",
+                "nav.menu": "MENU",
+                "hero.subtitle": "Impressão 3D • Motion Graphics • Exploração de Forma",
+                "hero.title1": "VaseMotion",
+                "hero.title2": "Protótipo",
+                "hero.desc": "Um vaso único impresso em 3D com a sua própria apresentação animada dedicada. Uma exploração criativa de impressão 3D, forma e animação.",
+                "hero.scroll": "Deslize para Iniciar",
+                "lottie.bg_text": "Síntese",
+                "lottie.sequence": "Sequência 01.04_A",
+                "lottie.title1": "Design",
+                "lottie.title2": "Tátil",
+                "lottie.title3": "Storytelling.",
+                "lottie.desc": "Um vaso único impresso em 3D com a sua própria apresentação animada dedicada. Gráficos em movimento revelam cada ângulo, curva e detalhe do objeto. O projeto combina design tátil com narrativa visual dinâmica.",
+                "lottie.res_label": "Resolução",
+                "lottie.nodes_label": "Nós",
+                "tech.preview": "Pré-visualização Técnica",
+                "tech.rotate": "Clique Esquerdo — Rodar",
+                "tech.pan": "Clique Direito — Panorâmica",
+                "tech.layer_title": "Precisão de Camada",
+                "tech.layer_desc": "Resolução de altura adaptativa de 0.2mm.",
+                "tech.infill_title": "Preenchimento Gyroid",
+                "tech.infill_desc": "15% de densidade para integridade estrutural.",
+                "tech.material_title": "Eco PLA+",
+                "tech.material_desc": "Filamento reciclado de alto impacto.",
+                "tech.proto_label": "Protótipo_01",
+                "tech.showcase_title1": "Exposição Física",
+                "tech.showcase_title2": "& Digital.",
+                "tech.desc": "Representações físicas e digitais criam uma experiência de exposição coesa. Uma exploração criativa de impressão 3D, forma e animação focada no fluxo de trabalho de protótipo FDM.",
+                "cta.availability": "Integração Botânica • Q2 2024",
+                "cta.title1": "Sucessão",
+                "cta.title2": "Orgânica.",
+                "cta.desc": "Uma demonstração em 360° do design generativo que se funde com o crescimento biológico. Junte-se ao Círculo Restrito para alocação prioritária do primeiro lote limitado.",
+                "footer.slogan": "Projetado para Performance & Precisão"
+            },
+            en: {
+                "nav.expertise": "EXPERTISE",
+                "nav.about": "ABOUT",
+                "nav.contact": "CONTACT",
+                "nav.menu": "MENU",
+                "hero.subtitle": "3D Printing • Motion Graphics • Form Exploration",
+                "hero.title1": "VaseMotion",
+                "hero.title2": "Prototype",
+                "hero.desc": "A unique 3D-printed vase with its own dedicated animated presentation. A creative exploration of 3D printing, form, and animation.",
+                "hero.scroll": "Scroll to Initiate",
+                "lottie.bg_text": "Synthesis",
+                "lottie.sequence": "Sequence 01.04_A",
+                "lottie.title1": "Tactile",
+                "lottie.title2": "Design",
+                "lottie.title3": "Storytelling.",
+                "lottie.desc": "A unique 3D-printed vase with its own dedicated animated presentation. Motion graphics reveal every angle, curve, and detail of the object. The project blends tactile design with dynamic visual storytelling.",
+                "lottie.res_label": "Resolution",
+                "lottie.nodes_label": "Nodes",
+                "tech.preview": "Technical Preview",
+                "tech.rotate": "Left Click — Rotate",
+                "tech.pan": "Right Click — Pan",
+                "tech.layer_title": "Layer Precision",
+                "tech.layer_desc": "0.2mm adaptive height resolution.",
+                "tech.infill_title": "Gyroid Infill",
+                "tech.infill_desc": "15% density for structural integrity.",
+                "tech.material_title": "Eco PLA+",
+                "tech.material_desc": "Recycled high-impact filament.",
+                "tech.proto_label": "Prototype_01",
+                "tech.showcase_title1": "Physical & Digital",
+                "tech.showcase_title2": "Showcase.",
+                "tech.desc": "Physical and digital representations create a cohesive showcase experience. A creative exploration of 3D printing, form, and animation focusing on the FDM prototype workflow.",
+                "cta.availability": "Botanical Integration • Q2 2024",
+                "cta.title1": "Organic",
+                "cta.title2": "Succession.",
+                "cta.desc": "A 360° showcase of generative design meeting biological growth. Join the Inner Circle for priority allocation of the first limited batch.",
+                "footer.slogan": "Designed for Performance & Precision"
+            }
+        };
+
+        let currentLang = 'pt'; // Start in Portuguese as requested
+
+        function updateLanguage() {
+            document.documentElement.lang = currentLang;
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    el.textContent = translations[currentLang][key];
+                }
+            });
+
+            // Update toggle buttons: show the CURRENT language
+            const toggle = document.getElementById('lang-toggle');
+            if (toggle) toggle.textContent = currentLang.toUpperCase();
+
+            const ptMobile = document.getElementById('lang-pt-mobile');
+            const enMobile = document.getElementById('lang-en-mobile');
+            const menuText = document.getElementById('menu-text');
+
+            // Handle Menu text translation for "Close" state
+            if (menuText) {
+                const menu = document.getElementById('mobile-menu');
+                const isOpen = !menu.classList.contains('translate-x-full');
+                if (isOpen) {
+                    menuText.textContent = currentLang === 'pt' ? 'Fechar' : 'Close';
+                } else {
+                    menuText.textContent = translations[currentLang]["nav.menu"];
+                }
+            }
+
+            if (ptMobile && enMobile) {
+                if (currentLang === 'pt') {
+                    ptMobile.classList.add('text-white');
+                    ptMobile.classList.remove('opacity-40');
+                    enMobile.classList.remove('text-white');
+                    enMobile.classList.add('opacity-40');
+                } else {
+                    enMobile.classList.add('text-white');
+                    enMobile.classList.remove('opacity-40');
+                    ptMobile.classList.remove('text-white');
+                    ptMobile.classList.add('opacity-40');
+                }
+            }
+        }
+
+        function toggleLang(lang) {
+            if (lang) {
+                if (currentLang === lang) return;
+                currentLang = lang;
+            } else {
+                currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            }
+            updateLanguage();
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const menuText = document.getElementById('menu-text');
+            const hamburgerTop = document.getElementById('hamburger-top');
+            const hamburgerMid = document.getElementById('hamburger-mid');
+            const hamburgerBottom = document.getElementById('hamburger-bottom');
+
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (!isOpen) {
+                menu.classList.remove('translate-x-full', 'pointer-events-none');
+                menu.classList.add('translate-x-0', 'opacity-100');
+                if (menuText) menuText.textContent = currentLang === 'pt' ? 'Fechar' : 'Close';
+                if (hamburgerTop) hamburgerTop.style.transform = 'translateY(8px) rotate(45deg)';
+                if (hamburgerMid) hamburgerMid.style.opacity = '0';
+                if (hamburgerBottom) hamburgerBottom.style.transform = 'translateY(-8px) rotate(-45deg)';
+            } else {
+                menu.classList.add('translate-x-full', 'pointer-events-none');
+                menu.classList.remove('translate-x-0', 'opacity-100');
+                if (menuText) menuText.textContent = translations[currentLang]["nav.menu"];
+                if (hamburgerTop) hamburgerTop.style.transform = 'none';
+                if (hamburgerMid) hamburgerMid.style.opacity = '1';
+                if (hamburgerBottom) hamburgerBottom.style.transform = 'none';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage();
+        });
+    </script>
+</body>
+
+</html>

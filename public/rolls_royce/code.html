@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="keywords"
+        content="miguel, virgilio, virgílio, miguel virgilio, miguel virgílio, miguel vfx, miguel virgilio studio, miguel virgílio studio, miguel studio, virgílio studio, virgilio studio, immersive, interactive, archviz, 3d animation, web creative coding, ai, 3D Modeling, Animation, 3D Tracking &amp; VFX, Video/Image Composition, Web &amp; Creative Coding, m virgil, mvirgil, virgil, virgil studio, studio, m virgil studio, mvirgil studio, alcobaça, alcobaca" />
+    <meta name="description"
+        content="MVs GhostView | Interactive Experience - Explore the Rolls-Royce Ghost in an immersive 3D automotive environment by MIGUEL VIRGÍLIO Studio." />
+    <meta name="author" content="Miguel Virgílio" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/mvfx_logo.svg">
+    <title>MVs GhostView | Interactive Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@200;300;400;500;600;700;800&family=Sora:wght@300;400;600;700&family=Oswald:wght@300;400;700&family=Orbitron:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" defer></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#131313",
+                        surface: "#0e0e0e",
+                        primary: "#ffffff",
+                        "concrete": "#b0b0b0",
+                        "charcoal": "#050505",
+                        "graphite": "#0a0a0a",
+                    },
+                    fontFamily: {
+                        headline: ["Playfair Display", "serif"],
+                        body: ["Manrope", "sans-serif"],
+                        "display": ["Sora", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                        "orbitron": ["Orbitron", "sans-serif"],
+                        "tech": ["Oswald", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131313;
+            color: #ffffff;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .bg-grain {
+            position: relative;
+        }
+
+        .bg-grain::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .text-shadow-lg {
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.4);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(71, 71, 71, 0.15);
+            border-radius: 8px;
+        }
+
+        .swatch-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .swatch-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swatch-btn:hover img {
+            transform: scale(1.1);
+        }
+
+        .swatch-btn.active {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2), 0 0 0 6px #131313;
+        }
+
+        .view-toggle-btn {
+            padding: 8px 24px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn.active {
+            background: white;
+            color: black;
+        }
+
+        .view-toggle-btn:not(.active) {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .view-toggle-btn:not(.active):hover {
+            color: white;
+        }
+
+        #loader {
+            transition: opacity 0.5s ease;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #131313;
+            aspect-ratio: 16/9;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.6);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1);
+        }
+
+        .spec-card {
+            background: #131313;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .spec-card:hover {
+            background: #1a1a1a;
+        }
+
+        /* Navbar entry animation */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-down {
+            animation: slideDown 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        header {
+            transform: translateY(-100%);
+        }
+
+        /* Mobile touch and hover optimization */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (hover: none) {
+
+            .swatch-btn:hover img,
+            button:hover img,
+            .gallery-item:hover img,
+            #paint-selectors button img,
+            #interior-selectors button img {
+                transform: none !important;
+            }
+
+            .view-toggle-btn:not(.active):hover {
+                color: rgba(255, 255, 255, 0.4) !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-white selection:text-black">
+    <!-- Top Navigation -->
+    <!-- Header / Logo Fixed -->
+    <!-- Main Portfolio Integration Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-3 md:py-5 z-[500] pointer-events-none mix-blend-difference bg-neutral-800/80 backdrop-blur-md grayscale-[10%] animate-slide-down"
+        id="main-header">
+        <div class="flex justify-between items-center w-full">
+            <div class="cursor-pointer pointer-events-auto group" onclick="window.location.href='/'">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <svg viewBox="0 0 1920 1080" class="h-8 md:h-[38.4px] w-auto">
+                        <g fill="#b0b0b0" class="transition-opacity group-hover:opacity-80">
+                            <path
+                                d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                            <path
+                                d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                            <path
+                                d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                            <path
+                                d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                        </g>
+                    </svg>
+                    <span
+                        class="text-[9px] min-[380px]:text-[10px] sm:text-sm md:text-base xl:text-lg font-medium font-orbitron tracking-[0.1em] md:tracking-[0.2em] xl:tracking-[0.3em] text-concrete group-hover:opacity-80 transition-opacity block whitespace-nowrap flex-shrink-0 uppercase">MIGUEL
+                        VIRGÍLIO <span class="opacity-60 font-light text-[0.85em]">STUDIO</span></span>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex gap-6 xl:gap-8 pointer-events-auto items-center">
+                <a href="/#about"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    id="nav-about">
+                    SOBRE
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#contact"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    id="nav-contact">
+                    CONTACTO
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <span
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer relative group w-6 text-center pointer-events-auto"
+                    onclick="toggleLang()" id="lang-toggle">
+                    PT
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </nav>
+
+            <button class="lg:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto py-2 px-1 min-h-[44px]"
+                id="mobile-menu-btn" onclick="toggleMenu()">
+                <span class="text-[10px] sm:text-xs font-mono tracking-widest text-concrete uppercase"
+                    id="menu-text">Menu</span>
+                <div class="relative w-6 h-4 group cursor-pointer">
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-0"
+                        id="hamburger-top"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-opacity duration-300 top-2"
+                        id="hamburger-mid"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-4"
+                        id="hamburger-bottom"></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 min-h-screen bg-black z-[45] flex flex-col justify-center p-8 lg:hidden pointer-events-none opacity-0 transition-all duration-500 translate-x-full">
+        <div class="flex flex-col gap-6 sm:gap-8 min-[400px]:gap-12 max-w-sm mx-auto w-full pointer-events-auto">
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">01</span>
+                <span id="nav-about-mobile">SOBRE</span>
+            </div>
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">02</span>
+                <span id="nav-contact-mobile">CONTACTO</span>
+            </div>
+
+            <!-- Mobile Language Switcher -->
+            <div class="mt-8 flex gap-4 font-mono text-sm tracking-widest pointer-events-auto">
+                <span class="text-white cursor-pointer" id="lang-pt-mobile" onclick="toggleLang()">PT</span>
+                <span class="text-white/20">/</span>
+                <span class="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" id="lang-en-mobile"
+                    onclick="toggleLang()">EN</span>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section & 3D Viewer -->
+        <section class="relative h-screen w-full overflow-hidden bg-black">
+            <canvas id="hero-sequence" class="w-full h-full object-cover"></canvas>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black pointer-events-none">
+            </div>
+
+            <div id="loader"
+                class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none opacity-0 gap-4 z-30">
+                <div class="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div id="loader-bar"
+                            class="h-full bg-white/80 rounded-full transition-all duration-200 ease-out"
+                            style="width:0%"></div>
+                    </div>
+                    <span id="loader-text"
+                        class="text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold font-['Manrope']">Loading
+                        0%</span>
+                </div>
+            </div>
+
+            <!-- Hero Branding -->
+            <div
+                class="absolute inset-0 z-10 flex flex-col items-center justify-start pt-8 sm:pt-16 md:pt-32 px-4 sm:px-6 text-center pointer-events-none gsap-scrub-fade">
+                <img src="vectors/rolls-royce.svg" alt="Rolls-Royce"
+                    class="h-8 sm:h-14 md:h-20 w-auto invert opacity-80 mb-2 md:mb-4 gsap-reveal-up"
+                    onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Rolls-Royce_Motor_Cars_logo.svg/1200px-Rolls-Royce_Motor_Cars_logo.svg.png'" />
+                <span id="hero-brand"
+                    class="text-[11px] sm:text-[13px] md:text-[15px] uppercase tracking-[0.5em] text-white/60 font-light mb-0.5 md:mb-1 gsap-reveal-up">Rolls
+                    Royce</span>
+                <span id="hero-presentation"
+                    class="text-[9px] sm:text-[10px] uppercase tracking-[0.6em] text-white/30 font-bold mb-2 md:mb-8 gsap-reveal-up">Apresentação
+                    Interativa</span>
+                <h1 id="hero-title"
+                    class="text-2xl sm:text-5xl md:text-7xl font-headline font-normal text-white tracking-tighter leading-none mb-3 sm:mb-4 md:mb-6 max-w-4xl text-shadow-lg gsap-reveal-up">
+                    O Rolls-Royce <span class="text-white/70 font-style-italic">Ghost.</span>
+                </h1>
+                <p id="hero-desc"
+                    class="text-xs sm:text-sm md:text-xl text-white/70 font-light max-w-xl md:max-w-2xl mb-4 md:mb-10 leading-relaxed gsap-reveal-up hidden sm:block">
+                    Explore o auge do luxo automóvel num ambiente 3D imersivo. Cada ponto, cada superfície, renderizados
+                    com fidelidade absoluta.
+                </p>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="absolute bottom-4 sm:bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 w-full max-w-6xl px-4 sm:px-6 z-20">
+                <!-- Hint -->
+                <div id="interaction-hint"
+                    class="flex flex-col items-center mb-2 sm:mb-6 md:mb-10 opacity-60 transition-opacity duration-300">
+                    <div class="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] uppercase tracking-[0.5em] text-white font-bold">
+                        <span class="material-symbols-outlined text-[14px] sm:text-[16px]">mouse</span>
+                        <span id="hint-drag">Clique e Arraste o Rato para Rodar</span>
+                    </div>
+                    <div class="w-px h-6 md:h-12 bg-gradient-to-b from-white/40 to-transparent mt-2 md:mt-4 hidden md:block"></div>
+                </div>
+
+                <div
+                    class="bg-[#131313]/40 backdrop-blur-[24px] border border-[#474747]/15 p-4 sm:p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-4 sm:gap-8 md:gap-16 items-center justify-center">
+                    
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-16 items-center w-full md:w-auto">
+                        <!-- Left/Top: Paint and Interior row on mobile -->
+                        <div class="flex gap-6 sm:gap-8 md:gap-16 justify-center w-full md:w-auto">
+                            <!-- Paint -->
+                            <div class="flex flex-col items-center">
+                                <span id="label-exterior"
+                                    class="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#c6c6c6] mb-2 md:mb-4 block font-bold text-center font-['Manrope']">Pintura
+                                    Exterior</span>
+                                <div class="flex gap-3 sm:gap-4 justify-center" id="paint-selectors">
+                                    <button
+                                        class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-all group ring-2 ring-white/20 ring-offset-4 ring-offset-[#131313] active"
+                                        data-color="gray">
+                                        <img src="buttons/carpaint_gray.png" alt="Gray"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                    <button class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-all group"
+                                        data-color="black">
+                                        <img src="buttons/carpaint_black.png" alt="Black"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                    <button class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-all group"
+                                        data-color="white">
+                                        <img src="buttons/carpaint_white.png" alt="White"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Interior -->
+                            <div class="flex flex-col items-center">
+                                <span id="label-interior"
+                                    class="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#c6c6c6] mb-2 md:mb-4 block font-bold text-center font-['Manrope']">Interior</span>
+                                <div class="flex gap-3 sm:gap-4 justify-center" id="interior-selectors">
+                                    <button
+                                        class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-transform group ring-2 ring-white/20 ring-offset-4 ring-offset-[#131313] active"
+                                        data-color="beige">
+                                        <img src="buttons/int_beige.png" alt="Beige"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                    <button class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-transform group"
+                                        data-color="black">
+                                        <img src="buttons/int_black.png" alt="Black"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                    <button class="w-10 h-10 md:w-12 md:h-12 p-0 rounded-full overflow-hidden transition-transform group"
+                                        data-color="blue">
+                                        <img src="buttons/int_blue.png" alt="Blue"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right/Bottom: Perspective on mobile -->
+                        <div class="flex flex-col items-center w-full md:w-auto">
+                            <span id="label-perspective"
+                                class="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#c6c6c6] mb-2 md:mb-4 block font-bold text-center font-['Manrope'] drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">Perspetiva</span>
+                            <div class="flex bg-white/5 p-0.5 md:p-1 rounded-full border border-white/10" id="view-toggle">
+                                <button id="btn-exterior"
+                                    class="px-4 py-2 md:px-6 md:py-3 rounded-full text-[9px] sm:text-[10px] font-bold tracking-widest transition-all font-['Manrope'] bg-white text-black active"
+                                    data-view="exterior">EXTERIOR</button>
+                                <button id="btn-interior"
+                                    class="px-4 py-2 md:px-6 md:py-3 rounded-full text-[9px] sm:text-[10px] font-bold tracking-widest transition-all font-['Manrope'] text-white/40 hover:text-white"
+                                    data-view="interior">INTERIOR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section
+            class="relative w-full bg-[#131313] py-32 overflow-hidden flex flex-col items-center border-t border-white/5 bg-grain">
+            <div class="max-w-4xl mx-auto text-center px-6 mb-16 gsap-stagger">
+                <span id="video-why"
+                    class="text-[11px] uppercase tracking-[0.6em] text-white/30 mb-6 block font-bold">Porquê o Ghost
+                    View</span>
+                <h2 id="video-title"
+                    class="text-4xl md:text-5xl font-headline font-normal text-white mb-8 tracking-tight">Além do
+                    Showroom</h2>
+                <p id="video-desc" class="text-white/60 font-light text-lg leading-relaxed">
+                    O Ghost View faz a ponte entre o mundo físico e digital da Rolls-Royce. Esta apresentação interativa
+                    foi concebida para traduzir a presença pós-opulenta do Ghost num meio digital — permitindo que
+                    futuros proprietários, entusiastas e designers explorem cada configuração personalizada.
+                </p>
+            </div>
+            <div class="w-full max-w-7xl px-6 gsap-scrub-scale">
+                <div
+                    class="rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] ring-1 ring-white/10 bg-black">
+                    <div style="position:relative;padding-top:56.25%;"><iframe id="rolls-royce-video"
+                            data-src="https://player.mediadelivery.net/embed/625906/5e01c0f1-f170-4c44-85e8-a6dcabadf5de?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            class="lazy-iframe" style="border:0;position:absolute;top:0;height:100%;width:100%;"
+                            allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                            allowfullscreen="true"></iframe></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specifications Section -->
+        <section id="specs" class="bg-[#0e0e0e] py-16 md:py-32 px-6 md:px-12 border-t border-white/5">
+            <div class="max-w-[1920px] mx-auto">
+                <div class="text-center mb-10 md:mb-20 gsap-stagger">
+                    <img src="vectors/rolls-royce.svg" alt="Rolls-Royce"
+                        class="h-10 md:h-16 w-auto invert opacity-20 mx-auto mb-4 md:mb-8"
+                        onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Rolls-Royce_Motor_Cars_logo.svg/1200px-Rolls-Royce_Motor_Cars_logo.svg.png'" />
+                    <span id="specs-tech"
+                        class="text-[11px] uppercase tracking-[0.6em] text-white/30 mb-4 md:mb-6 block font-bold">Excelência
+                        Técnica</span>
+                    <h2 id="specs-title"
+                        class="text-2xl sm:text-3xl md:text-5xl font-headline font-normal text-white mb-4 md:mb-6 tracking-tight">
+                        Especificações do Ghost</h2>
+                    <p id="specs-desc" class="text-white/50 font-light max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
+                        O novo Rolls-Royce Ghost é o Rolls-Royce mais tecnologicamente avançado de sempre. Destila os
+                        pilares da marca num produto belo, minimalista e, no entanto, altamente complexo.
+                    </p>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden max-w-5xl mx-auto gsap-stagger">
+                    <div class="spec-card">
+                        <span id="spec-engine"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Motor</span>
+                        <span id="spec-engine-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">6.75L
+                            V12</span>
+                        <span id="spec-engine-sub" class="text-[11px] text-white/40 font-light">Biturbo</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-power"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Potência</span>
+                        <span id="spec-power-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">563 CV</span>
+                        <span id="spec-power-sub" class="text-[11px] text-white/40 font-light">850 Nm de Binário</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-060" class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">0-60
+                            mph</span>
+                        <span id="spec-060-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">4.6s</span>
+                        <span id="spec-060-sub" class="text-[11px] text-white/40 font-light">Tração Integral</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-topspeed"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Velocidade
+                            Máxima</span>
+                        <span id="spec-topspeed-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">250
+                            km/h</span>
+                        <span id="spec-topspeed-sub" class="text-[11px] text-white/40 font-light">Limitada
+                            Eletronicamente</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-suspension"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Suspensão</span>
+                        <span id="spec-suspension-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">Planar</span>
+                        <span id="spec-suspension-sub" class="text-[11px] text-white/40 font-light">Sistema Único no
+                            Mundo</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-weight"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Peso</span>
+                        <span id="spec-weight-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">2.490
+                            kg</span>
+                        <span id="spec-weight-sub" class="text-[11px] text-white/40 font-light">Luxo Pós-Opulento</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-trans"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Transmissão</span>
+                        <span id="spec-trans-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">8
+                            Velocidades</span>
+                        <span id="spec-trans-sub" class="text-[11px] text-white/40 font-light">Apoiada por
+                            Satélite</span>
+                    </div>
+                    <div class="spec-card">
+                        <span id="spec-steering"
+                            class="text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">Direção</span>
+                        <span id="spec-steering-val"
+                            class="text-2xl md:text-3xl font-bold text-white font-headline tracking-tight">Integral</span>
+                        <span id="spec-steering-sub" class="text-[11px] text-white/40 font-light">Agilidade Sem
+                            Esforço</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section (Card Stack) -->
+        <section id="gallery"
+            class="bg-[#131313] py-32 px-6 md:px-12 border-t border-white/5 overflow-hidden relative bg-grain">
+            <div class="max-w-4xl mx-auto text-center mb-10 gsap-stagger">
+                <span id="gallery-perspective"
+                    class="text-[11px] uppercase tracking-[0.6em] text-white/30 mb-6 block font-bold">A
+                    Perspetiva</span>
+                <h2 id="gallery-title"
+                    class="text-4xl md:text-5xl font-headline font-normal text-white mb-6 tracking-tight">Galeria</h2>
+            </div>
+
+            <!-- Card Stack Container -->
+            <div class="relative w-full max-w-5xl mx-auto flex items-center justify-center min-h-[500px]">
+                <!-- Navigation Buttons -->
+                <button id="prev-card"
+                    class="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all z-50 hidden md:block">
+                    <span class="material-symbols-outlined text-white">chevron_left</span>
+                </button>
+                <button id="next-card"
+                    class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all z-50 hidden md:block">
+                    <span class="material-symbols-outlined text-white">chevron_right</span>
+                </button>
+
+                <div id="card-stack"
+                    class="relative w-full max-w-3xl aspect-video mx-auto px-4 md:px-0 cursor-grab active:cursor-grabbing touch-pan-y">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div id="progress-dots" class="flex justify-center gap-2 mt-8">
+                <!-- Dots will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Magnified Modal -->
+        <div id="magnified-modal"
+            class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 pointer-events-auto">
+            <div id="magnified-image-container"
+                class="relative max-w-6xl w-[90vw] aspect-video rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 bg-black pointer-events-auto">
+                <img id="modal-img" src="" alt="Magnified View" class="w-full h-full object-cover pointer-events-none">
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+
+        <!-- Social Media Links -->
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10">
+            <a href="https://www.linkedin.com/in/mvirgilstudio/" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/linkedin.svg" alt="LinkedIn"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://instagram.com/miguelvirgilio" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/instagram.svg" alt="Instagram"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://x.com/miguelvirgilio" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/X.svg" alt="X"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://facebook.com/miguelvirgilio" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/facebook.svg" alt="Facebook"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.youtube.com/@MVirgilStudio" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/youtube.svg" alt="YouTube"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://vimeo.com/user261754571?fl=pp&fe=sh" target="_blank" rel="noopener noreferrer"
+                class="text-concrete hover:text-white transition-colors">
+                <img src="../../assets/images/social/vimeo.svg" alt="Vimeo"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+        </div>
+
+        <p id="footer-rights"
+            class="font-tech text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.2em] text-concrete uppercase mb-2 relative z-10 px-4 md:px-0">
+            © 2026 TODOS OS DIREITOS RESERVADOS
+        </p>
+        <p id="footer-dev"
+            class="font-mono text-[8.5px] md:text-[10px] text-concrete/40 relative z-10 max-w-[90%] md:max-w-full mx-auto">
+            DESIGN E DESENVOLVIMENTO POR MV INTERACTIVE SYSTEMS
+        </p>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const GHOST_TRANSLATIONS = {
+                EN: {
+                    nav_expertise: 'Expertise',
+                    nav_about: 'About',
+                    nav_contact: 'Contact',
+                    hero_brand: 'Rolls Royce',
+                    hero_presentation: 'Interactive Presentation',
+                    hero_title: 'The Rolls-Royce <span class="text-white/70 font-style-italic">Ghost.</span>',
+                    hero_desc: 'Explore the pinnacle of automotive luxury in an immersive 3D environment. Every stitch, every surface, rendered with absolute fidelity.',
+                    hint_drag: 'Click & Drag Mouse to Rotate',
+                    label_exterior: 'Exterior Paint',
+                    label_interior: 'Interior Leather',
+                    label_perspective: 'Perspective',
+                    btn_exterior: 'EXTERIOR',
+                    btn_interior: 'INTERIOR',
+                    video_why: 'Why Ghost View',
+                    video_title: 'Beyond The Showroom',
+                    video_desc: 'Ghost View bridges the physical and digital worlds of Rolls-Royce. This interactive presentation was conceived to translate the post-opulent presence of the Ghost into a digital medium — allowing prospective owners, enthusiasts, and designers to explore every bespoke configuration before a single hand touches leather.',
+                    specs_tech: 'Technical Excellence',
+                    specs_title: 'Ghost Specifications',
+                    specs_desc: 'The new Rolls-Royce Ghost is the most technologically advanced Rolls-Royce yet. It distills the brand\'s pillars into a beautiful, minimalist, and yet highly complex product.',
+                    spec_engine: 'Engine',
+                    spec_power: 'Power',
+                    spec_060: '0-60 mph',
+                    spec_topspeed: 'Top Speed',
+                    spec_suspension: 'Suspension',
+                    spec_weight: 'Weight',
+                    spec_trans: 'Transmission',
+                    spec_steering: 'Steering',
+                    spec_engine_val: '6.75L V12',
+                    spec_engine_sub: 'Twin-Turbocharged',
+                    spec_power_val: '563 HP',
+                    spec_power_sub: '627 lb-ft Torque',
+                    spec_060_val: '4.6s',
+                    spec_060_sub: 'All-Wheel Drive',
+                    spec_topspeed_val: '155 mph',
+                    spec_topspeed_sub: 'Electronically Limited',
+                    spec_suspension_val: 'Planar',
+                    spec_suspension_sub: 'World-First System',
+                    spec_weight_val: '2,490 kg',
+                    spec_weight_sub: 'Post-Opulent Luxury',
+                    spec_trans_val: '8-Speed',
+                    spec_trans_sub: 'Satellite Aided',
+                    spec_steering_val: 'All-Wheel',
+                    spec_steering_sub: 'Effortless Agility',
+                    gallery_perspective: 'The Perspective',
+                    gallery_title: 'Gallery',
+                    footer_rights: '© 2026 ALL RIGHTS RESERVED',
+                    footer_dev: 'DESIGN AND DEVELOPMENT BY MV INTERACTIVE SYSTEMS',
+                    cards: [
+                        { title: "Sculpted Elegance", description: "The iconic profile in high resolution" },
+                        { title: "Impeccable Details", description: "Precision engineering on display" },
+                        { title: "Luxury Redefined", description: "Every surface meticulously crafted" },
+                        { title: "The Starlight Headliner", description: "A celestial experience inside" },
+                        { title: "Bespoke Interior", description: "Crafted for the senses" },
+                        { title: "Commanding Presence", description: "The unmistakable grille" },
+                        { title: "Artisan Woodwork", description: "Seamless grain matching" },
+                        { title: "Whisper Quiet", description: "Acoustic insulation technology" },
+                        { title: "Dynamic Drive", description: "Effortless power delivery" },
+                        { title: "Iconic Silhouette", description: "Timeless design proportions" },
+                        { title: "Signature Details", description: "The Spirit of Ecstasy" },
+                        { title: "Refined Leather", description: "Highest grade materials" },
+                        { title: "Atelier Customization", description: "Made uniquely yours" }
+                    ]
+                },
+                PT: {
+                    nav_expertise: 'Especialidade',
+                    nav_about: 'Sobre',
+                    nav_contact: 'Contacto',
+                    hero_brand: 'Rolls Royce',
+                    hero_presentation: 'Apresentação Interativa',
+                    hero_title: 'O Rolls-Royce <span class="text-white/70 font-style-italic">Ghost.</span>',
+                    hero_desc: 'Explore o auge do luxo automóvel num ambiente 3D imersivo. Cada ponto, cada superfície, renderizados com fidelidade absoluta.',
+                    hint_drag: 'Clique e Arraste o Rato para Rodar',
+                    label_exterior: 'Pintura Exterior',
+                    label_interior: 'Interior',
+                    label_perspective: 'Perspetiva',
+                    btn_exterior: 'EXTERIOR',
+                    btn_interior: 'INTERIOR',
+                    video_why: 'Porquê o Ghost View',
+                    video_title: 'Além do Showroom',
+                    video_desc: 'O Ghost View faz a ponte entre o mundo físico e digital da Rolls-Royce. Esta apresentação interativa foi concebida para traduzir a presença pós-opulenta do Ghost num meio digital — permitindo que futuros proprietários, entusiastas e designers explorem cada configuração personalizada.',
+                    specs_tech: 'Excelência Técnica',
+                    specs_title: 'Especificações do Ghost',
+                    specs_desc: 'O novo Rolls-Royce Ghost é o Rolls-Royce mais tecnologicamente avançado de sempre. Destila os pilares da marca num produto belo, minimalista e, no entanto, altamente complexo.',
+                    spec_engine: 'Motor',
+                    spec_power: 'Potência',
+                    spec_060: '0-60 mph',
+                    spec_topspeed: 'Velocidade Máxima',
+                    spec_suspension: 'Suspensão',
+                    spec_weight: 'Peso',
+                    spec_trans: 'Transmissão',
+                    spec_steering: 'Direção',
+                    spec_engine_val: '6.75L V12',
+                    spec_engine_sub: 'Biturbo',
+                    spec_power_val: '563 CV',
+                    spec_power_sub: '850 Nm de Binário',
+                    spec_060_val: '4.6s',
+                    spec_060_sub: 'Tração Integral',
+                    spec_topspeed_val: '250 km/h',
+                    spec_topspeed_sub: 'Limitada Eletronicamente',
+                    spec_suspension_val: 'Planar',
+                    spec_suspension_sub: 'Sistema Único no Mundo',
+                    spec_weight_val: '2.490 kg',
+                    spec_weight_sub: 'Luxo Pós-Opulento',
+                    spec_trans_val: '8 Velocidades',
+                    spec_trans_sub: 'Apoiada por Satélite',
+                    spec_steering_val: 'Integral',
+                    spec_steering_sub: 'Agilidade Sem Esforço',
+                    gallery_perspective: 'A Perspetiva',
+                    gallery_title: 'Galeria',
+                    footer_rights: '© 2026 TODOS OS DIREITOS RESERVADOS',
+                    footer_dev: 'DESIGN E DESENVOLVIMENTO POR MV INTERACTIVE SYSTEMS',
+                    cards: [
+                        { title: "Elegância Esculpida", description: "O perfil icónico em alta resolução" },
+                        { title: "Detalhes Impecáveis", description: "Engenharia de precisão em exibição" },
+                        { title: "Luxo Redefinido", description: "Cada superfície meticulosamente trabalhada" },
+                        { title: "O Teto Starlight", description: "Uma experiência celestial no interior" },
+                        { title: "Interior Sob Medida", description: "Criado para os sentidos" },
+                        { title: "Presença Imponente", description: "A grelha inconfundível" },
+                        { title: "Madeira Artesanal", description: "Grão perfeitamente combinado" },
+                        { title: "Silêncio Absoluto", description: "Tecnologia de isolamento acústico" },
+                        { title: "Condução Dinâmica", description: "Entrega de potência sem esforço" },
+                        { title: "Silhueta Icónica", description: "Proporções de design intemporais" },
+                        { title: "Detalhes de Assinatura", description: "O Spirit of Ecstasy" },
+                        { title: "Pele Refinada", description: "Materiais da mais alta qualidade" },
+                        { title: "Customização Atelier", description: "Tornado unicamente seu" }
+                    ]
+                }
+            };
+
+            let currentLang = 'PT';
+
+            function toggleLang() {
+                currentLang = currentLang === 'PT' ? 'EN' : 'PT';
+
+                // Update toggle buttons highlighting
+                const ptMobile = document.getElementById('lang-pt-mobile');
+                const enMobile = document.getElementById('lang-en-mobile');
+                if (ptMobile && enMobile) {
+                    ptMobile.className = currentLang === 'PT' ? 'text-white cursor-pointer' : 'opacity-40 hover:opacity-100 transition-opacity cursor-pointer';
+                    enMobile.className = currentLang === 'EN' ? 'text-white cursor-pointer' : 'opacity-40 hover:opacity-100 transition-opacity cursor-pointer';
+                }
+
+                updateLanguage();
+            }
+
+            function toggleMenu() {
+                const menu = document.getElementById('mobile-menu');
+                const menuText = document.getElementById('menu-text');
+                const hamburgerTop = document.getElementById('hamburger-top');
+                const hamburgerMid = document.getElementById('hamburger-mid');
+                const hamburgerBottom = document.getElementById('hamburger-bottom');
+
+                const isOpen = !menu.classList.contains('translate-x-full');
+
+                if (!isOpen) {
+                    menu.classList.remove('pointer-events-none', 'translate-x-full');
+                    menu.classList.add('translate-x-0', 'opacity-100');
+                    menuText.textContent = 'FECHAR';
+                    hamburgerTop.style.top = '8px';
+                    hamburgerTop.style.transform = 'rotate(45deg)';
+                    hamburgerMid.style.opacity = '0';
+                    hamburgerBottom.style.top = '8px';
+                    hamburgerBottom.style.transform = 'rotate(-45deg)';
+                } else {
+                    menu.classList.remove('translate-x-0', 'opacity-100');
+                    menu.classList.add('translate-x-full', 'pointer-events-none');
+                    menuText.textContent = 'MENU';
+                    hamburgerTop.style.top = '0';
+                    hamburgerTop.style.transform = '';
+                    hamburgerMid.style.opacity = '1';
+                    hamburgerBottom.style.top = '16px';
+                    hamburgerBottom.style.transform = '';
+                }
+            }
+
+            window.toggleLang = toggleLang;
+            window.toggleMenu = toggleMenu;
+
+            function updateLanguage() {
+                const t = GHOST_TRANSLATIONS[currentLang];
+
+                // Update Navbar
+                const navExpertise = document.getElementById('nav-expertise');
+                if (navExpertise) navExpertise.innerText = t.nav_expertise;
+                const navAbout = document.getElementById('nav-about');
+                if (navAbout) navAbout.innerText = t.nav_about;
+                const navContact = document.getElementById('nav-contact');
+                if (navContact) navContact.innerText = t.nav_contact;
+
+                const navExpertiseMobile = document.getElementById('nav-expertise-mobile');
+                if (navExpertiseMobile) navExpertiseMobile.innerText = t.nav_expertise;
+                const navAboutMobile = document.getElementById('nav-about-mobile');
+                if (navAboutMobile) navAboutMobile.innerText = t.nav_about;
+                const navContactMobile = document.getElementById('nav-contact-mobile');
+                if (navContactMobile) navContactMobile.innerText = t.nav_contact;
+
+                const langToggle = document.getElementById('lang-toggle');
+                if (langToggle) langToggle.innerHTML = `${currentLang}<span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>`;
+
+                // Update Hero
+                document.getElementById('hero-brand').innerText = t.hero_brand;
+                document.getElementById('hero-presentation').innerText = t.hero_presentation;
+                document.getElementById('hero-title').innerHTML = t.hero_title;
+                document.getElementById('hero-desc').innerText = t.hero_desc;
+
+                // Update Controls
+                document.getElementById('hint-drag').innerText = t.hint_drag;
+                document.getElementById('label-exterior').innerText = t.label_exterior;
+                document.getElementById('label-interior').innerText = t.label_interior;
+                document.getElementById('label-perspective').innerText = t.label_perspective;
+                document.getElementById('btn-exterior').innerText = t.btn_exterior;
+                document.getElementById('btn-interior').innerText = t.btn_interior;
+
+                // Update Video
+                document.getElementById('video-why').innerText = t.video_why;
+                document.getElementById('video-title').innerText = t.video_title;
+                document.getElementById('video-desc').innerText = t.video_desc;
+
+                // Update Specs
+                document.getElementById('specs-tech').innerText = t.specs_tech;
+                document.getElementById('specs-title').innerText = t.specs_title;
+                document.getElementById('specs-desc').innerText = t.specs_desc;
+
+                document.getElementById('spec-engine').innerText = t.spec_engine;
+                document.getElementById('spec-engine-val').innerText = t.spec_engine_val;
+                document.getElementById('spec-engine-sub').innerText = t.spec_engine_sub;
+                document.getElementById('spec-power').innerText = t.spec_power;
+                document.getElementById('spec-power-val').innerText = t.spec_power_val;
+                document.getElementById('spec-power-sub').innerText = t.spec_power_sub;
+                document.getElementById('spec-060').innerText = t.spec_060;
+                document.getElementById('spec-060-val').innerText = t.spec_060_val;
+                document.getElementById('spec-060-sub').innerText = t.spec_060_sub;
+                document.getElementById('spec-topspeed').innerText = t.spec_topspeed;
+                document.getElementById('spec-topspeed-val').innerText = t.spec_topspeed_val;
+                document.getElementById('spec-topspeed-sub').innerText = t.spec_topspeed_sub;
+                document.getElementById('spec-suspension').innerText = t.spec_suspension;
+                document.getElementById('spec-suspension-val').innerText = t.spec_suspension_val;
+                document.getElementById('spec-suspension-sub').innerText = t.spec_suspension_sub;
+                document.getElementById('spec-weight').innerText = t.spec_weight;
+                document.getElementById('spec-weight-val').innerText = t.spec_weight_val;
+                document.getElementById('spec-weight-sub').innerText = t.spec_weight_sub;
+                document.getElementById('spec-trans').innerText = t.spec_trans;
+                document.getElementById('spec-trans-val').innerText = t.spec_trans_val;
+                document.getElementById('spec-trans-sub').innerText = t.spec_trans_sub;
+                document.getElementById('spec-steering').innerText = t.spec_steering;
+                document.getElementById('spec-steering-val').innerText = t.spec_steering_val;
+                document.getElementById('spec-steering-sub').innerText = t.spec_steering_sub;
+
+                // Update Gallery
+                document.getElementById('gallery-perspective').innerText = t.gallery_perspective;
+                document.getElementById('gallery-title').innerText = t.gallery_title;
+
+                // Update Gallery Cards
+                initialCards.forEach((card, i) => {
+                    card.title = t.cards[i].title;
+                    card.description = t.cards[i].description;
+                });
+                renderStack();
+
+                // Update Footer
+                document.getElementById('footer-rights').innerText = t.footer_rights;
+                document.getElementById('footer-dev').innerText = t.footer_dev;
+            }
+
+            const canvas = document.getElementById('hero-sequence');
+            const ctx = canvas.getContext('2d');
+            const loader = document.getElementById('loader');
+
+            let frameCount = 60;
+            let viewMode = 'exterior';
+            let currentExterior = 'gray';
+            let currentInterior = 'beige';
+            let currentFrame = 1;
+            let activeSeqKey = 'low';
+            let lastExteriorFrame = 1;
+
+            const sequences = {
+                low: { path: '', start: 1, images: [] },
+                mid: { path: '', start: 1, images: [] },
+                high: { path: '', start: 1, images: [] }
+            };
+
+            let isAnimating = false;
+            let activeLoadingController = null;
+
+            const loaderBar = document.getElementById('loader-bar');
+            const loaderText = document.getElementById('loader-text');
+
+            function updatePaths() {
+                const isExt = viewMode === 'exterior';
+                const basePath = isExt ? `sequences/${currentExterior}_${currentInterior}/` : `sequences/${currentExterior}_${currentInterior}_trans/`;
+                const filePrefix = isExt ? `carpaint_${currentExterior}_ext_${currentInterior}_int.` : `carpaint_trans_${currentExterior}_ext_${currentInterior}_int.`;
+
+                frameCount = isExt ? 60 : 30;
+                const startFrameNum = isExt ? 1 : 61;
+
+                sequences.low.path = basePath + filePrefix;
+                sequences.low.start = startFrameNum;
+
+                if (isExt) {
+                    let midPrefix = `carpaint_mid_${currentExterior}_ext_${currentInterior}_int.`;
+                    let highPrefix = `carpaint_high_${currentExterior}_ext_${currentInterior}_int.`;
+
+                    if (currentExterior === 'white' && currentInterior === 'blue') {
+                        midPrefix = `carpaint_white_mid_ext_blue_int.`;
+                        highPrefix = `carpaint_white_high_ext_blue_int.`;
+                    }
+
+                    sequences.mid.path = `sequences/${currentExterior}_${currentInterior}_mid/${midPrefix}`;
+                    sequences.mid.start = 1;
+                    sequences.high.path = `sequences/${currentExterior}_${currentInterior}_high/${highPrefix}`;
+                    sequences.high.start = 1;
+                } else {
+                    sequences.mid.path = sequences.low.path;
+                    sequences.mid.start = startFrameNum;
+                    sequences.high.path = sequences.low.path;
+                    sequences.high.start = startFrameNum;
+                }
+                loadImages();
+            }
+
+            async function loadImages() {
+                // Cancel previous load attempt
+                if (activeLoadingController) {
+                    activeLoadingController.abort();
+                }
+
+                activeLoadingController = {
+                    aborted: false,
+                    pendingImages: [],
+                    abort() {
+                        this.aborted = true;
+                        // Reset src to cancel network request and free connections
+                        this.pendingImages.forEach(img => {
+                            if (!img.complete) img.src = '';
+                        });
+                        this.pendingImages = [];
+                    }
+                };
+                const controller = activeLoadingController;
+
+                loader.style.display = 'flex';
+                loader.style.opacity = '1';
+                const isExt = viewMode === 'exterior';
+
+                // Function to load a single image via native Image object for maximum performance & caching
+                const fetchImage = (url) => {
+                    return new Promise((resolve) => {
+                        if (controller.aborted) return resolve(null);
+
+                        const img = new Image();
+                        img.decoding = "async"; // Offload decoding to background thread
+
+                        const cleanup = () => {
+                            const idx = controller.pendingImages.indexOf(img);
+                            if (idx > -1) controller.pendingImages.splice(idx, 1);
+                        };
+
+                        img.onload = () => {
+                            cleanup();
+                            resolve(img);
+                        };
+
+                        img.onerror = () => {
+                            cleanup();
+                            resolve(null);
+                        };
+
+                        controller.pendingImages.push(img);
+                        img.src = url;
+                    });
+                };
+
+                // Priority frame indices (distributed across the sequence)
+                const getPriorityIndices = (count, key) => {
+                    const priority = [0]; // First frame
+                    if (count > 1) priority.push(count - 1); // Last frame
+                    if (count > 2) priority.push(Math.floor(count / 2)); // Middle
+                    if (count > 4) {
+                        priority.push(Math.floor(count / 4));
+                        priority.push(Math.floor(3 * count / 4));
+                    }
+                    // Add remaining frames in a distributed way
+                    const remaining = [];
+                    // If it's the 'low' sequence, skip frames to massively reduce initial bandwidth
+                    const step = key === 'low' ? 4 : 1;
+                    for (let i = 0; i < count; i += step) {
+                        if (!priority.includes(i)) remaining.push(i);
+                    }
+                    return { priority, remaining };
+                };
+
+                let essentialLoaded = false;
+
+                const loadSequence = async (key, count, start, isPriority = false) => {
+                    const path = sequences[key].path;
+                    const { priority, remaining } = getPriorityIndices(count, key);
+                    const results = new Array(count).fill(null);
+
+                    let loadedCount = 0;
+
+                    const fetchFrame = async (idx) => {
+                        if (controller.aborted) return;
+
+                        const num = (start + idx).toString().padStart(4, '0');
+                        const img = await fetchImage(`${path}${num}.jpg`);
+
+                        if (img && !controller.aborted) {
+                            results[idx] = img;
+                            loadedCount++;
+
+                            // Update progress UI
+                            if (key === 'low') {
+                                const totalProgress = (loadedCount / count) * 100;
+                                loaderBar.style.width = `${totalProgress}%`;
+                                loaderText.innerText = `Loading ${Math.round(totalProgress)}%`;
+                            }
+
+                            // Update view progressively
+                            if (key === activeSeqKey) {
+                                sequences[key].images = [...results];
+                                requestAnimationFrame(draw);
+                            }
+                        }
+                    };
+
+                    if (isPriority) {
+                        // 1. Await essential priority frames FIRST so they monopolize bandwidth
+                        await Promise.all(priority.map(fetchFrame));
+
+                        if (controller.aborted) return;
+
+                        if (key === 'low' && !essentialLoaded) {
+                            essentialLoaded = true;
+                            gsap.to(loader, { opacity: 0, duration: 0.8, onComplete: () => { loader.style.display = 'none'; } });
+                        }
+
+                        // 2. Fire the rest
+                        await Promise.all(remaining.map(fetchFrame));
+                    } else {
+                        // Non-priority (mid/high res), load slowly in small batches to prevent choking the network
+                        const allIndices = [...priority, ...remaining];
+                        const batchSize = 4;
+                        for (let i = 0; i < allIndices.length; i += batchSize) {
+                            if (controller.aborted) return;
+                            const chunk = allIndices.slice(i, i + batchSize);
+                            await Promise.all(chunk.map(fetchFrame));
+                            // Add a tiny delay to yield to the main thread and interaction
+                            await new Promise(r => setTimeout(r, 10));
+                        }
+                    }
+
+                    if (!controller.aborted) {
+                        sequences[key].images = results;
+                        if (key === activeSeqKey) requestAnimationFrame(draw);
+                    }
+                };
+
+                // 1. Start loading LOW resolution progressively
+                const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 1;
+                loadSequence('low', frameCount, sequences.low.start, true).then(async () => {
+                    // 2. Load MID and HIGH in background if exterior and not mobile, sequentially to save bandwidth
+                    if (isExt && !controller.aborted && !isMobile) {
+                        await loadSequence('mid', 60, 1);
+                        if (!controller.aborted) {
+                            await loadSequence('high', 60, 1);
+                        }
+                    } else {
+                        sequences.mid.images = [...sequences.low.images];
+                        sequences.high.images = [...sequences.low.images];
+                    }
+                });
+            }
+
+            function playToFrame(targetFrame, delay, callback) {
+                isAnimating = true;
+
+                const animate = () => {
+                    if (currentFrame !== targetFrame) {
+                        const step = targetFrame > currentFrame ? 1 : -1;
+                        currentFrame += step;
+                        draw();
+                        setTimeout(animate, delay);
+                    } else {
+                        isAnimating = false;
+                        if (callback) callback();
+                    }
+                };
+                animate();
+            }
+
+            function draw() {
+                const seq = sequences[activeSeqKey] || sequences.low;
+                if (!seq.images || seq.images.length === 0) return;
+
+                let idx = currentFrame - seq.start;
+                if (idx < 0) idx = 0;
+                if (idx >= seq.images.length) idx = seq.images.length - 1;
+
+                let img = seq.images[idx];
+
+                // If the specific frame isn't loaded, find the nearest one in the same sequence
+                if (!img || !img.complete || img.naturalWidth === 0) {
+                    let nearestIdx = -1;
+                    let minDist = Infinity;
+                    for (let i = 0; i < seq.images.length; i++) {
+                        if (seq.images[i] && seq.images[i].complete && seq.images[i].naturalWidth > 0) {
+                            const dist = Math.abs(i - idx);
+                            if (dist < minDist) {
+                                minDist = dist;
+                                nearestIdx = i;
+                            }
+                        }
+                    }
+
+                    if (nearestIdx !== -1) {
+                        img = seq.images[nearestIdx];
+                    } else {
+                        // Fallback to low res if mid/high not available at all for this frame
+                        const lowSeq = sequences.low;
+                        if (activeSeqKey !== 'low' && lowSeq.images && lowSeq.images[idx]) {
+                            img = lowSeq.images[idx];
+                        } else if (activeSeqKey !== 'low' && lowSeq.images) {
+                            // Find nearest in low res as last resort
+                            let nearestLowIdx = -1;
+                            let minLowDist = Infinity;
+                            for (let i = 0; i < lowSeq.images.length; i++) {
+                                if (lowSeq.images[i] && lowSeq.images[i].complete) {
+                                    const dist = Math.abs(i - idx);
+                                    if (dist < minLowDist) {
+                                        minLowDist = dist;
+                                        nearestLowIdx = i;
+                                    }
+                                }
+                            }
+                            if (nearestLowIdx !== -1) img = lowSeq.images[nearestLowIdx];
+                            else return;
+                        } else {
+                            return;
+                        }
+                    }
+                }
+
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+                const x = (canvas.width / 2) - (img.width / 2) * scale;
+                const y = (canvas.height / 2) - (img.height / 2) * scale;
+
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+            }
+
+            window.addEventListener('resize', draw);
+
+            // Interaction
+            let isDragging = false;
+            let startX = 0, startY = 0, startFrame = 1;
+
+            canvas.addEventListener('mousedown', e => {
+                if (viewMode === 'interior' || isAnimating) return;
+                isDragging = true;
+                startX = e.pageX; startY = e.pageY;
+                startFrame = currentFrame;
+
+                // Hide hint immediately on click
+                const hint = document.getElementById('interaction-hint');
+                if (hint) hint.style.opacity = '0';
+            });
+
+            window.addEventListener('mousemove', e => {
+                if (!isDragging || isAnimating) return;
+
+                const dx = e.pageX - startX;
+                const dy = e.pageY - startY;
+
+                const frameDiff = Math.round(dx / (800 / 60));
+                currentFrame = ((startFrame + frameDiff - 1) % 60 + 60) % 60 + 1;
+
+                if (dy > 200) activeSeqKey = 'high';
+                else if (dy > 100) activeSeqKey = 'mid';
+                else activeSeqKey = 'low';
+
+                requestAnimationFrame(draw);
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+
+                // Show hint again when mouse is released
+                const hint = document.getElementById('interaction-hint');
+                if (hint) hint.style.opacity = '0.6';
+            });
+
+            // Touch Interaction
+            canvas.addEventListener('touchstart', e => {
+                if (viewMode === 'interior' || isAnimating) return;
+                isDragging = true;
+                startX = e.touches[0].pageX; startY = e.touches[0].pageY;
+                startFrame = currentFrame;
+
+                const hint = document.getElementById('interaction-hint');
+                if (hint) hint.style.opacity = '0';
+            }, { passive: true });
+
+            window.addEventListener('touchmove', e => {
+                if (!isDragging || isAnimating) return;
+
+                const dx = e.touches[0].pageX - startX;
+                const dy = e.touches[0].pageY - startY;
+
+                const frameDiff = Math.round(dx / (800 / 60));
+                currentFrame = ((startFrame + frameDiff - 1) % 60 + 60) % 60 + 1;
+
+                if (dy > 200) activeSeqKey = 'high';
+                else if (dy > 100) activeSeqKey = 'mid';
+                else activeSeqKey = 'low';
+
+                requestAnimationFrame(draw);
+            }, { passive: true });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+                const hint = document.getElementById('interaction-hint');
+                if (hint) hint.style.opacity = '0.6';
+            });
+
+            // UI Listeners
+            document.querySelectorAll('#paint-selectors button').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('#paint-selectors button').forEach(b => b.classList.remove('ring-2', 'ring-white/20', 'ring-offset-4', 'ring-offset-[#131313]', 'active'));
+                    btn.classList.add('ring-2', 'ring-white/20', 'ring-offset-4', 'ring-offset-[#131313]', 'active');
+                    currentExterior = btn.dataset.color;
+                    updatePaths();
+                };
+            });
+
+            document.querySelectorAll('#interior-selectors button').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('#interior-selectors button').forEach(b => b.classList.remove('ring-2', 'ring-white/20', 'ring-offset-4', 'ring-offset-[#131313]', 'active'));
+                    btn.classList.add('ring-2', 'ring-white/20', 'ring-offset-4', 'ring-offset-[#131313]', 'active');
+                    currentInterior = btn.dataset.color;
+                    updatePaths();
+                };
+            });
+
+            document.querySelectorAll('#view-toggle button').forEach(btn => {
+                btn.onclick = () => {
+                    const next = btn.dataset.view;
+                    if (next === viewMode || isAnimating) return;
+
+                    document.querySelectorAll('#view-toggle button').forEach(b => {
+                        b.classList.remove('bg-white', 'text-black', 'active');
+                        b.classList.add('text-white/40', 'hover:text-white');
+                    });
+                    btn.classList.add('bg-white', 'text-black', 'active');
+                    btn.classList.remove('text-white/40', 'hover:text-white');
+
+                    if (next === 'interior') {
+                        lastExteriorFrame = currentFrame;
+                        playToFrame(60, 20, () => {
+                            viewMode = 'interior';
+                            currentFrame = 61;
+                            activeSeqKey = 'low';
+                            updatePaths();
+                            setTimeout(() => playToFrame(90, 30), 500);
+                        });
+                    } else {
+                        playToFrame(61, 30, () => {
+                            viewMode = 'exterior';
+                            currentFrame = 60;
+                            updatePaths();
+                            setTimeout(() => playToFrame(lastExteriorFrame, 20), 500);
+                        });
+                    }
+                };
+            });
+
+            // --- Card Stack Logic ---
+            const initialCards = [
+                { id: 1, src: "images/HighresScreenshot00002.jpg", title: "Sculpted Elegance", description: "The iconic profile in high resolution" },
+                { id: 2, src: "images/HighresScreenshot00006.jpg", title: "Impeccable Details", description: "Precision engineering on display" },
+                { id: 3, src: "images/HighresScreenshot00009.jpg", title: "Luxury Redefined", description: "Every surface meticulously crafted" },
+                { id: 4, src: "images/HighresScreenshot00010.jpg", title: "The Starlight Headliner", description: "A celestial experience inside" },
+                { id: 5, src: "images/HighresScreenshot00011.jpg", title: "Bespoke Interior", description: "Crafted for the senses" },
+                { id: 6, src: "images/HighresScreenshot00012.jpg", title: "Commanding Presence", description: "The unmistakable grille" },
+                { id: 7, src: "images/HighresScreenshot00013.jpg", title: "Artisan Woodwork", description: "Seamless grain matching" },
+                { id: 8, src: "images/HighresScreenshot00014.jpg", title: "Whisper Quiet", description: "Acoustic insulation technology" },
+                { id: 9, src: "images/HighresScreenshot00015.jpg", title: "Dynamic Drive", description: "Effortless power delivery" },
+                { id: 10, src: "images/HighresScreenshot00016.jpg", title: "Iconic Silhouette", description: "Timeless design proportions" },
+                { id: 11, src: "images/HighresScreenshot00017.jpg", title: "Signature Details", description: "The Spirit of Ecstasy" },
+                { id: 12, src: "images/HighresScreenshot00018.jpg", title: "Refined Leather", description: "Highest grade materials" },
+                { id: 13, src: "images/HighresScreenshot00019.jpg", title: "Atelier Customization", description: "Made uniquely yours" }
+            ];
+
+            let stackCards = [...initialCards];
+            let stackIndex = 0;
+            const stackContainer = document.getElementById('card-stack');
+            const dotsContainer = document.getElementById('progress-dots');
+            const prevBtn = document.getElementById('prev-card');
+            const nextBtn = document.getElementById('next-card');
+            const modal = document.getElementById('magnified-modal');
+            const modalImg = document.getElementById('modal-img');
+
+            function renderStack() {
+                stackContainer.innerHTML = '';
+                dotsContainer.innerHTML = '';
+
+                stackCards.forEach((card, i) => {
+                    if (i > 3) return;
+
+                    const el = document.createElement('div');
+                    el.className = 'absolute w-full h-full rounded-xl overflow-hidden border-2 border-white/10 transition-all duration-500 ease-out shadow-2xl';
+
+                    const zIndex = stackCards.length - i;
+                    const scale = 1 - (i * 0.05);
+                    const translateY = i * -15;
+                    const brightness = 1 - (i * 0.15);
+
+                    el.style.zIndex = zIndex;
+                    el.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                    el.style.filter = `brightness(${brightness})`;
+                    el.style.opacity = i > 3 ? 0 : 1;
+
+                    el.innerHTML = `
+                    <img src="${card.src}" class="w-full h-full object-cover pointer-events-none select-none">
+                `;
+
+                    if (i === 0) {
+                        el.onmouseenter = () => {
+                            modalImg.src = card.src;
+                            modal.classList.remove('hidden');
+                            setTimeout(() => modal.classList.add('opacity-100', 'flex'), 10);
+                        };
+                    }
+
+                    stackContainer.appendChild(el);
+                });
+
+                initialCards.forEach((_, i) => {
+                    const dot = document.createElement('div');
+                    const isActive = i === stackIndex;
+                    dot.className = `h-1.5 rounded-full transition-all duration-300 ${isActive ? 'bg-white w-8' : 'bg-white/20 w-1.5'}`;
+                    dotsContainer.appendChild(dot);
+                });
+            }
+
+            function moveToEnd() {
+                const topCard = stackCards.shift();
+                stackCards.push(topCard);
+                stackIndex = (stackIndex + 1) % initialCards.length;
+                renderStack();
+            }
+
+            function moveToStart() {
+                const lastCard = stackCards.pop();
+                stackCards.unshift(lastCard);
+                stackIndex = (stackIndex - 1 + initialCards.length) % initialCards.length;
+                renderStack();
+            }
+
+            nextBtn.onclick = moveToEnd;
+            prevBtn.onclick = moveToStart;
+
+            // Close modal on click/tap
+            modal.onclick = () => {
+                modal.classList.remove('opacity-100');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            };
+            const modalContainer = document.getElementById('magnified-image-container');
+            modalContainer.onmouseleave = () => {
+                modal.classList.remove('opacity-100');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            };
+            modal.onmousemove = (e) => {
+                if (e.target === modal) { // only close if hovering on backdrop
+                    modal.classList.remove('opacity-100');
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
+            };
+
+            // Swipe & Tap support for gallery cards
+            let swipeStartX = 0;
+            stackContainer.onmousedown = (e) => { swipeStartX = e.pageX; };
+            stackContainer.onmouseup = (e) => {
+                const diffX = e.pageX - swipeStartX;
+                if (diffX < -50) {
+                    moveToEnd();
+                } else if (diffX > 50) {
+                    moveToStart();
+                }
+            };
+
+            let touchSwipeStartX = 0;
+            let touchSwipeStartY = 0;
+            stackContainer.addEventListener('touchstart', (e) => {
+                touchSwipeStartX = e.touches[0].pageX;
+                touchSwipeStartY = e.touches[0].pageY;
+            }, { passive: true });
+            stackContainer.addEventListener('touchend', (e) => {
+                const diffX = e.changedTouches[0].pageX - touchSwipeStartX;
+                const diffY = e.changedTouches[0].pageY - touchSwipeStartY;
+                
+                // Only trigger if horizontal swipe is more pronounced than vertical swipe
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX < 0) {
+                        moveToEnd();
+                    } else {
+                        moveToStart();
+                    }
+                } else if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+                    // Tap to zoom the top card
+                    const topCard = stackCards[0];
+                    if (topCard) {
+                        modalImg.src = topCard.src;
+                        modal.classList.remove('hidden');
+                        setTimeout(() => modal.classList.add('opacity-100', 'flex'), 10);
+                    }
+                }
+            }, { passive: true });
+
+            renderStack();
+
+            updatePaths();
+
+            // --- GSAP & Lenis Smooth Scroll ---
+            const lenis = new Lenis({
+                duration: 1.6,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                smoothWheel: true,
+                touchMultiplier: 1.5,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.utils.toArray('.gsap-reveal-up').forEach((el) => {
+                gsap.fromTo(el, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', end: 'bottom 10%', toggleActions: 'play reverse play reverse' } });
+            });
+
+            gsap.utils.toArray('.gsap-stagger').forEach((parent) => {
+                gsap.fromTo(parent.children, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: parent, start: 'top 85%', end: 'bottom 10%', toggleActions: 'play reverse play reverse' } });
+            });
+
+            gsap.utils.toArray('.gsap-scrub-scale').forEach((el) => {
+                gsap.fromTo(el, { scale: 0.8, opacity: 0.3 }, { scale: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'center center', scrub: 1 } });
+            });
+
+            gsap.utils.toArray('.gsap-scrub-fade').forEach((el) => {
+                gsap.fromTo(el, { opacity: 1 }, { opacity: 0, ease: 'none', scrollTrigger: { trigger: el, start: 'top top', end: 'bottom top', scrub: true } });
+            });
+
+            // Add intersection observer to load Rolls Royce video iframe
+            const rrVideo = document.getElementById('rolls-royce-video');
+            if (rrVideo) {
+                if ('IntersectionObserver' in window) {
+                    const videoObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const iframe = entry.target;
+                                if (iframe.dataset.src) {
+                                    iframe.src = iframe.dataset.src;
+                                    iframe.removeAttribute('data-src');
+                                }
+                                videoObserver.unobserve(iframe);
+                            }
+                        });
+                    }, { rootMargin: '200px' });
+                    videoObserver.observe(rrVideo);
+                } else {
+                    if (rrVideo.dataset.src) {
+                        rrVideo.src = rrVideo.dataset.src;
+                        rrVideo.removeAttribute('data-src');
+                    }
+                }
+            }
+        }); // end of DOMContentLoaded wrapper
+    </script>
+</body>
+
+</html>

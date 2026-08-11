@@ -1,0 +1,56 @@
+MVs Archviz | Architectural Visualization
+
+High-end architectural techniques for visionary designs
+
+---------------------------------------------------------
+01 / IMMERSIVE EXPERIENCE
+---------------------------------------------------------
+Experience true tactile-to-digital immersion. We bridge physical scale maquettes and virtual layouts through innovative real-time integrations, instantly syncing real material swaps to high-fidelity 3D configurations on screen.
+
+Explore: Physical Maquette NFC & Stone Catalog Sync System
+Launch Standalone App: https://mvirgilstudio.com/archviz/code.html#digital-twin-experience-sec
+
+---------------------------------------------------------
+02 / 3D & INTERACTIVE VIEWER
+---------------------------------------------------------
+Experience dynamic 3D model synchronization in real-time alongside dense, high-fidelity spatial captures of historic spaces. Use floor selectors, daylight simulation controls, or rotate the WebGL Splat scan to bridge physical details and digital presentation.
+
+- Dynamic Image Sequence: Rendering Sequence
+- 3D Real-time Synced Model: Splat Model Synced
+
+Open the standalone application to switch floor layers, daylight simulation, and synchronized sequences.
+Open 3D Viewer: https://mvirgilstudio.com/archviz/code.html#digital-twin-viewer-sec
+
+Interactive 3D WebGL Splat Viewer:
+Explore a dense, high-fidelity spatial capture of the historic Convento de Monsaraz. By utilizing the real 3D scan, we preserve light fields, volumetric depth, and raw textures as a navigable real-time interactivity.
+Explore 3D Splat Space: https://mvirgilstudio.com/archviz/code.html#gaussian-splatting-sec
+
+---------------------------------------------------------
+03 / PRECISION 3D PROTOTYPING
+---------------------------------------------------------
+Scale physical models produced with premium white resin 3D printing and precise CNC milling workflows. Bridging computational design models and physical architectural tangibility.
+
+Explore: Premium 3D Printed Maquette scale model
+Watch Fabrication Video: https://mvirgilstudio.com/archviz/code.html#precision-prototyping-sec
+
+---------------------------------------------------------
+04 / VISUAL PORTFOLIO
+---------------------------------------------------------
+- 04.1 / Immersive Walkthroughs: Blending uncompromising visual fidelity with fluid spatial exploration. Step inside our vision through high-end real-time simulations, capturing natural light transitions, biophilic interactions, and raw material details in cinematic flow.
+  Explore Spatial Walkthroughs: https://mvirgilstudio.com/archviz/code.html#walkthrough-sec
+
+- 04.2 / Interactive Systems: Experience real-time interactive panoramas directly within the design presentation. Engage with smart, biophilic, and material-focused spaces in Section 02, using intuitive drag or media controls.
+  Engage 360° Panorama Views: https://mvirgilstudio.com/archviz/code.html#interactive-systems-sec
+
+- 04.3 / Cinematic Animations: Watch our high-fidelity real-time cinematic render sequences showcasing atmospheric lighting, natural animations, and materials.
+  Play Cinematic Videos: https://mvirgilstudio.com/archviz/code.html#video-renders-sec
+
+- 04.4 / Image Renders: Open our high-fidelity renders gallery.
+  Open Interactive Gallery: https://mvirgilstudio.com/archviz/code.html#image-renders-sec
+
+---------------------------------------------------------
+MIGUEL VIRGÍLIO STUDIO
+Architectural Visualization · Web & Creative Coding · 3D VFX
+---------------------------------------------------------
+Visit Studio Portfolio: https://mvirgilstudio.com
+© 2026 Miguel Virgílio Studio. All rights reserved.

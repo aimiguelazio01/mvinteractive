@@ -1,0 +1,189 @@
+{
+    "asset": {
+        "generator": "Khronos glTF Blender I/O v3.6.27",
+        "version": "2.0"
+    },
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Scene",
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "mesh": 0,
+            "name": "tgzoahbpa_LOD0_TIER3_000",
+            "rotation": [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ],
+            "scale": [
+                0.009999999776482582,
+                0.009999999776482582,
+                0.009999999776482582
+            ]
+        }
+    ],
+    "materials": [
+        {
+            "doubleSided": true,
+            "name": "MI_tgzoahbpa",
+            "normalTexture": {
+                "index": 0
+            },
+            "occlusionTexture": {
+                "index": 1
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 2
+                },
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "S_tgzoahbpa_tier_3",
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2,
+                        "TANGENT": 3
+                    },
+                    "indices": 4,
+                    "material": 0
+                }
+            ]
+        }
+    ],
+    "textures": [
+        {
+            "sampler": 0,
+            "source": 0
+        },
+        {
+            "sampler": 0,
+            "source": 1
+        },
+        {
+            "sampler": 0,
+            "source": 2
+        }
+    ],
+    "images": [
+        {
+            "mimeType": "image/jpeg",
+            "name": "T_tgzoahbpa_1K_N",
+            "uri": "Textures/T_tgzoahbpa_1K_N.jpg"
+        },
+        {
+            "mimeType": "image/jpeg",
+            "name": "T_tgzoahbpa_1K_ORM",
+            "uri": "Textures/T_tgzoahbpa_1K_ORM.jpg",
+            "extras": {
+                "compression": "mask"
+            }
+        },
+        {
+            "mimeType": "image/jpeg",
+            "name": "T_tgzoahbpa_1K_B",
+            "uri": "Textures/T_tgzoahbpa_1K_B.jpg"
+        }
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "componentType": 5126,
+            "count": 192,
+            "max": [
+                3.7939915657043457,
+                3.8521053791046143,
+                4.021906852722168
+            ],
+            "min": [
+                -3.8670711517333984,
+                -3.892132043838501,
+                -3.9987945556640625
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 192,
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "componentType": 5126,
+            "count": 192,
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 3,
+            "componentType": 5126,
+            "count": 192,
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 4,
+            "componentType": 5123,
+            "count": 576,
+            "type": "SCALAR"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 2304,
+            "byteOffset": 0,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 2304,
+            "byteOffset": 2304,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 1536,
+            "byteOffset": 4608,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 3072,
+            "byteOffset": 6144,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteLength": 1152,
+            "byteOffset": 9216,
+            "target": 34963
+        }
+    ],
+    "samplers": [
+        {
+            "magFilter": 9729,
+            "minFilter": 9987
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 10368,
+            "uri": "tgzoahbpa_tier_3.bin"
+        }
+    ]
+}

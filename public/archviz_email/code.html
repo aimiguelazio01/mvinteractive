@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="MVs Archviz | Architectural Visualization — High-end rendering, cinematic animation, immersive 3D and precision prototyping by MIGUEL VIRGÍLIO Studio." />
+    <meta name="author" content="Miguel Virgílio" />
+    <title>MVs Archviz | Email Landing Page</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon/favicon.ico" />
+
+    <!-- Google Fonts for branding and backup styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- PP Neue Montreal Font (Premium Heading Font) -->
+    <style>
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('https://db.onlinewebfonts.com/t/4366ceae6f7564999a0f0c3e8698a4ad.woff2?v=2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('https://db.onlinewebfonts.com/t/b76e589398b734c21453bb17d93dd7ff.woff2?v=2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('https://db.onlinewebfonts.com/t/99adcbf5786caf31880acfe5a5b7abcc.woff2?v=2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('https://db.onlinewebfonts.com/t/ca60ecf8682ee50619811d94af8db7d4.woff2?v=2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* Subtle micro-interactions */
+        .hover-sweep {
+            position: relative;
+        }
+        .hover-sweep::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-sweep:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+
+    <!-- Tailwind CSS (with customized config) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"PP Neue Montreal"', 'Inter', 'sans-serif'],
+                        mono: ['"SF Mono"', 'Consolas', 'Courier New', 'monospace'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1a1c1c',
+                        secondary: '#5c5f60',
+                        accent: '#4a3525',
+                        cream: '#f4ebe1',
+                        bglight: '#f9f9f9',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-bglight text-primary font-sans antialiased selection:bg-cream selection:text-accent">
+
+    <!-- ════════════════════════════════════════════════
+         HEADER CONTAINER
+         Two-column flex: logo placeholder + single action
+    ════════════════════════════════════════════════ -->
+    <header class="border-b border-primary/5 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+
+            <!-- Logo placeholder -->
+            <a href="/" class="flex items-center gap-3 shrink-0 group">
+                <svg viewBox="0 0 1920 1080" class="h-5 w-auto text-primary group-hover:text-accent transition-colors duration-300" aria-hidden="true">
+                    <g fill="currentColor">
+                        <path d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                        <path d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                        <path d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                        <path d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                    </g>
+                </svg>
+                <span class="font-orbitron tracking-[0.15em] text-xs font-semibold uppercase text-primary">MIGUEL VIRGÍLIO <span class="font-light text-secondary">STUDIO</span></span>
+            </a>
+
+            <!-- Single action link -->
+            <a href="https://mvirgilstudio.com/archviz" class="font-mono text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors duration-300 hover-sweep">View Portfolio</a>
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- ════════════════════════════════════════════════
+             HERO SECTION CONTAINER
+             Headline + description + primary CTA
+        ════════════════════════════════════════════════ -->
+        <section class="border-b border-primary/5 bg-white">
+            <div class="max-w-screen-xl mx-auto px-6 py-20 md:py-28 flex flex-col items-start">
+
+                <!-- Tag line -->
+                <p class="text-xs font-mono tracking-[0.25em] text-accent uppercase font-medium">Architectural Visualization</p>
+
+                <!-- Main headline -->
+                <h1 class="mt-4 text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.15] max-w-4xl text-primary">
+                    High-end architectural techniques for visionary designs.
+                </h1>
+
+                <!-- Supporting description -->
+                <p class="mt-6 text-base md:text-lg max-w-xl text-secondary font-light leading-relaxed">
+                    Photorealistic stills, cinematic animations, interactive 3D environments, and precision prototyping — crafted for architects and developers who demand excellence.
+                </p>
+
+                <!-- Primary CTA -->
+                <div class="mt-10">
+                    <a href="https://mvirgilstudio.com/archviz" class="inline-block bg-primary text-white border border-primary hover:bg-accent hover:border-accent uppercase font-mono text-xs tracking-[0.2em] px-8 py-4.5 transition-all duration-300 rounded-none hover:shadow-lg active:scale-[0.98]">
+                        Explore Full Portfolio →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ════════════════════════════════════════════════
+             VISUAL ANCHOR BLOCK
+             Single static image replacing all media/3D/video
+        ════════════════════════════════════════════════ -->
+        <section class="bg-bglight border-b border-primary/5 py-12 md:py-16">
+            <div class="max-w-screen-xl mx-auto px-6">
+                <div class="border border-primary/10 p-2 md:p-3 bg-white shadow-sm transition-all duration-500 hover:shadow-md">
+                    <img
+                        src="/archviz_email/assets/hero_background.jpg"
+                        alt="Monumental brutalist concrete architecture over a reflective pool — MIGUEL VIRGÍLIO Studio photorealistic CGI"
+                        loading="lazy"
+                        class="w-full aspect-video object-cover grayscale-[10%] hover:grayscale-0 transition-all duration-700"
+                    />
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ════════════════════════════════════════════════
+             CORE PILLARS GRID
+             3-column responsive grid condensing the 5 original
+             sections into scannable capability summaries
+        ════════════════════════════════════════════════ -->
+        <section class="bg-white border-b border-primary/5">
+            <div class="max-w-screen-xl mx-auto px-6 py-20 md:py-28">
+
+                <!-- Section intro -->
+                <p class="text-xs font-mono tracking-[0.25em] text-accent uppercase font-medium">What We Deliver</p>
+                <h2 class="mt-2 text-3xl md:text-4xl font-medium tracking-tight text-primary max-w-lg">
+                    Five disciplines. One unified vision.
+                </h2>
+
+                <!-- 3-column grid (collapses to 1-col on mobile) -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Pillar 1: Visual Showcase + Cinematic Animation -->
+                    <div class="group flex flex-col gap-5 bg-bglight border border-primary/5 p-6 transition-all duration-300 hover:bg-[#f4ebe1]/20 hover:border-primary/10 hover:shadow-md">
+                        <div class="overflow-hidden border border-primary/5">
+                            <img
+                                src="/archviz_email/assets/house/house_thumbnail.jpg"
+                                alt="High-fidelity photorealistic architectural rendering of villa exterior"
+                                loading="lazy"
+                                class="w-full aspect-video object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        </div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <!-- Icon container -->
+                            <div class="w-10 h-10 shrink-0 flex items-center justify-center bg-white border border-primary/5 text-secondary group-hover:text-primary group-hover:bg-cream/40 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/>
+                                    <path d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-semibold uppercase tracking-wider text-primary">Renders & Animation</h3>
+                        </div>
+                        <p class="text-sm text-secondary font-light leading-relaxed">
+                            High-fidelity CGI imagery and cinematic architectural flythroughs with volumetric lighting — indistinguishable from photography.
+                        </p>
+                        <p class="text-[10px] font-mono tracking-[0.2em] text-accent uppercase mt-auto pt-4 border-t border-primary/5 w-full">Stills · Flythrough · Timelapse</p>
+                    </div>
+
+                    <!-- Pillar 2: Immersive Experience + Interactive Viewer -->
+                    <div class="group flex flex-col gap-5 bg-bglight border border-primary/5 p-6 transition-all duration-300 hover:bg-[#f4ebe1]/20 hover:border-primary/10 hover:shadow-md">
+                        <div class="overflow-hidden border border-primary/5">
+                            <img
+                                src="/archviz_email/assets/convento/convento_bkg.jpg"
+                                alt="Real-time 3D model visualization of Convento de São Bento da Orada"
+                                loading="lazy"
+                                class="w-full aspect-video object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        </div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <div class="w-10 h-10 shrink-0 flex items-center justify-center bg-white border border-primary/5 text-secondary group-hover:text-primary group-hover:bg-cream/40 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-semibold uppercase tracking-wider text-primary">Interactive 3D</h3>
+                        </div>
+                        <p class="text-sm text-secondary font-light leading-relaxed">
+                            Real-time 3D environments, digital twins with NFC-triggered material swaps, and floor-by-floor interactive model viewers.
+                        </p>
+                        <p class="text-[10px] font-mono tracking-[0.2em] text-accent uppercase mt-auto pt-4 border-t border-primary/5 w-full">VR Tour · Digital Twin · 3D Viewer</p>
+                    </div>
+
+                    <!-- Pillar 3: Gaussian Splatting + Precision Prototyping -->
+                    <div class="group flex flex-col gap-5 bg-bglight border border-primary/5 p-6 transition-all duration-300 hover:bg-[#f4ebe1]/20 hover:border-primary/10 hover:shadow-md">
+                        <div class="overflow-hidden border border-primary/5">
+                            <img
+                                src="/archviz_email/assets/section_bck_02.jpg"
+                                alt="Gaussian Splatting spatial capture point cloud scan of building facade"
+                                loading="lazy"
+                                class="w-full aspect-video object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        </div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <div class="w-10 h-10 shrink-0 flex items-center justify-center bg-white border border-primary/5 text-secondary group-hover:text-primary group-hover:bg-cream/40 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-2.625 0V5.625m0 0A1.125 1.125 0 014.5 4.5h15a1.125 1.125 0 011.125 1.125m-17.25 0h17.25m0 0v12.75M20.625 19.5h-1.5C18.504 19.5 18 18.996 18 18.375m2.625 0V5.625M6 18.375v-1.5a1.125 1.125 0 011.125-1.125h9.75A1.125 1.125 0 0118 16.875v1.5m-12 0h12"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-semibold uppercase tracking-wider text-primary">Scan & Prototype</h3>
+                        </div>
+                        <p class="text-sm text-secondary font-light leading-relaxed">
+                            High-fidelity Gaussian Splatting spatial captures and precision 3D-printed architectural maquettes bridging digital to physical.
+                        </p>
+                        <p class="text-[10px] font-mono tracking-[0.2em] text-accent uppercase mt-auto pt-4 border-t border-primary/5 w-full">3D Scan · CNC · 3D Print</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ════════════════════════════════════════════════
+             SOCIAL PROOF / CREDIBILITY BLOCK
+             Horizontal flex container for testimonial or logos
+        ════════════════════════════════════════════════ -->
+        <section class="bg-bglight border-b border-primary/5">
+            <div class="max-w-screen-xl mx-auto px-6 py-20 md:py-24">
+                <div class="max-w-3xl mx-auto text-center flex flex-col items-center bg-white border border-primary/5 p-8 md:p-12 shadow-sm">
+                    <!-- Testimonial quote block -->
+                    <blockquote class="text-lg md:text-xl lg:text-2xl font-light italic leading-relaxed text-primary max-w-2xl">
+                        "Miguel Virgílio Studio doesn't just render buildings — they translate architectural intent into visceral, photorealistic experiences that accelerate client decisions and pre-sales."
+                    </blockquote>
+                    
+                    <div class="w-12 h-[1px] bg-primary/20 my-6"></div>
+                    
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs font-mono tracking-[0.2em] text-accent font-semibold uppercase">Lead Design Partner</span>
+                        <span class="text-xs text-secondary tracking-wider mt-1">Global Architecture & Development Firm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ════════════════════════════════════════════════
+         FOOTER CONTAINER
+         Secondary CTA + copyright + contact info
+    ════════════════════════════════════════════════ -->
+    <footer class="bg-white">
+        <div class="max-w-screen-xl mx-auto px-6 py-20 md:py-28">
+
+            <!-- Secondary CTA block (mirrors primary objective) -->
+            <div class="text-center flex flex-col items-center max-w-lg mx-auto">
+                <h2 class="text-3xl md:text-4xl font-medium tracking-tight text-primary">Collaborate With Us.</h2>
+                <p class="text-sm text-secondary font-light leading-relaxed mt-3 max-w-md">
+                    Explore the full interactive portfolio — or reach out directly to start your next project.
+                </p>
+                <div class="flex flex-wrap justify-center items-center gap-4 mt-8">
+                    <a href="https://mvirgilstudio.com/archviz" class="inline-block bg-primary text-white border border-primary hover:bg-accent hover:border-accent uppercase font-mono text-xs tracking-[0.2em] px-8 py-4.5 transition-all duration-300 rounded-none hover:shadow-lg active:scale-[0.98]">
+                        Explore Full Portfolio →
+                    </a>
+                    <a href="mailto:hello@mvirgilstudio.com" class="inline-block border border-primary/20 hover:border-primary text-primary hover:bg-cream/20 uppercase font-mono text-xs tracking-[0.2em] px-6 py-4.5 transition-all duration-300 rounded-none active:scale-[0.98]">
+                        Get a Quote
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contact info row -->
+            <div class="mt-20 pt-12 border-t border-primary/10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs font-mono tracking-[0.25em] text-accent uppercase font-semibold">Email</span>
+                    <a href="mailto:hello@mvirgilstudio.com" class="text-sm text-primary hover:text-accent font-light mt-1 transition-colors duration-300 self-center sm:self-start">hello@mvirgilstudio.com</a>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs font-mono tracking-[0.25em] text-accent uppercase font-semibold">Phone</span>
+                    <a href="tel:+351933628268" class="text-sm text-primary hover:text-accent font-light mt-1 transition-colors duration-300 self-center sm:self-start">+351 933 628 268</a>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs font-mono tracking-[0.25em] text-accent uppercase font-semibold">Location</span>
+                    <span class="text-sm text-primary font-light mt-1">Alcobaça, Portugal</span>
+                </div>
+            </div>
+
+            <!-- Bottom bar: copyright + links -->
+            <div class="mt-16 pt-8 border-t border-primary/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-secondary font-light">
+                <span>© 2024 Miguel Virgílio Studio. All rights reserved.</span>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-primary transition-colors duration-300">Privacy</a>
+                    <a href="#" class="hover:text-primary transition-colors duration-300">Terms</a>
+                    <a href="#" class="hover:text-primary transition-colors duration-300">Unsubscribe</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

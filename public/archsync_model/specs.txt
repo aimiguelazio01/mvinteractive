@@ -1,0 +1,262 @@
+COMPLETE PROJECT PROMPT — ARCHSYNC MODEL
+1. Project Overview
+
+Project Name:
+ArchSync Model
+
+Project Type:
+Interactive architectural presentation system
+
+Core Concept:
+ArchSync Model is a hybrid physical–digital system that synchronizes a physical architectural model with a real-time digital environment. Through sensors and interactive technology, users can manipulate or interact with a physical maquette and instantly visualize corresponding changes in a digital architectural representation.
+
+The project combines:
+
+Architectural visualization
+Real-time interaction
+Tangible interfaces
+Digital twin systems
+Immersive presentation techniques
+
+The goal is to create a more intuitive, engaging, and experiential way to present architectural projects.
+
+🟢 2. Main Objectives
+
+The system should:
+
+Transform static architectural presentations into interactive experiences
+Create a direct connection between physical and digital environments
+Improve communication between architects, clients, and stakeholders
+Allow intuitive exploration of architectural spaces
+Enhance understanding of scale, lighting, materials, and spatial relationships
+Provide a premium and innovative presentation format
+🟢 3. Core Experience
+
+Users interact with a physical architectural model placed on a table or exhibition surface.
+
+The interaction can include:
+
+Touching specific zones
+Moving physical elements
+Rotating modules
+Triggering sensors
+Using gesture interaction
+
+These actions instantly affect a synchronized digital environment displayed on:
+
+Large screens
+Interactive displays
+Projection systems
+Real-time 3D viewers
+
+The experience should feel:
+
+Immediate
+Natural
+Immersive
+Intuitive
+🟢 4. Key Features
+🏗 Physical Architectural Model
+High-quality 3D printed maquette
+Modular or fixed structure
+Clean architectural finish
+Realistic proportions and scale
+Integrated hidden sensor system
+
+Possible materials:
+
+PLA / resin prints
+Acrylic
+MDF
+Foam board
+🌐 Real-Time Digital Twin
+
+Digital environment synchronized with the physical model.
+
+Capabilities:
+
+Real-time navigation
+Dynamic lighting changes
+Material variations
+Day/night simulation
+Spatial exploration
+
+Visual quality:
+
+Photorealistic
+Atmospheric
+Architectural cinematic style
+✋ Interactive Input Systems
+
+Possible interaction methods:
+
+Touch Interaction
+Capacitive sensors
+Touch-sensitive surfaces
+Gesture Interaction
+Hand tracking
+Motion sensing
+Physical Interaction
+Rotating pieces
+Moving modules
+Trigger buttons
+💡 Dynamic Environmental Control
+
+Users can:
+
+Change lighting conditions
+Modify atmosphere
+Switch material palettes
+Explore multiple configurations
+
+All updates occur instantly in the digital environment.
+
+🧠 Intelligent Synchronization
+
+The system should visually communicate synchronization between:
+
+Physical object
+Sensor input
+Digital response
+
+Feedback should feel:
+
+Smooth
+Immediate
+Responsive
+🟢 5. Visual Direction
+Style
+Architectural minimalism
+High-end presentation aesthetic
+Clean geometry
+Neutral palette
+Mood
+Intelligent
+Futuristic
+Precise
+Elegant
+Immersive
+Color Palette
+White
+Soft grey
+Matte black
+Subtle blue/green accent for interaction feedback
+Lighting
+Soft studio lighting
+Cinematic contrast
+Ambient environmental lighting
+🟢 6. Target Audience
+Architecture studios
+Real estate developers
+Urban planners
+Exhibition designers
+Museums
+Educational institutions
+Technology-focused presentations
+🟢 7. Use Cases
+🏢 Architectural Presentation
+
+Present projects interactively to clients and investors.
+
+🌆 Urban Planning
+
+Visualize districts, circulation, and spatial relationships.
+
+🎓 Education
+
+Teach architectural concepts through interaction.
+
+🎪 Exhibitions & Installations
+
+Create immersive experiences in public spaces.
+
+🟢 8. Technical Components
+Hardware
+Sensors
+Microcontrollers 
+Projection or display systems
+Touch interfaces
+Cameras / tracking systems
+Real-time rendering systems
+Interaction Systems
+Real-time data transmission
+Sensor mapping
+Gesture recognition
+Dynamic scene control
+🟢 9. Webpage / Presentation Requirements
+
+The webpage for ArchSync Model should reflect the system itself.
+
+Design Direction
+Interactive
+Dynamic
+Scroll-based storytelling
+Real-time feeling
+Webpage Sections
+Hero
+
+Physical model synchronizing with digital environment
+
+Concept
+
+Explain physical–digital connection
+
+How It Works
+
+Interactive workflow visualization
+
+Features
+
+Real-time sync, sensors, digital twin
+
+Applications
+
+Architecture, urban planning, exhibitions
+
+CTA
+
+Request demo / collaboration
+
+🟢 10. User Experience Goals
+
+The experience should communicate:
+
+Innovation
+Precision
+Interactivity
+Architectural sophistication
+Future-oriented presentation methods
+
+The user should feel:
+
+“This is a new way to experience architecture.”
+
+🟢 11. Deliverables
+
+Possible outputs:
+
+Interactive real-time application
+Physical model prototype
+Architectural visualizations
+Presentation videos
+Interactive webpage
+Installation setup
+Exhibition-ready system
+🟢 12. Core Message
+
+ArchSync Model transforms architectural presentation into a synchronized physical–digital experience where interaction, visualization, and immersion work together in real time.
+
+🟢 13. Keywords
+Interactive architecture
+Digital twin
+Physical–digital sync
+Real-time visualization
+Immersive presentation
+Architectural interaction
+Tangible interface
+Smart architectural systems
+Interactive maquette
+Experiential architecture
+🟢 14. Short Project Description
+
+ArchSync Model is an interactive architectural system that connects physical models with synchronized digital environments in real time. Through sensors, gesture interaction, and immersive visualization, it transforms architectural presentation into a dynamic and engaging experience.

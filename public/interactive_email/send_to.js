@@ -1,0 +1,238 @@
+/**
+ * MVs Interactive — CLI Email Sender
+ * 
+ * Sends the interactive design HTML email to a specified recipient.
+ * 
+ * Usage:
+ *   node send_to.js <recipient_email> [language]
+ * 
+ * Examples:
+ *   node send_to.js client@example.com        # sends Portuguese version
+ *   node send_to.js client@example.com en      # sends English version
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { logEmailToExcel } from './export_excel.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ═══════════════════════════════════════════
+//  CONFIGURATION
+// ═══════════════════════════════════════════
+
+const RESEND_KEYS = {
+  '1': process.env.RESEND_API_KEY_1 || process.env.RESEND_API_KEY || '',
+  '2': process.env.RESEND_API_KEY_2 || ''
+};
+
+const FROM_NAME = 'MVs Interactive';
+const FROM_EMAIL = 'hello@mvirgilstudio.com';
+const REPLY_TO = 'mvirgilstudio@gmail.com';
+
+// ═══════════════════════════════════════════
+//  CLI ARGUMENT PARSING
+// ═══════════════════════════════════════════
+
+function parseArgs(rawArgs) {
+  let recipientArg = null;
+  let language = 'pt';
+  let apiKeyChoice = '1';
+
+  for (const arg of rawArgs) {
+    if (!arg) continue;
+    const lower = arg.trim().toLowerCase();
+
+    if (lower === 'pt' || lower === 'en') {
+      language = lower;
+      continue;
+    }
+
+    if (lower.includes('resend') || lower === '1' || lower === '2' || lower.startsWith('re_')) {
+      if (lower.includes('2') || lower === '2') {
+        apiKeyChoice = '2';
+      } else if (lower.includes('1') || lower === '1') {
+        apiKeyChoice = '1';
+      } else if (lower.startsWith('re_')) {
+        apiKeyChoice = arg.trim();
+      }
+      continue;
+    }
+
+    if (!recipientArg) {
+      recipientArg = arg;
+    }
+  }
+
+  const apiKey = RESEND_KEYS[apiKeyChoice] || (apiKeyChoice.startsWith('re_') ? apiKeyChoice : RESEND_KEYS['1']);
+  const keyLabel = apiKeyChoice === '2' ? 'resend 2' : (apiKeyChoice === '1' ? 'resend 1' : apiKeyChoice);
+
+  return { recipientArg, language, apiKeyChoice, apiKey, keyLabel };
+}
+
+const { recipientArg, language: LANGUAGE, apiKey: API_KEY, keyLabel: KEY_LABEL } = parseArgs(process.argv.slice(2));
+
+if (!recipientArg) {
+  console.error('❌ Usage: node send_to.js <recipient_emails> [language] [resend_option]');
+  console.error('   recipient_emails: single email or comma-separated list (e.g. "a@b.com,c@d.com")');
+  console.error('   language: "pt" (default) or "en"');
+  console.error('   resend_option: "resend 1" (default API) or "resend 2" (secondary API key)');
+  process.exit(1);
+}
+
+const recipients = recipientArg.split(',').map(email => email.trim()).filter(Boolean);
+
+if (recipients.length === 0) {
+  console.error('❌ No valid email address provided.');
+  process.exit(1);
+}
+
+// Basic email format validation
+for (const email of recipients) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    console.error(`❌ Invalid email address: ${email}`);
+    process.exit(1);
+  }
+}
+
+if (!['pt', 'en'].includes(LANGUAGE)) {
+  console.error(`❌ Invalid language "${LANGUAGE}". Use "pt" or "en".`);
+  process.exit(1);
+}
+
+const SUBJECT = LANGUAGE === 'pt'
+  ? 'Design Interativo: Sistemas 3D & Experiências de IA'
+  : 'Interactive Design: 3D Systems & AI Experiences';
+
+// ═══════════════════════════════════════════
+//  SEND LOGIC
+// ═══════════════════════════════════════════
+
+async function sendEmail() {
+
+  const templateFile = LANGUAGE === 'pt' ? 'email_pt.html' : 'email_en.html';
+  const htmlPath = path.join(__dirname, templateFile);
+
+  let html;
+  if (fs.existsSync(htmlPath)) {
+    html = fs.readFileSync(htmlPath, 'utf8');
+  } else {
+    const templateUrl = LANGUAGE === 'pt'
+      ? 'https://mvirgilstudio.com/interactive_email/email_pt'
+      : 'https://mvirgilstudio.com/interactive_email/email_en';
+    try {
+      const response = await fetch(templateUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+      html = await response.text();
+    } catch (err) {
+      console.error(`❌ Failed to fetch template from ${templateUrl}:`, err.message);
+      process.exit(1);
+    }
+  }
+
+  // Insert intro message card above the Main Container
+  const introText = LANGUAGE === 'pt'
+    ? `<!-- Personal Message -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container"
+                    style="background-color: #ffffff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                    <tr>
+                        <td class="mobile-padding" style="padding: 32px 32px; font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #1a1a1a;">
+                            Olá,<br><br>
+                            O meu nome é Miguel Virgílio e desenvolvo aplicações 3D interativas para apresentar produtos, espaços e processos de forma mais envolvente.<br>
+                            Gostaria de partilhar uma breve apresentação com alguns dos projetos que desenvolvi.
+                        </td>
+                    </tr>
+                </table>`
+    : `<!-- Personal Message -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container"
+                    style="background-color: #ffffff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                    <tr>
+                        <td class="mobile-padding" style="padding: 32px 32px; font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #1a1a1a;">
+                            Hello,<br><br>
+                            My name is Miguel Virgílio and I create interactive 3D applications to showcase products, spaces, and processes in a more engaging way.<br>
+                            I would like to share a brief presentation featuring some of the projects I have developed.
+                        </td>
+                    </tr>
+                </table>`;
+
+  html = html.replace('<!-- Main Container -->', `${introText}\n                <!-- Main Container -->`);
+
+
+
+  // Convert relative asset paths to absolute URLs using the live website domain
+  html = html.replace(/src="\/interactive_email\//g, 'src="https://mvirgilstudio.com/interactive_email/');
+
+  // 1. Strip <script> tags for deliverability
+  html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+
+  // 2. Strip large CSS animation/gallery blocks
+  html = html.replace(/\/\* CSS Image Fade Transitions[\s\S]*?(?=\\<\/style\\>)/i, '');
+
+  // 3. Strip structural "id" attributes
+  html = html.replace(/\s+id="[^"]*"/gi, '');
+
+  // 4. Boost small font sizes to 12px minimum
+  html = html.replace(/font-size:\s*(9|10|11)px/gi, 'font-size: 12px');
+
+  console.log(`🔑 Resend API Key: ${KEY_LABEL}`);
+  console.log(`📧 Sending ${LANGUAGE.toUpperCase()} email from ${FROM_NAME} <${FROM_EMAIL}>`);
+  console.log(`📝 Subject: ${SUBJECT}`);
+  console.log(`📎 Template: ${templateFile}`);
+  console.log('');
+
+  for (let i = 0; i < recipients.length; i++) {
+    const recipient = recipients[i];
+    console.log(`📨 Sending email ${i + 1}/${recipients.length} to: ${recipient}...`);
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: `${FROM_NAME} <${FROM_EMAIL}>`,
+          to: [recipient],
+          reply_to: REPLY_TO,
+          subject: SUBJECT,
+          html: html,
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        console.error(`❌ Failed to send to ${recipient}:`, data.error || data);
+      } else {
+        console.log(`✅ Email sent successfully to ${recipient}!`);
+        console.log(`📋 Message ID: ${data.id}`);
+        try {
+          await logEmailToExcel({
+            id: data.id,
+            to: recipient,
+            from: `${FROM_NAME} <${FROM_EMAIL}>`,
+            subject: SUBJECT,
+            last_event: 'delivered',
+            created_at: new Date().toISOString(),
+            message_id: data.id
+          });
+          console.log(`📊 Logged to sent_interactive_emails.xlsx`);
+        } catch (excelErr) {
+          console.error(`⚠️ Failed to log to Excel:`, excelErr.message);
+        }
+      }
+    } catch (err) {
+      console.error(`❌ Error sending to ${recipient}:`, err.message);
+    }
+
+    // Add a 1-second delay between sending to individual recipients to avoid rate limits
+    if (i < recipients.length - 1) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+}
+
+sendEmail();

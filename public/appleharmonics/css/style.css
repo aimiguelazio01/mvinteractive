@@ -1,0 +1,467 @@
+.copper-border {
+    border: 1px solid #b87333;
+    border-color: rgba(184, 115, 51, 0.1);
+}
+
+.copper-divider {
+    background: linear-gradient(90deg, transparent, rgba(184, 115, 51, 0.5), transparent);
+    height: 1px;
+    width: 100%;
+}
+
+.copper-divider-v {
+    background: linear-gradient(180deg, transparent, rgba(184, 115, 51, 0.5), transparent);
+    width: 1px;
+    height: 100%;
+}
+
+.glass-panel {
+    background: rgba(19, 19, 19, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.text-copper {
+    color: #b87333;
+}
+
+.text-accent-green {
+    color: #ecff00;
+}
+
+/* Piano Styles — Responsive keys that scale to fit any screen */
+.piano-key {
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* ── White Keys ── */
+.white-key {
+    width: 80px;
+    height: 300px;
+    background: linear-gradient(to bottom, #e5e2e1 0%, #cfcccb 100%);
+    border: 1px solid #131313;
+    border-radius: 0 0 8px 8px;
+    z-index: 10;
+    box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.white-key:hover {
+    background: #ffffff;
+    transform: translateY(1px);
+}
+
+.white-key.active {
+    background: linear-gradient(to bottom, #ff5539 0%, #dc2626 100%);
+    transform: translateY(3px);
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Black Keys ── */
+.black-key {
+    width: 50px;
+    height: 190px;
+    background: linear-gradient(180deg, #2a2a2a 0%, #131313 100%);
+    border: 1px solid #000;
+    border-radius: 0 0 5px 5px;
+    z-index: 20;
+    margin-left: -25px;
+    margin-right: -25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.black-key:hover {
+    background: #353534;
+}
+
+.black-key.active {
+    background-color: #b84c4c;
+    transform: translateY(3px);
+    box-shadow: 0 0 25px rgba(184, 76, 76, 0.4);
+}
+
+/* ── Piano Container ── */
+.piano-container {
+    padding: 48px 32px;
+    background: rgba(28, 27, 27, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(148, 92, 92, 0.2), 0 30px 60px rgba(0, 0, 0, 0.6);
+    overflow: hidden !important;
+    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ── Tablet (641–1024px) ── */
+@media (max-width: 1024px) {
+    .piano-container {
+        padding: 32px 20px;
+    }
+    .white-key {
+        width: 60px;
+        height: 240px;
+        border-radius: 0 0 6px 6px;
+    }
+    .black-key {
+        width: 38px;
+        height: 150px;
+        margin-left: -19px;
+        margin-right: -19px;
+        border-radius: 0 0 4px 4px;
+    }
+}
+
+/* ── Mobile portrait (≤640px): Only Octave 4 visible (7 white keys) ──  */
+/* Available width = 100vw - 48px (parent px-gutter) - 16px (container)  */
+/*                 = 100vw - 64px.  Divided by 7 white keys.             */
+@media (max-width: 640px) {
+    .piano-key {
+        flex-shrink: 1; /* Allow shrinking as safety net on mobile */
+    }
+    .piano-container {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        padding: 16px 8px;
+        border-radius: 10px;
+        justify-content: center;
+    }
+    .white-key {
+        width: clamp(32px, (100vw - 64px) / 7, 52px);
+        height: 130px;
+        border-radius: 0 0 4px 4px;
+        box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.1), 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    .black-key {
+        width: clamp(20px, (100vw - 64px) / 7 * 0.6, 32px);
+        height: 80px;
+        margin-left: clamp(-16px, (100vw - 64px) / 7 * -0.3, -10px);
+        margin-right: clamp(-16px, (100vw - 64px) / 7 * -0.3, -10px);
+        border-radius: 0 0 3px 3px;
+    }
+}
+
+/* ── Very small phones (≤360px) ── */
+@media (max-width: 360px) {
+    .piano-container {
+        padding: 12px 4px;
+    }
+    .white-key {
+        width: calc((100vw - 56px) / 7);
+        height: 110px;
+        border-radius: 0 0 3px 3px;
+    }
+    .black-key {
+        width: calc((100vw - 56px) / 7 * 0.58);
+        height: 68px;
+        margin-left: calc((100vw - 56px) / 7 * -0.29);
+        margin-right: calc((100vw - 56px) / 7 * -0.29);
+    }
+}
+
+/* ── Mobile landscape: shorter keys for limited vertical space ── */
+@media (max-height: 500px) and (orientation: landscape) {
+    .piano-key {
+        flex-shrink: 1;
+    }
+    .piano-container {
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+    .white-key {
+        width: clamp(30px, 5vw, 56px);
+        height: clamp(70px, 22vh, 130px);
+        border-radius: 0 0 3px 3px;
+    }
+    .black-key {
+        width: clamp(18px, 3vw, 35px);
+        height: clamp(42px, 13vh, 80px);
+        margin-left: clamp(-18px, -1.5vw, -9px);
+        margin-right: clamp(-18px, -1.5vw, -9px);
+        border-radius: 0 0 2px 2px;
+    }
+}
+
+#hand-cursor {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(148, 92, 92, 0.5);
+    background: rgba(148, 92, 92, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+#hand-cursor.active {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+    animation: cursor-pulse 2s infinite ease-in-out;
+}
+
+.hand-cursor-core {
+    width: 10px;
+    height: 10px;
+    background: #b84c4c;
+    border-radius: 50%;
+}
+
+@keyframes cursor-pulse {
+    0%,
+    100% {
+        border-color: rgba(148, 92, 92, 0.4);
+        box-shadow: 0 0 10px rgba(148, 92, 92, 0.2);
+    }
+
+    50% {
+        border-color: rgba(148, 92, 92, 0.8);
+        box-shadow: 0 0 25px rgba(148, 92, 92, 0.5);
+    }
+}
+
+/* Modal Scrollbar Styling */
+#modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#modal-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#modal-content::-webkit-scrollbar-thumb {
+    background: rgba(220, 38, 38, 0.3);
+    border-radius: 10px;
+}
+
+#modal-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(220, 38, 38, 0.5);
+}
+
+/* Modal Content Glow */
+#modal-content {
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(220, 38, 38, 0.05);
+}
+
+/* Modal specific glass effect */
+.modal-glass {
+    background: rgba(19, 19, 19, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/* Corner Frame Component */
+.corner-frame {
+    position: relative;
+    display: inline-block;
+    padding: 12px 24px;
+    background-image: 
+        linear-gradient(to right, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to right, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to left, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to left, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to bottom, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to bottom, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to top, #991b1b 1.5px, transparent 1.5px),
+        linear-gradient(to top, #991b1b 1.5px, transparent 1.5px);
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: 0 0, 0 100%, 100% 0, 100% 100%, 0 0, 100% 0, 0 100%, 100% 100%;
+}
+
+/* Animated Shiny Text Effect */
+.shiny-text {
+    background: linear-gradient(90deg, #131313 0%, #ecff00 25%, #ffffff 50%, #ecff00 75%, #131313 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shiny-sweep 4s infinite linear;
+    transition: filter 0.3s ease;
+    display: inline-block;
+}
+
+.shiny-text:hover {
+    filter: drop-shadow(0 0 12px rgba(236, 255, 0, 0.5));
+}
+
+@keyframes shiny-sweep {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Morphing Text Animations */
+@keyframes morphChar {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-5px) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+@keyframes pulse-blink {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.morph-char {
+    display: inline-block;
+    animation: morphChar 0.4s ease-out forwards;
+}
+
+.glitch-effect {
+    animation: glitch 0.3s ease-in-out infinite;
+}
+
+.morphing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--primary, #991b1b);
+    margin-left: 4px;
+    animation: pulse-blink 2s ease-in-out infinite;
+}
+
+/* Scroll Reveal Utilities */
+.reveal {
+    opacity: 0;
+    filter: blur(10px);
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-up {
+    transform: translateY(30px);
+}
+
+.reveal-down {
+    transform: translateY(-30px);
+}
+
+.reveal.active {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 1.5s ease-out;
+}
+
+.fade-in.active {
+    opacity: 1;
+}
+
+/* Animated Underline for Nav */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background-color: #ecff00; /* Neon Yellow */
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* 3D Flipping Card System */
+.flipping-card-container {
+    perspective: 1000px;
+    height: 480px;
+    width: 100%;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .flipping-card-container {
+        height: 480px;
+    }
+    .flipping-card-front, .flipping-card-back {
+        padding: 1.25rem;
+    }
+}
+
+.flipping-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+.flipping-card-container:hover .flipping-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flipping-card-front, .flipping-card-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.flipping-card-front {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.flipping-card-back {
+    transform: rotateY(180deg);
+    z-index: 1;
+}
+
+.flipping-card-content-front {
+    transform: translateZ(60px) scale(0.95);
+    transform-style: preserve-3d;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.flipping-card-content-back {
+    transform: translateZ(60px) scale(0.95);
+    transform-style: preserve-3d;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

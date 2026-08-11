@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SketchMagic AI - Level Up Your Art!</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#005ab4", secondary: "#465f89", accent: "#FFFF00", "game-bg": "#220044", "arcade-red": "#FF3131", "retro-green": "#39FF14", "on-error": "#ffffff", "surface-dim": "#d8dae3", "on-background": "#181c22", "surface-variant": "#e0e2ec", "on-secondary-container": "#405882", "error-container": "#ffdad6", "on-error-container": "#93000a", "on-primary-fixed": "#001b3e", "on-secondary-fixed": "#001b3e", "on-primary-container": "#fefcff", "on-tertiary-fixed": "#321200", "inverse-primary": "#aac7ff", tertiary: "#964400", "surface-container-low": "#f2f3fd", "primary-fixed": "#d6e3ff", "on-primary-fixed-variant": "#00458d", "primary-container": "#0873df", "secondary-container": "#b7cfff", "on-secondary": "#ffffff", "inverse-surface": "#2d3038", "inverse-on-surface": "#eff0fa", "on-tertiary-fixed-variant": "#763400", "on-surface": "#181c22", "tertiary-fixed-dim": "#ffb68c", "on-primary": "#ffffff", "surface-container-lowest": "#ffffff", background: "#f9f9ff", "tertiary-fixed": "#ffdbc9", surface: "#f9f9ff", "on-tertiary": "#ffffff", "surface-container": "#ecedf7", "on-tertiary-container": "#fffbff", "primary-fixed-dim": "#aac7ff", "surface-container-high": "#e6e8f1", "surface-bright": "#f9f9ff", "tertiary-container": "#bd5700", "on-secondary-fixed-variant": "#2e4770", "surface-container-highest": "#e0e2ec", "secondary-fixed-dim": "#afc7f7", "surface-tint": "#005db8", "on-surface-variant": "#414753", "secondary-fixed": "#d6e3ff", "outline-variant": "#c1c6d5", error: "#ba1a1a", outline: "#717785"}, fontFamily: {headline: ["Inter"], pixel: ["DotGothic16", "sans-serif"], body: ["Inter"], label: ["Inter"], display: "Inter"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-game-bg text-white overflow-x-hidden;
+                background-image: 
+                    radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+                background-size: 32px 32px;
+            }
+        }
+        .checkerboard {
+            background-image: linear-gradient(45deg, #000 25%, transparent 25%), linear-gradient(-45deg, #000 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #000 75%), linear-gradient(-45deg, transparent 75%, #000 75%);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+            opacity: 0.15;
+        }
+        .diagonal-stripes {
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 0, 255, 0.1) 10px, rgba(255, 0, 255, 0.1) 20px);
+        }
+        .y2k-shadow {
+            box-shadow: 8px 8px 0px 0px #FF00FF;
+        }
+        .y2k-shadow-cyan {
+            box-shadow: 8px 8px 0px 0px #00FFFF;
+        }
+        .tilt-left { transform: rotate(-3deg); }
+        .tilt-right { transform: rotate(2deg); }
+        .pixel-border {
+            border: 4px solid #fff;
+            box-shadow: 4px 0 #000, -4px 0 #000, 0 4px #000, 0 -4px #000;
+        }
+    </style>
+</head>
+<body class="font-body">
+<nav class="fixed top-0 w-full z-[100] bg-black/90 border-b-4 border-primary px-4 md:px-8 py-3 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="bg-primary p-1 rounded-sm"><span class="material-symbols-outlined text-white text-3xl">sports_esports</span></div>
+<div class="text-3xl font-headline tracking-tighter text-secondary italic">SKETCH<span class="text-primary">MAGIC</span></div>
+</div>
+<div class="hidden lg:flex items-center gap-6 font-pixel text-lg">
+<a class="hover:text-primary hover:bg-white px-2 py-1 transition-all" href="#concept">LVL.01 CONCEPT</a>
+<a class="hover:text-secondary hover:bg-white px-2 py-1 transition-all" href="#how-it-works">LVL.02 GUIDE</a>
+<a class="hover:text-accent hover:bg-white px-2 py-1 transition-all" href="#features">LVL.03 GEAR</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 bg-retro-green text-black font-headline text-lg border-b-4 border-r-4 border-black hover:translate-y-1 hover:border-b-0 transition-all">
+            LOGIN_PLAYER_1
+        </button>
+</div>
+</nav>
+<main class="relative pt-32 pb-40 px-4 md:px-8 overflow-hidden">
+<div class="checkerboard absolute inset-0 pointer-events-none"></div>
+<div class="absolute -top-20 -left-20 w-[600px] h-[600px] bg-primary/20 blur-[150px] rounded-full animate-pulse"></div>
+<div class="absolute bottom-0 right-0 w-full h-32 bg-secondary/80 -skew-y-3 translate-y-16"></div>
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10">
+<div class="lg:w-1/2 text-left tilt-left">
+<div class="inline-block bg-accent text-black font-pixel px-4 py-1 text-xl mb-4 uppercase tracking-widest">Power Up!</div>
+<h1 class="font-headline text-6xl md:text-8xl leading-none text-white drop-shadow-[6px_6px_0px_#FF00FF] mb-6">
+                LEVEL UP <br/> YOUR <span class="text-secondary">ART!</span>
+</h1>
+<p class="font-pixel text-2xl text-secondary mb-10 leading-snug max-w-lg">
+                INSERT COIN to transform your trashy doodles into BOSS MODE MASTERPIECES instantly! No skill required.
+            </p>
+<div class="flex flex-wrap gap-4">
+<button class="px-10 py-6 bg-primary text-white font-headline text-2xl y2k-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all border-4 border-white">
+                    PLAY NOW!
+                </button>
+<button class="px-10 py-6 bg-secondary text-black font-headline text-2xl y2k-shadow-cyan hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all border-4 border-black">
+                    TUTORIAL
+                </button>
+</div>
+</div>
+<div class="lg:w-1/2 relative">
+<div class="relative w-full aspect-square max-w-xl mx-auto">
+<img class="absolute -top-12 -left-12 w-32 z-30 drop-shadow-xl hover:scale-110 transition-transform" data-alt="floating rainbow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz1OD0HfW-08VmWGho-wvLT_esQg1k86ja_t-aj07Os_X3rjfwem1AFlMfP-8Fas2zZilgVKWnmk3zdH_cUhKaVvLD9gFXLJPhhMM0OZaJB3sjx3O6AxQ_L_n7VyA3ybr7psceTQ9u5SvgNA0EDssU71fDiDbdg0LePtWNEGgLd9RNTVaENEsCYKFY3RzBodzMeI06o64mZOnqqC-1marAaCU9fd5Sz3UJO-QFH3GPhbtlLmTTdxk6G3QJVYdgOV8aZfwATM46-zRS"/>
+<img class="absolute -bottom-10 -right-10 w-40 z-30 drop-shadow-xl hover:rotate-12 transition-transform" data-alt="star sticker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxyR9zVPufZmAqUjTu07A1BCU-6bIdvq1TiUdcCirxT88zJqDR2Ohc7mm4X2eQ8dRnUtJ2ay4sJ-q7YPUc0SpRCyYms-tzFe1rrk7nFUh1AmlzN-jgXeN0IWPkCDa2BuzQU183vMJr1IfePJve6AitidZDE_7noAqKD7hwzUs7kbGeiW4w7UfmbDuH5BNfQORNtjaqUbKtwzpdGtA9Koi4kUKtkN09QaioEfmDW6H-yE-9JaQWGWM0u8esl09e4thLSdG7AIcOuzCP"/>
+<div class="absolute inset-0 border-8 border-white bg-black rotate-3 overflow-hidden y2k-shadow-cyan">
+<img class="w-full h-full object-cover opacity-50 grayscale" data-alt="tech reference" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU-ycEM3H1zis-ej8NBD9EMSn_lFhjDPCKb_9UOW4ZudgXm7QTfwlZo1tkjMBlvJ-yJvSEE0oAe_3qQvhny9W3loBu3in3-HoBoESGFF41eBGsz_6gyJuYeyYJ85y0knpkInEzMIGNoDUvqwPvWujjMhG28wzpo9daF5E6bih5DL-_gYDqKYICXi77ETM177fsb2y6mDxufTlhMOVp-wruTyK33IA4dPx0OWjDccoafV3Vi4vmIPVMeCmsusyNCdtmBFvICESxw8CL"/>
+<div class="absolute inset-0 flex items-center justify-center p-8">
+<div class="bg-white/90 p-4 border-4 border-primary scale-110">
+<img class="w-64 h-64 object-contain" data-alt="monster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC5dR_xtmWW7B0Nkuqs2u2md3ze2W2sZW_Y8Hz2v_1b1OBfSSfTBZf5esjZPOBLcXL0GELqb5n6beR-A0fXTg9ypIZ0IlJeoZFUVXbPuomBfoi_ByMEgmOyTRxLzjSmp9oF8B0DJ2kmOKIj6_8OY7xZS6wabjz8N420BYIT-izR70oHMKI-96ndKobKvtCzsVwCNniBb_qi4EttWymQlu-MGm_ELI3YlQkoKk6NsfkyRjMfuvYuRdz69Hsd_dHuSBNlvpJYNWh99Ro"/>
+</div>
+</div>
+<div class="absolute top-4 left-4 font-pixel bg-primary px-2 text-white">RE_MIXING...</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<section class="relative py-32 bg-primary transform -skew-y-3 z-20" id="concept">
+<div class="transform skew-y-3 max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+<div class="bg-black p-8 border-8 border-white y2k-shadow flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-9xl text-secondary mb-6 animate-bounce">auto_fix_high</span>
+<h3 class="text-4xl font-headline text-white mb-4">BOSS MODE AI</h3>
+<p class="font-pixel text-xl text-secondary">Our neural engine is over 9000! It eats your scribbles and poops out masterpieces in high fidelity.</p>
+</div>
+<div class="text-black">
+<h2 class="text-6xl font-headline mb-8 leading-none">THE ULTIMATE <span class="text-white">CHEAT CODE</span></h2>
+<p class="font-body text-2xl font-bold mb-6">Forget the manual. Stop the grind. Just scribble and watch the magic happen. We've unlocked the secret level of creativity for everyone.</p>
+<div class="flex flex-wrap gap-4">
+<span class="px-6 py-2 bg-white font-pixel text-black border-4 border-black font-bold">#GOD_MODE</span>
+<span class="px-6 py-2 bg-secondary font-pixel text-black border-4 border-black font-bold">#NO_LAG</span>
+<span class="px-6 py-2 bg-accent font-pixel text-black border-4 border-black font-bold">#EPIC_DROP</span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-40 px-8 relative overflow-hidden" id="how-it-works">
+<div class="absolute inset-0 diagonal-stripes pointer-events-none"></div>
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-24">
+<h2 class="text-6xl md:text-8xl font-headline text-white drop-shadow-[0_4px_0px_#00FFFF] mb-4">START GAME</h2>
+<div class="h-2 w-48 bg-accent mx-auto"></div>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="bg-black/80 p-8 border-t-8 border-primary hover:scale-105 transition-all cursor-crosshair">
+<div class="text-7xl font-headline text-primary opacity-30 mb-2">01</div>
+<div class="w-20 h-20 bg-primary mb-6 flex items-center justify-center rotate-45 border-4 border-white">
+<span class="material-symbols-outlined text-white text-4xl -rotate-45">draw</span>
+</div>
+<h4 class="text-3xl font-headline text-white mb-4 italic">SCRIBBLE IT</h4>
+<p class="font-pixel text-lg text-secondary">Draw like a toddler on a sugar rush. The uglier, the better. Our AI loves a challenge.</p>
+</div>
+<div class="bg-black/80 p-8 border-t-8 border-secondary hover:scale-105 transition-all cursor-crosshair">
+<div class="text-7xl font-headline text-secondary opacity-30 mb-2">02</div>
+<div class="w-20 h-20 bg-secondary mb-6 flex items-center justify-center -rotate-12 border-4 border-black">
+<span class="material-symbols-outlined text-black text-4xl rotate-12">joystick</span>
+</div>
+<h4 class="text-3xl font-headline text-white mb-4 italic">STYLE IT</h4>
+<p class="font-pixel text-lg text-primary">Select your loot box of styles. 3D, Retro, Pixel, or Hyper-Cute. Customize your avatar.</p>
+</div>
+<div class="bg-black/80 p-8 border-t-8 border-accent hover:scale-105 transition-all cursor-crosshair">
+<div class="text-7xl font-headline text-accent opacity-30 mb-2">03</div>
+<div class="w-20 h-20 bg-accent mb-6 flex items-center justify-center rotate-12 border-4 border-black">
+<span class="material-symbols-outlined text-black text-4xl -rotate-12">auto_awesome</span>
+</div>
+<h4 class="text-3xl font-headline text-white mb-4 italic">WIN IT</h4>
+<p class="font-pixel text-lg text-secondary">Instant High Score! Export your legendary 4K loot and flex on your friends.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-4 max-w-7xl mx-auto" id="features">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="md:col-span-2 bg-white text-black p-10 border-8 border-black y2k-shadow relative overflow-hidden group">
+<div class="checkerboard absolute inset-0 opacity-10"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-8">
+<div class="bg-primary px-4 py-2 font-pixel text-white text-2xl">ULTRA-HD</div>
+<span class="material-symbols-outlined text-5xl">photo_size_select_actual</span>
+</div>
+<h3 class="text-5xl font-headline mb-4 uppercase">4K BOSS RESOLUTION</h3>
+<p class="font-body text-xl font-bold max-w-lg mb-8">We don't do potato quality. Every pixel is hand-cranked by our AI gnomes for maximum crunchiness.</p>
+<div class="flex gap-2">
+<div class="w-12 h-4 bg-primary"></div>
+<div class="w-12 h-4 bg-secondary"></div>
+<div class="w-12 h-4 bg-accent"></div>
+</div>
+</div>
+</div>
+<div class="bg-secondary text-black p-10 border-8 border-black y2k-shadow flex flex-col justify-between hover:bg-white transition-colors">
+<div>
+<span class="material-symbols-outlined text-6xl mb-6">bolt</span>
+<h3 class="text-4xl font-headline mb-4">ZERO LAG</h3>
+<p class="font-pixel text-lg">Real-time processing faster than your reflexes. Draw and watch it mutate instantly.</p>
+</div>
+<div class="mt-8 border-4 border-black p-4 bg-white/50 text-center font-headline">999+ FPS</div>
+</div>
+<div class="bg-accent text-black p-8 border-8 border-black y2k-shadow group">
+<span class="material-symbols-outlined text-5xl mb-4 group-hover:rotate-180 transition-transform">layers</span>
+<h3 class="text-2xl font-headline">MULTI-LAYER LOOT</h3>
+<p class="font-pixel mt-2">Get PSD files with all layers. It's like having the developer build of your art.</p>
+</div>
+<div class="bg-primary text-white p-8 border-8 border-white y2k-shadow-cyan">
+<span class="material-symbols-outlined text-5xl mb-4">palette</span>
+<h3 class="text-2xl font-headline">STYLE STACKER</h3>
+<p class="font-pixel mt-2">Combo multiple aesthetics for a unique visual critical hit.</p>
+</div>
+<div class="bg-black text-secondary p-8 border-8 border-secondary y2k-shadow">
+<span class="material-symbols-outlined text-5xl mb-4">share</span>
+<h3 class="text-2xl font-headline text-white">SQUAD SHARE</h3>
+<p class="font-pixel mt-2">Export directly to the metaverse. Instant viral potential +500.</p>
+</div>
+</div>
+</section>
+<section class="py-40 px-8 relative overflow-hidden bg-black">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+<div class="max-w-5xl mx-auto text-center relative z-10 border-8 border-white p-12 md:p-20 tilt-right bg-black/60 backdrop-blur-md">
+<h2 class="text-6xl md:text-8xl font-headline text-white mb-8 drop-shadow-[0_0_20px_#FF00FF]">BOSS BATTLE <span class="text-secondary">READY?</span></h2>
+<p class="font-pixel text-2xl text-accent mb-12 uppercase tracking-widest">A NEW CHALLENGER HAS APPEARED: YOUR IMAGINATION!</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-8">
+<button class="w-full sm:w-auto px-12 py-8 bg-retro-green text-black font-headline text-3xl border-b-8 border-r-8 border-black hover:translate-y-2 hover:border-0 transition-all">
+                START_QUEST
+            </button>
+<button class="w-full sm:w-auto px-12 py-8 bg-white/10 text-white border-4 border-white font-headline text-xl hover:bg-white hover:text-black transition-all">
+                SHOWCASE_REPLAY
+            </button>
+</div>
+<div class="absolute -bottom-10 -left-10 bg-white p-2 border-4 border-black rotate-12 hidden md:block">
+<img class="w-32 h-32 object-contain" data-alt="kawaii sticker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC5dR_xtmWW7B0Nkuqs2u2md3ze2W2sZW_Y8Hz2v_1b1OBfSSfTBZf5esjZPOBLcXL0GELqb5n6beR-A0fXTg9ypIZ0IlJeoZFUVXbPuomBfoi_ByMEgmOyTRxLzjSmp9oF8B0DJ2kmOKIj6_8OY7xZS6wabjz8N420BYIT-izR70oHMKI-96ndKobKvtCzsVwCNniBb_qi4EttWymQlu-MGm_ELI3YlQkoKk6NsfkyRjMfuvYuRdz69Hsd_dHuSBNlvpJYNWh99Ro"/>
+</div>
+<div class="absolute -top-10 -right-10 bg-secondary p-2 border-4 border-black -rotate-12 hidden md:block">
+<img class="w-32 h-32 object-contain" data-alt="kawaii character" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZtjDdgCNUm_jQ75U-IhRAC022EwTjFfGo-v9GrsX_l8-icFSJmkAOU0EqV4hS12KxG7RwKGPaePLYuqoRwIomEjQdGJc4KWjh9Bq-lPipSxswjRVGxMFVG2G87aotRkyI7_4f3INmLU3IshvlCJVbldZa96yF3U_u5gUQbN4KUZmi4V1Pi0Qe6iPnQ5vkLj3xQj05QPHmXb-_6BFwSQpiMeuoDbal8fh0tbuvQ4dpxro0uWnuKTaCZVVj3yu3MAzW896MhwkLnWZd"/>
+</div>
+</div>
+</section>
+<footer class="bg-black py-16 px-8 border-t-8 border-primary relative">
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-12 font-pixel">
+<div class="text-center lg:text-left">
+<div class="text-4xl font-headline text-secondary mb-2 italic">SKETCH<span class="text-primary">MAGIC</span></div>
+<div class="text-accent text-lg">GAME OVER? NAH, JUST STARTING.</div>
+<div class="mt-4 text-white/40">© 2024 VIRTUAL_REALITY_ENTERTAINMENT</div>
+</div>
+<div class="flex flex-wrap justify-center gap-8 text-xl">
+<a class="hover:bg-primary px-2 text-white" href="#">DISCORD_LINK</a>
+<a class="hover:bg-secondary px-2 text-white" href="#">TWITTER_DM</a>
+<a class="hover:bg-accent px-2 text-black" href="#">INSTA_PICS</a>
+<a class="hover:bg-retro-green px-2 text-black" href="#">TERMS_OF_PLAY</a>
+</div>
+<div class="bg-white text-black p-4 font-bold border-4 border-primary">
+            INSERT COIN TO CONTINUE... [10]
+        </div>
+</div>
+</footer>
+</body></html>

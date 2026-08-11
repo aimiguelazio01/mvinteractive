@@ -1,0 +1,12 @@
+# robots.txt for Miguel Virgílio Studio
+# https://mvirgilstudiowebsite.vercel.app
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://mvirgilstudiowebsite.vercel.app/sitemap.xml
+
+# Disallow admin/system paths
+Disallow: /.vercel/
+Disallow: /node_modules/

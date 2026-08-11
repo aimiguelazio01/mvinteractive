@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="keywords" content="miguel, virgilio, virgílio, miguel virgilio, miguel virgílio, miguel vfx, miguel virgilio studio, miguel virgílio studio, miguel studio, virgílio studio, virgilio studio, immersive, interactive, archviz, 3d animation, web creative coding, ai, 3D Modeling, Animation, 3D Tracking &amp; VFX, Video/Image Composition, Web &amp; Creative Coding, m virgil, mvirgil, virgil, virgil studio, studio, m virgil studio, mvirgil studio, alcobaça, alcobaca" />
+    <meta name="description" content="MVs Archsync | Physical Precision 3D Print Model - The seamless convergence of physical architectural models and digital twins by MIGUEL VIRGÍLIO Studio." />
+    <meta name="author" content="Miguel Virgílio" />
+    <title>MVs Archsync | Physical Precision 3D Print Model</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/mvfx_logo.svg">
+    <!-- Tailwind CSS V3 CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts: Hanken Grotesk -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandCyan: '#00E5FF',
+                        electricCyan: '#00E5FF',
+                        matteBlack: '#1A1A1A',
+                        techDark: '#0F172A',
+                        softGrey: '#F5F5F7',
+                        blueprintGray: '#E2E8F0',
+                    },
+                    fontFamily: {
+                        sans: ['Hanken Grotesk', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'precise': '0.025em',
+                        'wide-precise': '0.05em',
+                        'widest-tech': '0.2em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #F5F5F7;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button,
+        a,
+        .floor-btn,
+        .material-swatch {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .text-balance {
+            text-wrap: balance;
+        }
+
+        /* ===== ANIMATION KEYFRAMES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes syncPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 35px rgba(0, 229, 255, 0.8);
+            }
+        }
+
+        @keyframes lineGlow {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 0% 200%;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes textGlitch {
+
+            0%,
+            100% {
+                text-shadow: none;
+            }
+
+            20% {
+                text-shadow: -2px 0 #00E5FF, 2px 0 #ff006e;
+            }
+
+            40% {
+                text-shadow: 2px 0 #00E5FF, -2px 0 #ff006e;
+            }
+
+            60% {
+                text-shadow: -1px 0 #00E5FF, 1px 0 #ff006e;
+            }
+
+            80% {
+                text-shadow: 1px 0 #00E5FF, -1px 0 #ff006e;
+            }
+        }
+
+        @keyframes borderDraw {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes particleDrift {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-5deg) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes underlineExpand {
+            from {
+                transform: scaleX(0);
+            }
+
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* ===== ANIMATION CLASSES ===== */
+        .anim-fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .anim-fade-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-fade-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .anim-fade-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-fade-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .anim-scale-in {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger delays */
+        .delay-100 {
+            transition-delay: 0.1s !important;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s !important;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s !important;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s !important;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s !important;
+        }
+
+        .delay-600 {
+            transition-delay: 0.6s !important;
+        }
+
+        .delay-700 {
+            transition-delay: 0.7s !important;
+        }
+
+        /* ===== HERO ANIMATIONS ===== */
+        .hero-title-line {
+            display: inline-block;
+            position: relative;
+        }
+
+
+        .hero-subtitle {
+            opacity: 0;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        }
+
+        .hero-cta {
+            opacity: 0;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+        }
+
+        .hero-badge {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 1.2s forwards;
+        }
+
+        /* ===== DYNAMIC ELEMENTS ===== */
+        .sync-line-animated {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, #00E5FF 30%, transparent 60%, #00E5FF 80%, transparent 100%);
+            background-size: 100% 200%;
+            animation: lineGlow 3s linear infinite, syncPulse 2s ease-in-out infinite;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .floating-slow {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* ===== STICKY SECTION OVERLAP EFFECT ===== */
+        @media (min-width: 1024px) {
+            .sticky-section {
+                position: sticky !important;
+                top: 0 !important;
+                box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.8), 0 -15px 30px rgba(0, 0, 0, 0.6);
+                /* Ensure height is at least 100vh so it covers previous sections fully if shorter */
+                min-height: 100vh;
+            }
+        }
+
+        /* ===== SECTION TITLE STYLES ===== */
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #00E5FF, transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-title.visible::after {
+            transform: scaleX(1);
+        }
+
+        .section-label {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.15), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        /* ===== INTERACTIVE CARD EFFECTS ===== */
+        .tilt-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .tilt-card:hover {
+            transform: translateY(-4px) rotateX(2deg) rotateY(-2deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(0, 229, 255, 0.08);
+        }
+
+        /* ===== MAGNETIC BUTTON ===== */
+        .magnetic-btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .magnetic-btn:hover::before {
+            opacity: 1;
+        }
+
+        .magnetic-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .magnetic-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* ===== ANIMATED GRADIENT BORDER ===== */
+        .gradient-border {
+            position: relative;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #00E5FF, #0066ff, #00E5FF, #00ffaa);
+            background-size: 400% 400%;
+            animation: gradientShift 4s ease infinite;
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+
+        /* ===== PARTICLE BACKGROUND ===== */
+        .particles-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00E5FF;
+            border-radius: 50%;
+            animation: particleDrift linear infinite;
+            opacity: 0;
+        }
+
+        /* ===== COUNTER ANIMATION ===== */
+        .counter-value {
+            display: inline-block;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== EXISTING STYLES (preserved) ===== */
+        .hero-container {
+            height: calc(100vh - 80px);
+            min-height: 600px;
+        }
+
+        .sync-line {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #00E5FF, transparent);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
+        .content-overlay {
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .grid-overlay {
+            background-image:
+                linear-gradient(to right, rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2D2D2D;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #00E5FF;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
+
+        .material-swatch {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .material-swatch.active {
+            border-color: #00E5FF;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+        }
+
+        .blueprint-border {
+            border: 1px solid #cbd5e1;
+            position: relative;
+            border-radius: 4px;
+        }
+
+        .blueprint-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #00E5FF;
+            border-left: 2px solid #00E5FF;
+        }
+
+        .cyan-glow {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .blueprint-illustration {
+            filter: grayscale(100%) brightness(0.2);
+            opacity: 0.8;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 2rem;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            cursor: pointer;
+        }
+
+        .play-button-circle {
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 229, 255, 0.2);
+            border: 2px solid #00E5FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .play-button-overlay:hover .play-button-circle {
+            transform: scale(1.1);
+            background: rgba(0, 229, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+        }
+
+        /* ===== SMOOTH SCROLL ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== HEADER ANIMATION ===== */
+        .header-animate {
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Nav link hover underline */
+        nav a {
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00E5FF;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== MOBILE PERFORMANCE OPTIMIZATIONS ===== */
+        @media (max-width: 1023px) {
+            /* Hide entire blurred background layer (4 iframes) */
+            #hero-bg-blurred { display: none !important; }
+            /* Hide ambience-fill iframes in sharp layer (2 more iframes) */
+            #pane-left-sharp > iframe:first-child,
+            #pane-right-sharp > iframe:first-child { display: none !important; }
+            /* Hide fixed grid overlay that forces GPU compositing */
+            .grid-overlay { display: none !important; }
+
+            /* === Fix: Disable knockout text blend effect on mobile === */
+            /* The knockout effect requires active video; without it, everything is black */
+            /* Instead, show text directly on a dark gradient background with active video splits */
+            .hero-container {
+                background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f172a 100%) !important;
+            }
+            /* Remove mix-blend-screen from the overlay layer */
+            .hero-container > div.mix-blend-screen {
+                mix-blend-mode: normal !important;
+            }
+
+            /* Remove mix-blend-multiply from the text mask; show text directly on top of a dark overlay */
+            .hero-container .mix-blend-multiply {
+                mix-blend-mode: normal !important;
+                background: rgba(0, 0, 0, 0.45) !important;
+                z-index: 20 !important;
+            }
+
+            /* === Fix: Ensure all animated elements start visible on mobile === */
+            /* IntersectionObserver/ScrollTrigger may not fire reliably on mobile */
+            .anim-fade-up,
+            .anim-fade-left,
+            .anim-fade-right,
+            .anim-scale-in {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white text-matteBlack" style="overflow-x: clip;">
+
+    <!-- Fonts for Premium Header/Footer -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Premium NavBar from MV Interactive Systems -->
+    <header
+        class="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-3 md:py-5 z-[100] mix-blend-difference pointer-events-none bg-[rgba(38,38,38,0.8)] backdrop-blur-md grayscale-[10%] border-b border-white/5">
+        <div class="flex justify-between items-center w-full max-w-screen-2xl mx-auto">
+            <div class="cursor-pointer pointer-events-auto group" onclick="window.location.href='/'">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <svg viewBox="0 0 1920 1080"
+                        class="h-8 md:h-[38.4px] w-auto transition-transform duration-300 group-hover:scale-105">
+                        <g fill="#b0b0b0" class="transition-opacity group-hover:opacity-80">
+                            <path
+                                d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                            <path
+                                d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                            <path
+                                d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                            <path
+                                d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                        </g>
+                    </svg>
+                    <span
+                        class="text-[10px] sm:text-sm md:text-base xl:text-lg font-medium tracking-[0.1em] md:tracking-[0.2em] xl:tracking-[0.3em] text-[#b0b0b0] group-hover:opacity-80 transition-opacity block whitespace-nowrap flex-shrink-0"
+                        style="font-family: 'Orbitron', sans-serif;">MIGUEL VIRGÍLIO <span
+                            class="opacity-60 font-light text-[0.85em]">STUDIO</span></span>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex gap-6 xl:gap-8 pointer-events-auto items-center">
+                <a href="/#about" data-t-en="About" data-t-pt="Sobre"
+                    class="text-sm font-mono uppercase tracking-widest text-[#b0b0b0] hover:text-white cursor-pointer transition-colors relative group">
+                    About
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#contact" data-t-en="Contact" data-t-pt="Contacto"
+                    class="text-sm font-mono uppercase tracking-widest text-[#b0b0b0] hover:text-white cursor-pointer transition-colors relative group">
+                    Contact
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <!-- Language Toggle (Desktop) -->
+                <span onclick="window.toggleLanguage()"
+                    class="text-sm font-mono uppercase tracking-widest text-[#b0b0b0] hover:text-white cursor-pointer transition-colors relative group w-6 text-center pointer-events-auto">
+                    <span id="lang-text-desktop">PT</span>
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="lg:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto cursor-pointer group"
+                onclick="window.toggleMobileMenu()">
+                <div class="text-[10px] sm:text-xs font-mono tracking-widest text-[#b0b0b0] uppercase group-hover:text-white transition-colors"
+                    id="mobile-menu-text">Menu</div>
+                <div class="relative w-6 h-4 flex flex-col justify-between group">
+                    <span id="bar-1" class="w-full h-[1px] bg-white transition-all duration-300 origin-left"></span>
+                    <span id="bar-2" class="w-full h-[1px] bg-white transition-opacity duration-300"></span>
+                    <span id="bar-3" class="w-full h-[1px] bg-white transition-all duration-300 origin-left"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay (Premium style) -->
+    <div id="premium-mobile-menu"
+        class="fixed inset-0 bg-black z-[90] flex flex-col justify-center p-8 lg:hidden transition-all duration-500 translate-x-full opacity-0"
+        style="font-family: 'Orbitron', sans-serif;">
+        <div class="flex flex-col gap-12 max-w-sm mx-auto w-full">
+            <a href="/#about" data-t-en="About" data-t-pt="Sobre"
+                class="text-3xl font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity flex items-center gap-6 group"
+                onclick="window.toggleMobileMenu()">
+                <span class="text-xs font-mono text-[#b0b0b0] group-hover:text-white transition-colors">01</span>
+                About
+            </a>
+            <a href="/#contact" data-t-en="Contact" data-t-pt="Contacto"
+                class="text-3xl font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity flex items-center gap-6 group"
+                onclick="window.toggleMobileMenu()">
+                <span class="text-xs font-mono text-[#b0b0b0] group-hover:text-white transition-colors">02</span>
+                Contact
+            </a>
+            <div class="mt-12 pt-12 border-t border-white/10">
+                <div class="text-[#b0b0b0] hover:text-white font-mono text-xs tracking-widest cursor-pointer uppercase transition-colors"
+                    onclick="window.toggleLanguage()" id="lang-text-mobile">ENGLISH</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION (from hero_section) -->
+    <main id="hero" class="relative w-full px-4 pb-4 pt-[88px]" style="z-index: 1;">
+        <section class="hero-container relative rounded-[2.5rem] overflow-hidden bg-black shadow-2xl"
+            data-purpose="hero-visual-wrapper">
+
+            <!-- 1. BASE: Blurred Background -->
+            <div id="hero-bg-blurred" class="absolute inset-0 flex opacity-90">
+                <div id="pane-left-blur" class="w-1/2 h-full relative overflow-hidden bg-black">
+                    <!-- Ambience Fill (Blurred & Scaled) -->
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/231991de-5935-4ff7-b058-fb0dda4eea66?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        class="absolute inset-0 w-full h-full border-0 pointer-events-none blur-3xl opacity-60 scale-[2.5]"
+                        allow="autoplay;encrypted-media;" loading="lazy"></iframe>
+                    <!-- Main Video (Fitted) -->
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/231991de-5935-4ff7-b058-fb0dda4eea66?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        class="absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2 border-0 pointer-events-none z-10"
+                        style="aspect-ratio: 16/9; max-width: none; width: auto;" allow="autoplay;encrypted-media;"
+                        loading="lazy"></iframe>
+                </div>
+                <div id="pane-right-blur" class="w-1/2 h-full relative overflow-hidden bg-black">
+                    <!-- Ambience Fill (Blurred & Scaled) -->
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/a37d2c54-a974-48c7-a0bf-38eada4b66ac?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        class="absolute inset-0 w-full h-full border-0 pointer-events-none blur-3xl opacity-60 scale-[2.5]"
+                        allow="autoplay;encrypted-media;" loading="lazy"></iframe>
+                    <!-- Main Video (Fitted) -->
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/a37d2c54-a974-48c7-a0bf-38eada4b66ac?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        class="absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2 border-0 pointer-events-none z-10"
+                        style="aspect-ratio: 16/9; max-width: none; width: auto;" allow="autoplay;encrypted-media;"
+                        loading="lazy"></iframe>
+                </div>
+            </div>
+
+
+
+            <!-- 2. TOP LAYER: Screen Blend Mode -->
+            <div class="absolute inset-0 mix-blend-screen z-20">
+                <!-- 2a. Sharp Background -->
+                <div id="hero-bg-sharp" class="absolute inset-0 flex">
+                    <div id="pane-left-sharp" class="w-1/2 h-full relative overflow-hidden bg-black">
+                        <!-- Ambience Fill (Blurred & Scaled) -->
+                        <iframe
+                            data-src="https://player.mediadelivery.net/embed/625906/231991de-5935-4ff7-b058-fb0dda4eea66?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            class="absolute inset-0 w-full h-full border-0 pointer-events-none blur-3xl opacity-60 scale-[2.5]"
+                            allow="autoplay;encrypted-media;" loading="lazy"></iframe>
+                        <!-- Main Video (Fitted) -->
+                        <iframe
+                            data-src="https://player.mediadelivery.net/embed/625906/231991de-5935-4ff7-b058-fb0dda4eea66?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            class="absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2 border-0 pointer-events-none z-10"
+                            style="aspect-ratio: 16/9; max-width: none; width: auto;" allow="autoplay;encrypted-media;"
+                            loading="lazy"></iframe>
+                    </div>
+                    <div id="pane-right-sharp" class="w-1/2 h-full relative overflow-hidden bg-black">
+                        <!-- Ambience Fill (Blurred & Scaled) -->
+                        <iframe
+                            data-src="https://player.mediadelivery.net/embed/625906/a37d2c54-a974-48c7-a0bf-38eada4b66ac?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            class="absolute inset-0 w-full h-full border-0 pointer-events-none blur-3xl opacity-60 scale-[2.5]"
+                            allow="autoplay;encrypted-media;" loading="lazy"></iframe>
+                        <!-- Main Video (Fitted) -->
+                        <iframe
+                            data-src="https://player.mediadelivery.net/embed/625906/a37d2c54-a974-48c7-a0bf-38eada4b66ac?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                            class="absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2 border-0 pointer-events-none z-10"
+                            style="aspect-ratio: 16/9; max-width: none; width: auto;" allow="autoplay;encrypted-media;"
+                            loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <!-- 2b. Knockout Text Mask -->
+                <div
+                    class="absolute inset-0 bg-black mix-blend-multiply flex flex-col items-center justify-center text-center px-6">
+                    <div class="w-full px-4" data-purpose="hero-text-block">
+                        <h2 class="text-[14vw] md:text-[10vw] font-black text-white uppercase tracking-tighter leading-[0.8] text-balance"
+                            style="perspective: 1000px;">
+                            <span class="hero-title-line block" data-t-en="MODEL" data-t-pt="MODELO">MODEL</span>
+                            <span class="hero-title-line block" data-t-en="PRINT" data-t-pt="IMPRESSO">PRINT</span>
+                            <span class="hero-title-line block" data-t-en="3D" data-t-pt="3D">3D</span>
+                            <span class="hero-title-line block" data-t-en="PRECISION" data-t-pt="PRECISÃO">PRECISION</span>
+                            <span class="hero-title-line block whitespace-nowrap" data-t-en="PHYSICAL" data-t-pt="FÍSICA">PHYSICAL</span>
+                        </h2>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </main>
+
+    <!-- SECTION 01: Interactive Viewer (from section_01) -->
+    <section id="viewer" class="relative w-full py-20 px-8 bg-[#0c0c0c] text-white" style="z-index: 2;">
+        <div class="fixed inset-0 grid-overlay pointer-events-none z-0"></div>
+        <div class="particles-container" id="viewer-particles"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <header class="mb-12 anim-fade-up">
+                <h2 class="text-4xl font-bold tracking-tight mb-2 section-title gsap-viewer-headline"
+                    data-t-en='Digital Twin <span class="text-brandCyan">Interactive</span> Viewer'
+                    data-t-pt='Visualizador <span class="text-brandCyan">Interativo</span>'>Digital
+                    Twin <span class="text-brandCyan">Interactive</span> Viewer</h2>
+                <p class="text-softGrey/60 text-lg tracking-wide" data-t-en="Live ArchSync Model Visualization"
+                    data-t-pt="Visualização em Tempo Real do Modelo ArchSync">Live ArchSync Model Visualization</p>
+            </header>
+            <div class="relative rounded-2xl border-4 border-electricCyan/20 flex flex-col lg:block h-auto lg:h-[700px] group shadow-2xl anim-scale-in delay-200"
+                id="interactive-viewer-container">
+                <!-- Canvas Wrapper -->
+                <div
+                    class="relative w-full h-[300px] sm:h-[450px] lg:h-full lg:absolute lg:inset-0 overflow-hidden rounded-t-xl lg:rounded-2xl z-10">
+                    <canvas alt="Architectural Digital Twin" class="w-full h-full object-cover"
+                        id="sequence-canvas"></canvas>
+                </div>
+
+                <aside
+                    class="glass-panel lg:absolute lg:right-6 lg:top-6 lg:bottom-6 lg:w-80 w-full rounded-b-xl lg:rounded-xl p-6 flex flex-col gap-6 lg:gap-8 text-sm relative z-20"
+                    data-purpose="controls-panel">
+                    <div class="text-center order-1">
+                        <h3 class="text-white/90 font-semibold text-base uppercase tracking-widest"
+                            data-t-en="Sync Controls" data-t-pt="Controlos de Sincronização">Sync Controls</h3>
+                    </div>
+                    <section class="order-3 lg:order-2">
+                        <label class="block text-softGrey mb-4 font-medium uppercase tracking-wider text-[10px]"
+                            data-t-en="Building Floor Select" data-t-pt="Seleção de Piso">Building Floor Select</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button
+                                class="floor-btn active flex flex-col items-center justify-center p-2 bg-black/40 border border-brandCyan/50 rounded-lg text-white transition-all duration-300 group"
+                                data-floor="all">
+                                <span class="font-bold tracking-widest text-[8px] uppercase mb-1" data-t-en="Full"
+                                    data-t-pt="Completo">Full</span>
+                                <div class="w-1 h-1 rounded-full bg-brandCyan shadow-[0_0_8px_#00E5FF]"></div>
+                            </button>
+                            <button
+                                class="floor-btn flex flex-col items-center justify-center p-2 bg-black/20 border border-white/5 rounded-lg text-white/60 hover:bg-black/40 hover:border-brandCyan/30 transition-all duration-300 group"
+                                data-floor="1">
+                                <span class="font-bold tracking-widest text-[8px] uppercase mb-1" data-t-en="Floor 1"
+                                    data-t-pt="Piso 1">Floor 1</span>
+                                <div class="w-1 h-1 rounded-full bg-white/10 group-hover:bg-white/20"></div>
+                            </button>
+                            <button
+                                class="floor-btn flex flex-col items-center justify-center p-2 bg-black/20 border border-white/5 rounded-lg text-white/60 hover:bg-black/40 hover:border-brandCyan/30 transition-all duration-300 group"
+                                data-floor="2">
+                                <span class="font-bold tracking-widest text-[8px] uppercase mb-1" data-t-en="Floor 2"
+                                    data-t-pt="Piso 2">Floor 2</span>
+                                <div class="w-1 h-1 rounded-full bg-white/10 group-hover:bg-white/20"></div>
+                            </button>
+                            <button
+                                class="floor-btn flex flex-col items-center justify-center p-2 bg-black/20 border border-white/5 rounded-lg text-white/60 hover:bg-black/40 hover:border-brandCyan/30 transition-all duration-300 group"
+                                data-floor="3">
+                                <span class="font-bold tracking-widest text-[8px] uppercase mb-1" data-t-en="Floor 3"
+                                    data-t-pt="Piso 3">Floor 3</span>
+                                <div class="w-1 h-1 rounded-full bg-white/10 group-hover:bg-white/20"></div>
+                            </button>
+                            <button
+                                class="floor-btn flex flex-col items-center justify-center p-2 bg-black/20 border border-white/5 rounded-lg text-white/60 hover:bg-black/40 hover:border-brandCyan/30 transition-all duration-300 group"
+                                data-floor="4">
+                                <span class="font-bold tracking-widest text-[8px] uppercase mb-1" data-t-en="Floor 4"
+                                    data-t-pt="Piso 4">Floor 4</span>
+                                <div class="w-1 h-1 rounded-full bg-white/10 group-hover:bg-white/20"></div>
+                            </button>
+                        </div>
+                    </section>
+                    <section class="flex-grow flex flex-col min-h-0 order-2 lg:order-3">
+                        <label
+                            class="block text-softGrey mb-2 font-medium text-[10px] uppercase tracking-widest flex-shrink-0"
+                            data-t-en="3D Asset Sync" data-t-pt="Sincronização 3D">3D Asset Sync</label>
+                        <div
+                            class="relative rounded-lg overflow-hidden h-[250px] lg:h-auto lg:flex-grow lg:min-h-[150px] border border-white/10 bg-black/60 shadow-inner group/viewer">
+                            <!-- Premium Loading Overlay -->
+                            <div id="viewer-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-black/85 z-30 transition-opacity duration-500 pointer-events-none">
+                                <div class="flex items-center gap-3">
+                                    <svg class="animate-spin h-5 w-5 text-brandCyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span class="text-xs uppercase font-mono tracking-widest text-white" data-t-en="Loading 3D Model..." data-t-pt="A carregar modelo 3D...">Loading 3D Model...</span>
+                                </div>
+                                <div class="w-32 h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+                                    <div id="viewer-progress-bar" class="h-full bg-brandCyan w-0 transition-all duration-300"></div>
+                                </div>
+                            </div>
+                            <model-viewer id="building-viewer" src="3d_assets/3d_building.gltf" alt="3D Building Model"
+                                camera-controls environment-image="images/urban_courtyard_02_1k.hdr" exposure="1.2"
+                                shadow-intensity="1" shadow-softness="1"
+                                style="width: 100%; height: 100%; background-color: transparent;"
+                                interaction-prompt="none" camera-orbit="-100deg 85deg auto"
+                                min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 90deg auto" loading="lazy">
+                            </model-viewer>
+                        </div>
+
+                        <!-- Interaction Legend (Below) -->
+                        <div
+                            class="mt-3 px-3 py-2 bg-black/40 backdrop-blur-sm rounded-lg border border-white/10 flex flex-wrap justify-center gap-x-4 gap-y-1 flex-shrink-0">
+                            <span
+                                class="text-[9px] text-white font-bold uppercase tracking-[0.1em] flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-pulse"
+                                    style="animation-duration: 2s;"></span>
+                                <span
+                                    data-t-en='Left Click + Drag: <span class="text-brandCyan font-normal">Rotate</span>'
+                                    data-t-pt='Clique Esq + Arrastar: <span class="text-brandCyan font-normal">Rodar</span>'>Left
+                                    Click + Drag: <span class="text-brandCyan font-normal">Rotate</span></span>
+                            </span>
+                            <span
+                                class="text-[9px] text-white font-bold uppercase tracking-[0.1em] flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-pulse"
+                                    style="animation-duration: 2s; animation-delay: 0.5s;"></span>
+                                <span data-t-en='Scroll Wheel: <span class="text-brandCyan font-normal">Zoom</span>'
+                                    data-t-pt='Roda do Rato: <span class="text-brandCyan font-normal">Aproximar</span>'>Scroll
+                                    Wheel: <span class="text-brandCyan font-normal">Zoom</span></span>
+                            </span>
+                            <span
+                                class="text-[9px] text-white font-bold uppercase tracking-[0.1em] flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-pulse"
+                                    style="animation-duration: 2s; animation-delay: 1s;"></span>
+                                <span
+                                    data-t-en='Right Click + Drag: <span class="text-brandCyan font-normal">Pan</span>'
+                                    data-t-pt='Clique Dir + Arrastar: <span class="text-brandCyan font-normal">Mover</span>'>Right
+                                    Click + Drag: <span class="text-brandCyan font-normal">Pan</span></span>
+                            </span>
+                        </div>
+                    </section>
+                </aside>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 02: Video Process (Cinematic Section) -->
+    <section id="process" class="py-20 px-8 bg-matteBlack text-white relative" style="z-index: 3;">
+        <div class="particles-container" id="process-particles"></div>
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <div class="mb-10 anim-fade-up">
+
+                <h2 class="text-5xl md:text-6xl font-black mb-8 leading-tight section-title window-reveal"
+                    data-t-en='Witness the <span class="text-brandCyan">Convergence</span> in Real-time.'
+                    data-t-pt='Testemunhe a <span class="text-brandCyan">Convergência</span> em Tempo Real.'>Witness the
+                    <span class="text-brandCyan">Convergence</span> in Real-time.</h2>
+                <p class="text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-6 window-reveal"
+                    data-t-en="See how ArchSync transforms physical movements into digital actions. Our proprietary live-sync engine handles complex spatial data with zero latency."
+                    data-t-pt="Veja como o ArchSync transforma movimentos físicos em ações digitais. O nosso motor de sincronização lida com dados espaciais complexos com latência zero.">
+                    See how ArchSync transforms physical movements into digital actions. Our proprietary live-sync
+                    engine handles complex spatial data with zero latency.</p>
+            </div>
+
+            <!-- Massive Video Container -->
+            <div class="relative anim-fade-up delay-200 mb-10">
+                <!-- Background Glow -->
+                <div class="absolute -inset-4 bg-brandCyan/10 blur-3xl rounded-[3rem] opacity-50"></div>
+
+                <div
+                    class="video-container max-w-[1400px] max-h-[90vh] shadow-[0_0_50px_rgba(0,229,255,0.15)] border border-white/10 group relative z-10 mx-auto">
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/e3f399cd-2616-42a0-a2ff-04810597567d?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        style="border:0;position:absolute;top:0;height:100%;width:100%;"
+                        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                        allowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <!-- Features Grid Below Video -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-5xl mx-auto anim-fade-up delay-400">
+                <div
+                    class="glass-panel p-8 rounded-2xl border border-white/5 hover:border-brandCyan/30 transition-all duration-500 group">
+                    <div class="flex items-start space-x-6">
+                        <div
+                            class="w-14 h-14 bg-electricCyan/10 border border-electricCyan/30 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7 text-electricCyan" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" />
+                                <path
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2 window-reveal" data-t-en="High-Fidelity Tracking"
+                                data-t-pt="Rastreamento de Alta Fidelidade">High-Fidelity Tracking</h4>
+                            <p class="text-white/50 leading-relaxed window-reveal"
+                                data-t-en="Optical sensors capture every nuance of the physical model's state with sub-millimeter precision."
+                                data-t-pt="Sensores óticos capturam cada detalhe do estado do modelo físico com precisão sub-milimétrica.">
+                                Optical sensors capture every nuance of the physical model's state with sub-millimeter
+                                precision.</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="glass-panel p-8 rounded-2xl border border-white/5 hover:border-brandCyan/30 transition-all duration-500 group">
+                    <div class="flex items-start space-x-6">
+                        <div
+                            class="w-14 h-14 bg-electricCyan/10 border border-electricCyan/30 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7 text-electricCyan" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2 window-reveal" data-t-en="Instant Feedback"
+                                data-t-pt="Feedback Instantâneo">Instant Feedback</h4>
+                            <p class="text-white/50 leading-relaxed window-reveal"
+                                data-t-en="Digital twins react within milliseconds to any physical modification, creating a truly phygital loop."
+                                data-t-pt="Os gémeos digitais reagem em milissegundos a qualquer modificação física, criando um verdadeiro ciclo phygital.">
+                                Digital twins react within milliseconds to any physical modification, creating a truly
+                                phygital loop.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 03: Technical Specs (from section_03) -->
+    <section id="specs" class="py-24 px-8 bg-white text-techDark sticky-section" style="z-index: 4;">
+        <main
+            class="max-w-7xl mx-auto border border-gray-200 rounded-[2rem] p-8 md:p-16 shadow-sm relative overflow-hidden anim-scale-in">
+            <header class="text-center mb-20 anim-fade-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight section-title gsap-headline"
+                    data-t-en='Technical Specs &amp; <span class="text-brandCyan">Blueprint</span> Details'
+                    data-t-pt='Especificações Técnicas &amp; Detalhes do <span class="text-brandCyan">Blueprint</span>'>
+                    Technical
+                    Specs &amp;
+                    <span class="text-brandCyan">Blueprint</span> Details
+                </h2>
+                <p class="text-gray-400 text-xl font-light"
+                    data-t-en="Precision engineering meets digital intelligence."
+                    data-t-pt="A engenharia de precisão encontra a inteligência digital.">Precision engineering meets
+                    digital intelligence.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-16 relative">
+                <!-- Decoration -->
+                <div
+                    class="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-40 pointer-events-none">
+                    <svg class="w-full h-full" fill="none" viewbox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 50 H30 V150 H0" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+                        <path d="M100 50 H70 V150 H100" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+                        <path d="M30 100 H70" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+                        <circle cx="50" cy="100" fill="#00E5FF" r="4"></circle>
+                    </svg>
+                </div>
+
+                <!-- HARDWARE -->
+                <div class="space-y-12">
+                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 anim-fade-up"
+                        data-t-en="Hardware Components" data-t-pt="Componentes de Hardware">Hardware Components</h3>
+                    <div
+                        class="blueprint-border tilt-card p-6 sm:p-8 flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 sm:gap-8 bg-white hover:shadow-xl transition-all duration-300 group anim-fade-up delay-100">
+                        <div
+                            class="w-24 h-24 flex-shrink-0 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+                            <img alt="Microcontroller"
+                                class="blueprint-illustration w-full group-hover:filter-none transition-all"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4JGIuszX1PJHahcgfbFmGhfWslckVpdrrXW3FB63bGEfZ1BuRkpzGykz3dopw0nOZK1JXqyKfFnDGV4UH_Cp-pD6klbs5TWFpU5u7kogRPbJ-DYs4GcgyJTqEfBqsv9yefEnueCjoHu1d7KXhJGHM6tR8Nw120oKhUGphWw84-qIUVFfQjSmpy5C04kOAFASI4qPjtZgovRgKSH3uEatvMKll68H_W1Vi-_kXoJ8G2ePwtITSjjG85IIYuERP28c4eFG0AxQGu_A" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2" data-t-en="Microcontrollers"
+                                data-t-pt="Microcontroladores">Microcontrollers</h4>
+                            <p class="text-sm text-gray-500"
+                                data-t-en="wireless communication and real-time processing."
+                                data-t-pt="Comunicação sem fios e processamento em tempo real.">wireless communication
+                                and real-time processing.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="blueprint-border p-6 sm:p-8 flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 sm:gap-8 bg-white hover:shadow-xl transition-all duration-300 group">
+                        <div
+                            class="w-24 h-24 flex-shrink-0 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+                            <img alt="3D Print"
+                                class="blueprint-illustration w-full group-hover:filter-none transition-all"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfCbo8gxhNr-5ARPjKa3IvBahG3fglcpaUWlD_qE9Sowv-RXMHFo5a1qm_BK4XnXl_mi-OvhS0kBuMIt7YJqM2EO_dEX8k-Er_AqxODByqpz-CQzPrlM25li_TVGV2eWgmsfyIfJHL1ZF2ofHcALBANXwzlqc9G0dIo2EuwOuy0nPBUkjD9sx_nXcpup7dUR4MHfEq9H89GyaTWpIrnXmMAt1sQRrAL7LXrQXIaws3ROsDUnCOvZhqZh5h7fsVsba-H1hknMDnP-4" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2" data-t-en="3D Print" data-t-pt="Impressão 3D">3D Print
+                            </h4>
+                            <p class="text-sm text-gray-500"
+                                data-t-en="Eco-friendly precision components with high structural durability."
+                                data-t-pt="Componentes de precisão ecológicos com elevada durabilidade estrutural.">
+                                Eco-friendly precision components with high structural
+                                durability.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOFTWARE -->
+                <div class="space-y-12">
+                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 anim-fade-up"
+                        data-t-en="Software Engine" data-t-pt="Motor de Software">Software Engine
+                    </h3>
+                    <div
+                        class="blueprint-border tilt-card p-6 sm:p-8 flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 sm:gap-8 bg-white hover:shadow-xl transition-all duration-300 group anim-fade-up delay-100">
+                        <div
+                            class="w-24 h-24 flex-shrink-0 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+                            <img alt="Real-time Rendering"
+                                class="blueprint-illustration w-full group-hover:filter-none transition-all"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA6vqyWAtMCFwxXoZ7N9gosbjJb4GCzVfYVDqphNBTlHT-FJpT7r4EEqChOL65hXiy2xWy2VwUzusCvwkHTRT_HOzJIxL2TLqzZq9VIdald9Dv9oP2YRs3Z87xSWd7nR71Ne7uBzyQzWaMeoSGy8kiH3xhicLF7d2jsU0qa4lO7AAnrg6wDKdTK0I4K42GC9n39PuhY5HbAx9WyQ7P_L3vTlh2djXxcdnpojM6PlVnOzDg34T2KpXOiYC_ZYVpB8jpeFuFzYMCGzE" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2" data-t-en="Real-time Rendering"
+                                data-t-pt="Renderização em Tempo Real">Real-time Rendering</h4>
+                            <p class="text-sm text-gray-500"
+                                data-t-en="WebGL-powered visualization for instant digital twin synchronization."
+                                data-t-pt="Visualização baseada em WebGL para sincronização instantânea do gémeo digital.">
+                                WebGL-powered visualization for instant digital twin
+                                synchronization.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="blueprint-border tilt-card p-6 sm:p-8 flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 sm:gap-8 bg-white hover:shadow-xl transition-all duration-300 group anim-fade-up delay-300">
+                        <div
+                            class="w-24 h-24 flex-shrink-0 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-gray-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+                            <img alt="Sensor Mapping"
+                                class="blueprint-illustration w-full group-hover:filter-none transition-all"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmA6bscYlwwBeCJKLpAJEkOZ4e9CIVDNG1ayHG2Er-_Qlp6teD7bN59U5hN1QdbdwYeL867zu7l6Sa5IrAZt5l9TIPJ2OudPW6RNk1hfwHuyMMz0qfItq3iog3faqHlmam20hOEcTutwFnV5k3q_6VBZKtmdblZdw0Nk7knx3beCzV6h-5uSmOMx_akFy1LLkqzrNUcb1iwv-OAalHRBDpuNijdNtA--mmEYi3e8qr9Ju8JKqzSIvup2geKPPsQ5KqtJ9tEIZp9yo" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2" data-t-en="Sensor Mapping"
+                                data-t-pt="Mapeamento de Sensores">Sensor Mapping</h4>
+                            <p class="text-sm text-gray-500"
+                                data-t-en="Advanced gesture recognition and spatial tracking for natural interaction."
+                                data-t-pt="Reconhecimento avançado de gestos e rastreamento espacial para interação natural.">
+                                Advanced gesture recognition and spatial tracking for
+                                natural interaction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <!-- SECTION 03: Applications -->
+    <section id="applications" class="py-24 px-8 bg-[#0c0c0c] text-white relative sticky-section" style="z-index: 4;">
+        <div class="particles-container" id="apps-particles"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <header class="text-center mb-16 anim-fade-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight section-title gsap-headline"
+                    data-t-en='Limitless <span class="text-brandCyan">Applications</span>'
+                    data-t-pt='<span class="text-brandCyan">Aplicações</span> Ilimitadas'>Limitless
+                    <span class="text-brandCyan">Applications</span>
+                </h2>
+                <p class="text-white/50 text-xl font-light" data-t-en="Transforming how we communicate spatial ideas."
+                    data-t-pt="Transformando a forma como comunicamos ideias espaciais.">Transforming how we communicate
+                    spatial ideas.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Architecture -->
+                <div
+                    class="glass-panel p-10 rounded-[2rem] border border-white/5 hover:border-brandCyan/40 transition-all duration-500 group tilt-card anim-fade-up">
+                    <div
+                        class="w-16 h-16 bg-brandCyan/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+                        <svg class="w-8 h-8 text-brandCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4" data-t-en="Architecture Studios"
+                        data-t-pt="Estúdios de Arquitetura">Architecture Studios</h3>
+                    <p class="text-white/40 leading-relaxed"
+                        data-t-en="Present complex projects to clients with an interactive physical-digital interface that simplifies spatial understanding."
+                        data-t-pt="Apresente projetos complexos a clientes com uma interface físico-digital interativa que simplifica a compreensão espacial.">
+                        Present complex projects to clients with an interactive
+                        physical-digital interface that simplifies spatial understanding.</p>
+                </div>
+
+                <!-- Urban Planning -->
+                <div
+                    class="glass-panel p-10 rounded-[2rem] border border-white/5 hover:border-brandCyan/40 transition-all duration-500 group tilt-card anim-fade-up delay-200">
+                    <div
+                        class="w-16 h-16 bg-brandCyan/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+                        <svg class="w-8 h-8 text-brandCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L16 4m0 13V4m0 0L9 7"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4" data-t-en="Urban Planning" data-t-pt="Planeamento Urbano">Urban
+                        Planning</h3>
+                    <p class="text-white/40 leading-relaxed"
+                        data-t-en="Visualize city districts, circulation patterns, and environmental impacts across entire neighborhoods in real-time."
+                        data-t-pt="Visualize bairros, padrões de circulação e impactos ambientais em vizinhanças inteiras em tempo real.">
+                        Visualize city districts, circulation patterns, and
+                        environmental impacts across entire neighborhoods in real-time.</p>
+                </div>
+
+                <!-- Exhibitions -->
+                <div
+                    class="glass-panel p-10 rounded-[2rem] border border-white/5 hover:border-brandCyan/40 transition-all duration-500 group tilt-card anim-fade-up delay-400">
+                    <div
+                        class="w-16 h-16 bg-brandCyan/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+                        <svg class="w-8 h-8 text-brandCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9-9c1.657 0 3 2.134 3 4.8s-1.343 4.8-3 4.8m0-9.6C10.343 4.8 9 6.934 9 9.6s1.343 4.8 3 4.8m0 0l.5 3.5"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4" data-t-en="Museums & Retail" data-t-pt="Museus & Retalho">
+                        Museums & Retail</h3>
+                    <p class="text-white/40 leading-relaxed"
+                        data-t-en="Create immersive, educational installations that engage visitors through tactile interaction and stunning visual feedback."
+                        data-t-pt="Crie instalações imersivas e educativas que envolvem os visitantes através de interação tátil e feedback visual impressionante.">
+                        Create immersive, educational installations that engage visitors through tactile interaction and
+                        stunning visual feedback.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer from MV Interactive Systems -->
+    <footer
+        class="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden"
+        style="z-index: 5;">
+        <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+
+        <!-- Social Media Links -->
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10">
+            <a href="https://www.linkedin.com/in/mvirgilstudio/" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/linkedin.svg" alt="LinkedIn"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.instagram.com/vfxmiguel/?hl=en" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/instagram.svg" alt="Instagram"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://x.com/miguelvfx" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/X.svg" alt="X"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.facebook.com/people/Miguel-Virg%C3%ADlio/pfbid09js7CsAkcMYDbvRmVMBC4KxGc5s36iGhv2GRVQqWS87DwrwM4UrBeDQUjAM7Wavbl/" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/facebook.svg" alt="Facebook"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://www.youtube.com/@MVirgilStudio" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/youtube.svg" alt="YouTube"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+            <a href="https://vimeo.com/user261754571?fl=pp&fe=sh" target="_blank" rel="noopener noreferrer"
+                class="text-[#b0b0b0] hover:text-white transition-all hover:scale-110">
+                <img src="/assets/images/social/vimeo.svg" alt="Vimeo"
+                    class="w-8 h-8 md:w-10 md:h-10 opacity-60 hover:opacity-100 transition-all" />
+            </a>
+        </div>
+
+        <p class="text-[10px] md:text-xs tracking-[0.2em] text-[#b0b0b0] uppercase mb-2 relative z-10 px-4 md:px-0"
+            style="font-family: 'Oswald', sans-serif;">
+            © 2026 MV Interactive Systems
+        </p>
+        <p data-t-en="Designed for Performance & Precision" data-t-pt="Desenhado para Performance e Precisão"
+            class="font-mono text-[8.5px] md:text-[10px] text-[#b0b0b0]/40 relative z-10 max-w-[90%] md:max-w-full mx-auto uppercase tracking-widest">
+            Designed for Performance & Precision
+        </p>
+    </footer>
+
+    <script>
+        window.toggleMobileMenu = function () {
+            const menu = document.getElementById('premium-mobile-menu');
+            const text = document.getElementById('mobile-menu-text');
+            const bar1 = document.getElementById('bar-1');
+            const bar2 = document.getElementById('bar-2');
+            const bar3 = document.getElementById('bar-3');
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (!isOpen) {
+                menu.classList.remove('translate-x-full', 'opacity-0');
+                text.innerText = 'Close';
+                bar1.classList.add('rotate-45', 'translate-y-[2px]');
+                bar2.classList.add('opacity-0');
+                bar3.classList.add('-rotate-45', '-translate-y-[2px]');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('translate-x-full', 'opacity-0');
+                text.innerText = 'Menu';
+                bar1.classList.remove('rotate-45', 'translate-y-[2px]');
+                bar2.classList.remove('opacity-0');
+                bar3.classList.remove('-rotate-45', '-translate-y-[2px]');
+                document.body.style.overflow = '';
+            }
+        };
+
+        window.setLanguage = function (newLang) {
+            const desktopLangText = document.getElementById('lang-text-desktop');
+            const mobileLangText = document.getElementById('lang-text-mobile');
+            if (!desktopLangText) return;
+
+            desktopLangText.innerText = newLang;
+            mobileLangText.innerText = newLang === 'EN' ? 'ENGLISH' : 'PORTUGUÊS';
+
+            window.currentLang = newLang;
+
+            // Update all tagged elements
+            document.querySelectorAll('[data-t-en]').forEach(el => {
+                const translation = newLang === 'PT' ? el.getAttribute('data-t-pt') : el.getAttribute('data-t-en');
+                if (translation !== null) {
+                    el.innerHTML = translation;
+                }
+            });
+        };
+
+        window.toggleLanguage = function () {
+            const isCurrentlyEN = window.currentLang === 'EN';
+            const newLang = isCurrentlyEN ? 'PT' : 'EN';
+            window.setLanguage(newLang);
+
+            // Re-apply hero title character splitting and animation
+            const heroLines = document.querySelectorAll('.hero-title-line');
+            heroLines.forEach(line => {
+                const text = newLang === 'PT' ? line.getAttribute('data-t-pt') : line.getAttribute('data-t-en');
+                line.innerHTML = text.split('').map(char =>
+                    `<span class="hero-char" style="display: inline-block; transform-origin: center center;">${char === ' ' ? '&nbsp;' : char}</span>`
+                ).join('');
+            });
+
+            // Re-animate the hero chars
+            if (typeof gsap !== 'undefined') {
+                gsap.from(".hero-char", {
+                    duration: 1.0,
+                    opacity: 0,
+                    scale: 2,
+                    y: 30,
+                    rotateX: -30,
+                    stagger: 0.03,
+                    ease: "back.out(2)",
+                    force3D: true,
+                    onComplete: () => {
+                        document.querySelectorAll('.hero-char').forEach(char => {
+                            char.addEventListener('mouseenter', () => {
+                                gsap.to(char, { scale: 1.4, color: "#00E5FF", textShadow: "0 0 20px #00E5FF", duration: 0.3 });
+                            });
+                            char.addEventListener('mouseleave', () => {
+                                gsap.to(char, { scale: 1, color: "white", textShadow: "none", duration: 0.5 });
+                            });
+                        });
+                    }
+                });
+            }
+        };
+    </script>
+
+    <script>
+
+
+        // Floor-to-GLTF mapping
+        const floorModels = {
+            'all': '3d_assets/3d_building.gltf',
+            '1': '3d_assets/3d_building_floor1.gltf',
+            '2': '3d_assets/3d_building_floor2.gltf',
+            '3': '3d_assets/3d_building_floor3.gltf',
+            '4': '3d_assets/3d_building_floor4.gltf'
+        };
+
+        const sequenceConfigs = {
+            'all': {
+                prefix: 'image_sequence/UE/Full_Building/NewLevelSequence.',
+                count: 30
+            },
+            '1': {
+                prefix: 'image_sequence/UE/Building_01/full_building_01_seq.',
+                count: 30
+            },
+            '2': {
+                prefix: 'image_sequence/UE/Building_02/full_building_02_seq.',
+                count: 30
+            },
+            '3': {
+                prefix: 'image_sequence/UE/Building_03/full_building_03_seq.',
+                count: 30
+            },
+            '4': {
+                prefix: 'image_sequence/UE/Building_04/full_building_04_seq.',
+                count: 30
+            }
+        };
+
+        let activeFloor = 'all';
+
+        // Floor Button Selection & Model Swap
+        const floorBtns = document.querySelectorAll('.floor-btn');
+        const buildingViewer = document.getElementById('building-viewer');
+
+        floorBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const floor = btn.getAttribute('data-floor');
+
+                // Update button UI
+                floorBtns.forEach(b => {
+                    b.classList.remove('active', 'border-brandCyan/50', 'bg-black/40');
+                    b.classList.add('border-white/5', 'bg-black/20', 'text-white/60');
+                    const led = b.querySelector('div');
+                    led.classList.remove('bg-brandCyan', 'shadow-[0_0_8px_#00E5FF]');
+                    led.classList.add('bg-white/10');
+                });
+
+                btn.classList.add('active', 'border-brandCyan/50', 'bg-black/40');
+                btn.classList.remove('border-white/5', 'bg-black/20', 'text-white/60');
+                btn.classList.add('text-white');
+                const led = btn.querySelector('div');
+                led.classList.add('bg-brandCyan', 'shadow-[0_0_8px_#00E5FF]');
+                led.classList.remove('bg-white/10');
+
+                // Swap 3D model source
+                const newSrc = floorModels[floor];
+                if (newSrc && buildingViewer.src !== newSrc) {
+                    buildingViewer.src = newSrc;
+                }
+
+                // Swap Image Sequence
+                if (sequenceConfigs[floor] && activeFloor !== floor) {
+                    activeFloor = floor;
+                    preloadImages();
+                }
+            });
+        });
+
+        // Scroll Reveal Logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-1000');
+            observer.observe(el);
+        });
+
+        // Navigation Highlight
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-brandCyan');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-brandCyan');
+                }
+            });
+        });
+
+        // Image Sequence Player
+        const canvas = document.getElementById('sequence-canvas');
+        const context = canvas.getContext('2d');
+        const container = document.getElementById('interactive-viewer-container');
+
+        const getFramePath = (index) => {
+            const config = sequenceConfigs[activeFloor] || sequenceConfigs['all'];
+            return `${config.prefix}${(index + 1).toString().padStart(4, '0')}.jpg`;
+        };
+
+        const images = [];
+        const sequenceState = {
+            frame: 0
+        };
+
+        // Preload images
+        const preloadImages = () => {
+            const config = sequenceConfigs[activeFloor] || sequenceConfigs['all'];
+            images.length = 0; // Clear current images
+            for (let i = 0; i < config.count; i++) {
+                const img = new Image();
+                img.src = getFramePath(i);
+                img.onload = () => {
+                    if (i === sequenceState.frame) render();
+                };
+                images.push(img);
+            }
+        };
+
+        const render = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            const img = images[sequenceState.frame];
+            if (img && img.complete) {
+                // Object-cover implementation for canvas
+                const canvasAspect = canvas.width / canvas.height;
+                const imgAspect = img.width / img.height;
+                let drawWidth, drawHeight, drawX, drawY;
+
+                if (canvasAspect > imgAspect) {
+                    drawWidth = canvas.width;
+                    drawHeight = canvas.width / imgAspect;
+                    drawX = 0;
+                    drawY = (canvas.height - drawHeight) / 2;
+                } else {
+                    drawWidth = canvas.height * imgAspect;
+                    drawHeight = canvas.height;
+                    drawX = (canvas.width - drawWidth) / 2;
+                    drawY = 0;
+                }
+                context.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+            }
+        };
+
+        const resizeCanvas = () => {
+            canvas.width = canvas.parentElement.offsetWidth || container.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight || container.offsetHeight;
+            render();
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // On mobile, defer image sequence preloading until the viewer section is visible
+        if (window.innerWidth < 1024) {
+            const viewerSection = document.getElementById('viewer');
+            if (viewerSection && 'IntersectionObserver' in window) {
+                const seqObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            preloadImages();
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '300px' });
+                seqObserver.observe(viewerSection);
+            } else {
+                preloadImages();
+            }
+        } else {
+            preloadImages();
+        }
+        // Sync Image Sequence to 3D Model Rotation
+        buildingViewer.addEventListener('camera-change', () => {
+            const orbit = buildingViewer.getCameraOrbit();
+            // theta is horizontal rotation in radians
+            let theta = orbit.theta;
+
+            // Offset to match -100deg to Frame 1
+            const offset = (-100 * Math.PI) / 180;
+            let adjustedTheta = theta - offset;
+
+            // Normalize adjustedTheta to 0 to 2*PI
+            adjustedTheta = adjustedTheta % (2 * Math.PI);
+            if (adjustedTheta < 0) adjustedTheta += 2 * Math.PI;
+
+            // Map 0-2PI to 0-1 percentage (reversed)
+            const percentage = adjustedTheta / (2 * Math.PI);
+            const config = sequenceConfigs[activeFloor] || sequenceConfigs['all'];
+            const frameIndex = Math.min(config.count - 1, Math.floor((1 - percentage) * config.count));
+
+            if (sequenceState.frame !== frameIndex) {
+                sequenceState.frame = frameIndex;
+                render();
+            }
+        });
+
+        // Apply Rough White Shader to 3D Model
+        buildingViewer.addEventListener('load', () => {
+            const materials = buildingViewer.model.materials;
+            materials.forEach(material => {
+                // Set to pure white
+                material.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
+                // Set to high roughness
+                material.pbrMetallicRoughness.setRoughnessFactor(0.9);
+                // Set to low metalness
+                material.pbrMetallicRoughness.setMetallicFactor(0.0);
+            });
+        });
+
+        // Initial render after a small delay to ensure images load
+
+        setTimeout(render, 500);
+        if (images && images.length > 0) {
+            images[0].onload = render;
+        }
+
+        // ===== ANIMATION ENGINE =====
+
+        // 1. Scroll-triggered reveal animations (replay on every entry)
+        const animObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    // Reset animation so it replays on re-entry
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.anim-fade-up, .anim-fade-left, .anim-fade-right, .anim-scale-in, .section-title').forEach(el => {
+            animObserver.observe(el);
+        });
+
+        // 2. Particle Generator
+        function createParticles(containerId, count = 20) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = '-10px';
+                particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.width = (1 + Math.random() * 3) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.opacity = 0;
+                container.appendChild(particle);
+            }
+        }
+        // Reduce particle count on mobile to save GPU/CPU
+        const mobileCheck = window.innerWidth < 1024;
+        createParticles('viewer-particles', mobileCheck ? 8 : 25);
+        createParticles('process-particles', mobileCheck ? 6 : 20);
+        createParticles('apps-particles', mobileCheck ? 8 : 25);
+
+        // 3. Parallax on hero images (desktop only — scroll listeners are expensive on mobile)
+        if (window.innerWidth >= 1024) {
+            const heroSection = document.getElementById('hero');
+            if (heroSection) {
+                const heroImages = heroSection.querySelectorAll('img');
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.scrollY;
+                    const heroHeight = heroSection.offsetHeight;
+                    if (scrolled < heroHeight) {
+                        const parallax = scrolled * 0.15;
+                        heroImages.forEach(img => {
+                            img.style.transform = `translateY(${parallax}px)`;
+                        });
+                    }
+                }, { passive: true });
+            }
+        }
+
+        // Only register mouse/hover-based effects on devices that support hover
+        if (window.matchMedia('(hover: hover)').matches) {
+            // 4. Magnetic button hover effect
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px) scale(1.02)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0, 0) scale(1)';
+                });
+            });
+
+            // 5. Tilt card 3D hover effect
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+                    const tiltX = (y - 0.5) * 6;
+                    const tiltY = (x - 0.5) * -6;
+                    card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+        }
+
+        // 6. Smooth scroll progress indicator (optional visual)
+        const scrollProgress = document.createElement('div');
+        scrollProgress.style.cssText = 'position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00E5FF,#0066ff);z-index:9999;transition:width 0.15s ease;width:0';
+        document.body.appendChild(scrollProgress);
+        window.addEventListener('scroll', () => {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / docHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+        }, { passive: true });
+
+        // 7. Hero Text Reveal Animation (GSAP)
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Dynamic Iframe and Lazy Video Loader
+            // On mobile, only load iframes that are not hidden by CSS (display:none)
+            const heroIframes = document.querySelectorAll('#hero iframe[data-src]');
+            heroIframes.forEach(iframe => {
+                const blurredParent = iframe.closest('#hero-bg-blurred');
+                const isHidden = getComputedStyle(iframe).display === 'none' || 
+                                 (blurredParent && getComputedStyle(blurredParent).display === 'none');
+                if (!isHidden) {
+                    iframe.setAttribute('src', iframe.getAttribute('data-src'));
+                }
+            });
+
+            // Lazy load below-fold process video
+            const processIframe = document.querySelector('#process iframe[data-src]');
+            if (processIframe) {
+                if ('IntersectionObserver' in window) {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const target = entry.target;
+                                target.setAttribute('src', target.getAttribute('data-src'));
+                                observer.unobserve(target);
+                            }
+                        });
+                    }, { rootMargin: '200px' });
+                    videoObserver.observe(processIframe);
+                } else {
+                    processIframe.setAttribute('src', processIframe.getAttribute('data-src'));
+                }
+            }
+
+            // Pause model-viewer when it is scrolled out of viewport
+            const viewerEl = document.getElementById('building-viewer');
+            const loaderEl = document.getElementById('viewer-loading');
+            const progressBar = document.getElementById('viewer-progress-bar');
+
+            if (viewerEl) {
+                // Force load model on mobile immediately since lazy loading is unreliable with mobile layouts
+                if (window.innerWidth < 1024) {
+                    viewerEl.setAttribute('loading', 'eager');
+                }
+
+                if ('IntersectionObserver' in window) {
+                    const viewerObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                viewerEl.removeAttribute('loading'); // load if lazy
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    viewerObserver.observe(viewerEl);
+                }
+
+                // Update loader progress & fade out on completion
+                viewerEl.addEventListener('progress', (event) => {
+                    const progress = event.detail.totalProgress;
+                    if (progressBar) {
+                        progressBar.style.width = `${progress * 100}%`;
+                    }
+                    if (progress === 1 && loaderEl) {
+                        setTimeout(() => {
+                            loaderEl.classList.add('opacity-0');
+                        }, 500);
+                    }
+                });
+
+                viewerEl.addEventListener('load', () => {
+                    if (progressBar) {
+                        progressBar.style.width = '100%';
+                    }
+                    if (loaderEl) {
+                        setTimeout(() => {
+                            loaderEl.classList.add('opacity-0');
+                        }, 500);
+                    }
+                });
+            }
+
+            // Initialize default language as PT
+            window.setLanguage('PT');
+
+            const isMobile = window.innerWidth < 1024;
+
+            const heroLines = document.querySelectorAll('.hero-title-line');
+            if (isMobile) {
+                // Mobile: simple word-level animation (fewer DOM nodes, no per-char GPU layers)
+                heroLines.forEach(line => {
+                    // Keep text as-is, no character splitting
+                });
+                gsap.from(".hero-title-line", {
+                    duration: 0.8,
+                    opacity: 0,
+                    y: 30,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    delay: 0.5
+                });
+            } else {
+                // Desktop: full per-character 3D animation
+                heroLines.forEach(line => {
+                    const text = line.textContent;
+                    line.innerHTML = text.split('').map(char =>
+                        `<span class="hero-char" style="display: inline-block; transform-origin: center center;">${char === ' ' ? '&nbsp;' : char}</span>`
+                    ).join('');
+                });
+
+                gsap.from("#hero-bg-blurred", {
+                    filter: "blur(40px)",
+                    duration: 3,
+                    ease: "power2.out"
+                });
+
+                gsap.from("#hero-bg-sharp", {
+                    filter: "blur(20px)",
+                    duration: 2,
+                    delay: 0.5,
+                    ease: "power2.out"
+                });
+
+                // Initial states for panes
+                gsap.set(["#pane-left-blur", "#pane-left-sharp"], { filter: "blur(0px)" });
+                gsap.set(["#pane-right-blur", "#pane-right-sharp"], { filter: "blur(1px)" });
+
+                gsap.from(".hero-char", {
+                    scrollTrigger: {
+                        trigger: "#hero",
+                        start: "top center",
+                        toggleActions: "restart none restart none"
+                    },
+                    duration: 1.5,
+                    delay: 0.5,
+                    opacity: 0,
+                    scale: 3,
+                    y: 50,
+                    rotateX: -45,
+                    stagger: 0.05,
+                    ease: "back.out(2)",
+                    force3D: true,
+                    onComplete: () => {
+                        document.querySelectorAll('.hero-char').forEach(char => {
+                            char.addEventListener('mouseenter', () => {
+                                gsap.to(char, { scale: 1.4, color: "#00E5FF", textShadow: "0 0 20px #00E5FF", duration: 0.3 });
+                            });
+                            char.addEventListener('mouseleave', () => {
+                                gsap.to(char, { scale: 1, color: "white", textShadow: "none", duration: 0.5 });
+                            });
+                        });
+                    }
+                });
+
+                const heroSection = document.querySelector('#hero');
+                if (heroSection) {
+                    heroSection.addEventListener('mousemove', (e) => {
+                        const { clientX } = e;
+                        const isLeft = clientX < window.innerWidth / 2;
+
+                        // Left focus
+                        gsap.to(["#pane-left-blur", "#pane-left-sharp"], {
+                            filter: isLeft ? "blur(0px)" : "blur(1px)",
+                            duration: 0.6,
+                            ease: "power1.out"
+                        });
+
+                        // Right focus
+                        gsap.to(["#pane-right-blur", "#pane-right-sharp"], {
+                            filter: isLeft ? "blur(1px)" : "blur(0px)",
+                            duration: 0.6,
+                            ease: "power1.out"
+                        });
+                    });
+                }
+            }
+
+
+
+
+
+            // 8. General Headline Reveal (ScrollTrigger)
+            const headlines = document.querySelectorAll('.gsap-headline');
+            headlines.forEach(headline => {
+                // Split text into words for a different effect
+                const words = headline.innerText.split(' ');
+                headline.innerHTML = words.map(word =>
+                    `<span class="inline-block overflow-hidden"><span class="headline-word inline-block">${word}</span></span>`
+                ).join(' ');
+
+                const headlineWords = headline.querySelectorAll('.headline-word');
+
+                gsap.from(headlineWords, {
+                    scrollTrigger: {
+                        trigger: headline,
+                        start: "top 85%",
+                        toggleActions: "restart none restart none"
+                    },
+
+                    y: 100,
+                    opacity: 0,
+                    filter: "blur(10px)",
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: "power4.out"
+                });
+            });
+
+            // 9. Viewer Headline Specialized Reveal (Digital Flicker)
+            const viewerHeadline = document.querySelector('.gsap-viewer-headline');
+            if (viewerHeadline) {
+                const text = viewerHeadline.innerText;
+                viewerHeadline.innerHTML = text.split('').map(char =>
+                    `<span class="viewer-char" style="display: inline-block;">${char === ' ' ? '&nbsp;' : char}</span>`
+                ).join('');
+
+                const viewerChars = viewerHeadline.querySelectorAll('.viewer-char');
+
+                viewerChars.forEach((char, i) => {
+                    gsap.timeline({
+                        scrollTrigger: {
+                            trigger: viewerHeadline,
+                            start: "top 85%",
+                            toggleActions: "restart none restart none"
+                        }
+                    })
+                        .from(char, {
+                            x: 40,
+                            filter: "blur(15px)",
+                            opacity: 0,
+                            duration: 0.7,
+                            delay: i * 0.03,
+                            ease: "expo.out"
+                        })
+                        .to(char, {
+                            opacity: 0.1,
+                            duration: 0.03,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "none"
+                        })
+                        .to(char, { opacity: 1, duration: 0.1 });
+                });
+            }
+
+            // 10. Window Reveal Animation (Phygital Workflow section)
+            const revealElements = document.querySelectorAll('.window-reveal');
+            revealElements.forEach(el => {
+                const content = el.innerHTML;
+                el.innerHTML = `<span class="reveal-mask" style="display: block; overflow: hidden;"><span class="reveal-content" style="display: block; transform-origin: top center;">${content}</span></span>`;
+
+                const revealContent = el.querySelector('.reveal-content');
+
+                gsap.from(revealContent, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 95%",
+                        toggleActions: "restart none restart none"
+                    },
+                    y: "120%",
+                    rotateX: -25,
+                    letterSpacing: "0.3em",
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: "power4.out"
+                });
+            });
+            // Apply pinning only on desktop viewports to prevent content cutoff and scroll issues on mobile
+            if (window.innerWidth >= 1024) {
+                // 11. Custom Pinning for Process Section (Stick when bottom hits bottom)
+                ScrollTrigger.create({
+                    trigger: "#process",
+                    start: "bottom bottom",
+                    pin: true,
+                    pinSpacing: false
+                });
+
+                // 12. Custom Pinning for Viewer Section (Stick when bottom hits bottom)
+                ScrollTrigger.create({
+                    trigger: "#viewer",
+                    start: "bottom bottom",
+                    pin: true,
+                    pinSpacing: false
+                });
+            }
+        });
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

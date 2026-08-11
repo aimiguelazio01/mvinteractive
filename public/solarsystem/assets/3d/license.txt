@@ -1,0 +1,11 @@
+Model Information:
+* title:	Solar system
+* source:	https://sketchfab.com/3d-models/solar-system-96e701793bca476fac958985ee256a99
+* author:	dannzjs (https://sketchfab.com/dannzjs)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Solar system" (https://sketchfab.com/3d-models/solar-system-96e701793bca476fac958985ee256a99) by dannzjs (https://sketchfab.com/dannzjs) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

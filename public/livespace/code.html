@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="keywords" content="miguel, virgilio, virgílio, miguel virgilio, miguel virgílio, miguel vfx, miguel virgilio studio, miguel virgílio studio, miguel studio, virgílio studio, virgilio studio, immersive, interactive, archviz, 3d animation, web creative coding, ai, 3D Modeling, Animation, 3D Tracking &amp; VFX, Video/Image Composition, Web &amp; Creative Coding, m virgil, mvirgil, virgil, virgil studio, studio, m virgil studio, mvirgil studio, alcobaça, alcobaca" />
+    <meta name="description" content="MVs Livespace | Architectural Visualization - Fluid real-time material customization walkthrough by MIGUEL VIRGÍLIO Studio." />
+    <meta name="author" content="Miguel Virgílio" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/mvfx_logo.svg">
+    <title>MVs Livespace | Architectural Visualization</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@300;400;700&amp;family=Orbitron:wght@400;500;600;700;800;900&amp;family=Oswald:wght@400;500;700&amp;family=Sora:wght@300;400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#131313",
+                        surface: "#1a1a1a",
+                        primary: "#5d5e61",
+                        secondary: "#805633",
+                        concrete: "#b0b0b0",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                        display: ["Outfit", "sans-serif"],
+                        orbitron: ["Orbitron", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"],
+                    },
+                },
+            }
+        }
+    </script>
+    <style>
+        body, button, a, .thumbnail-item, #realtime-opt-1, #realtime-opt-2 {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(249, 249, 249, 0.7);
+            backdrop-filter: blur(24px);
+        }
+
+        @keyframes scroll-right {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+        }
+
+        .thumbnail-item {
+            transition: opacity 0.3s ease, border-color 0.3s ease;
+        }
+
+        .thumbnail-item.active {
+            opacity: 1;
+            border-color: #ffffff;
+        }
+
+        .thumbnail-item:not(.active) {
+            opacity: 0.5;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.25, 1);
+        }
+
+        /* Hide scrollbars for thumbnails strip */
+        #carousel-thumbnails::-webkit-scrollbar {
+            display: none;
+        }
+        #carousel-thumbnails {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .menu-open {
+            overflow: hidden;
+        }
+
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Navbar entry animation */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-down {
+            animation: slideDown 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        header {
+            transform: translateY(-100%);
+        }
+
+        /* Scroll reveal system classes */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, opacity;
+        }
+        
+        .reveal-on-scroll.reveal-visible {
+            transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), 
+                        transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        .reveal-visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transform: translateX(0) !important;
+            transform: scale(1) !important;
+        }
+
+        /* Delay utilities for sequential triggers (only apply when visible to allow instant reset on exit) */
+        .reveal-visible.delay-100 { transition-delay: 100ms; }
+        .reveal-visible.delay-200 { transition-delay: 200ms; }
+        .reveal-visible.delay-300 { transition-delay: 300ms; }
+        .reveal-visible.delay-400 { transition-delay: 400ms; }
+        .reveal-visible.delay-500 { transition-delay: 500ms; }
+        
+        /* Zoom-out reveal (especially for media containers) */
+        .reveal-zoom-in {
+            opacity: 0;
+            transform: scale(0.96);
+            will-change: transform, opacity;
+        }
+        
+        .reveal-zoom-in.reveal-visible {
+            transition: opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+                        transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        /* Horizontal slide reveals */
+        .reveal-slide-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            will-change: transform, opacity;
+        }
+        
+        .reveal-slide-left.reveal-visible {
+            transition: opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+                        transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .reveal-slide-right {
+            opacity: 0;
+            transform: translateX(40px);
+            will-change: transform, opacity;
+        }
+        
+        .reveal-slide-right.reveal-visible {
+            transition: opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+                        transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        /* Hero Text Cinematic Animation */
+        .cinematic-text-line {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+        .cinematic-text-word {
+            display: inline-block;
+            transform: translateY(100%);
+            animation: cinematicReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes cinematicReveal {
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Oswald:wght@400;500;700&amp;family=Sora:wght@300;400;600;700&amp;display=swap"
+        rel="stylesheet" />
+</head>
+
+<body class="bg-surface text-on-surface font-body selection:bg-tertiary/30">
+    <!-- Main Portfolio Integration Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-3 md:py-5 z-[500] pointer-events-none mix-blend-difference bg-neutral-800/80 backdrop-blur-md grayscale-[10%] animate-slide-down"
+        id="main-header">
+        <div class="flex justify-between items-center w-full">
+            <div class="cursor-pointer pointer-events-auto group"
+                onclick="window.location.href='/'">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <svg viewBox="0 0 1920 1080" class="h-8 md:h-[38.4px] w-auto">
+                        <g fill="#b0b0b0" class="transition-opacity group-hover:opacity-80">
+                            <path
+                                d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                            <path
+                                d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                            <path
+                                d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                            <path
+                                d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                        </g>
+                    </svg>
+                    <span
+                        class="text-[9px] min-[380px]:text-[10px] sm:text-sm md:text-base xl:text-lg font-medium font-orbitron tracking-[0.1em] md:tracking-[0.2em] xl:tracking-[0.3em] text-concrete group-hover:opacity-80 transition-opacity block whitespace-nowrap flex-shrink-0 uppercase">MIGUEL
+                        VIRGÍLIO <span class="opacity-60 font-light text-[0.85em]">STUDIO</span></span>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex gap-6 xl:gap-8 pointer-events-auto items-center">
+                <a href="/#about"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline">
+                    <span data-t="nav.about">SOBRE</span>
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#contact"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline">
+                    <span data-t="nav.contact">CONTACTO</span>
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <span
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer relative group w-6 text-center pointer-events-auto"
+                    onclick="toggleLang()" id="lang-toggle">
+                    PT
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </nav>
+
+            <button class="lg:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto" id="mobile-menu-btn"
+                onclick="toggleMenu()">
+                <span class="text-[10px] sm:text-xs font-mono tracking-widest text-concrete uppercase"
+                    id="menu-text">Menu</span>
+                <div class="relative w-6 h-4 group cursor-pointer">
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-0"
+                        id="hamburger-top"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-opacity duration-300 top-2"
+                        id="hamburger-mid"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-4"
+                        id="hamburger-bottom"></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 min-h-screen bg-black z-[45] flex flex-col justify-center p-8 lg:hidden pointer-events-none opacity-0 transition-all duration-500 translate-x-full">
+        <div class="flex flex-col gap-6 sm:gap-8 min-[400px]:gap-12 max-w-sm mx-auto w-full pointer-events-auto">
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">01</span>
+                <span data-t="nav.about">SOBRE</span>
+            </div>
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">02</span>
+                <span data-t="nav.contact">CONTACTO</span>
+            </div>
+
+            <!-- Mobile Language Switcher -->
+            <div class="mt-8 flex gap-4 font-mono text-sm tracking-widest pointer-events-auto">
+                <span class="text-white cursor-pointer" id="lang-pt-mobile" onclick="toggleLang()">PT</span>
+                <span class="text-white/20">/</span>
+                <span class="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" id="lang-en-mobile"
+                    onclick="toggleLang()">EN</span>
+            </div>
+        </div>
+    </div>
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-screen w-full flex items-center overflow-hidden bg-on-surface">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-black/50 z-10"></div>
+                <div style="position:relative;padding-top:56.25%;"><iframe
+                        src="https://player.mediadelivery.net/embed/625906/1e2a6a70-9cf0-406c-a7ef-aa9e080f4e95?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;"
+                        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                        allowfullscreen="true"></iframe></div>
+            </div>
+            <div class="relative z-20 px-8 md:px-20 max-w-5xl">
+                <h1 class="font-headline text-5xl md:text-[5rem] leading-[0.95] text-white tracking-tighter mb-8 reveal-on-scroll"
+                    data-t="hero_h1">
+                    Bring architectural <br /> design to life.
+                </h1>
+                <p class="font-body text-lg md:text-xl text-white/80 max-w-xl mb-12 leading-relaxed reveal-on-scroll delay-200" data-t="hero_p">
+                    An immersive 3D visualization where you freely walk through every space. Precision modeling meets
+                    real-time light physics.
+                </p>
+
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 reveal-on-scroll delay-400">
+                <span class="text-[10px] font-headline uppercase tracking-[0.3em] text-white/40"
+                    data-t="hero_scroll">Scroll to Explore</span>
+                <div class="w-[1px] h-12 bg-white/20 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1/2 bg-white animate-pulse"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Features Grid -->
+        <section class="py-12 md:py-28 px-4 sm:px-8 md:px-20 bg-surface">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-outline-variant/20">
+                <!-- Column 1: Explore -->
+                <div
+                    class="p-4 sm:p-6 md:p-10 border-r border-b md:border-b-0 border-outline-variant/20 bg-stone-100 group hover:bg-stone-50/90 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl reveal-on-scroll delay-100">
+                    <span class="material-symbols-outlined text-primary mb-3 md:mb-8 text-2xl md:text-3xl"
+                        data-icon="directions_walk">directions_walk</span>
+                    <h3 class="font-headline text-sm sm:text-base md:text-xl mb-2 md:mb-4 tracking-tight uppercase" data-t="feat1_h3">Explore</h3>
+                    <p class="font-body text-[11px] sm:text-xs md:text-sm text-on-surface-variant leading-relaxed" data-t="feat1_p">
+                        Navigate through architectural spaces with total freedom. No pre-rendered paths, just pure
+                        exploration.
+                    </p>
+                </div>
+                <!-- Column 2: Customize -->
+                <div
+                    class="p-4 sm:p-6 md:p-10 border-b md:border-r md:border-b-0 border-outline-variant/20 bg-stone-200 group hover:bg-stone-100/90 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl reveal-on-scroll delay-200">
+                    <span class="material-symbols-outlined text-primary mb-3 md:mb-8 text-2xl md:text-3xl"
+                        data-icon="palette">palette</span>
+                    <h3 class="font-headline text-sm sm:text-base md:text-xl mb-2 md:mb-4 tracking-tight uppercase" data-t="feat2_h3">Customize</h3>
+                    <p class="font-body text-[11px] sm:text-xs md:text-sm text-on-surface-variant leading-relaxed" data-t="feat2_p">
+                        Swap materials in real-time. Change furniture layouts, floor textures, and wall finishes
+                        instantly.
+                    </p>
+                </div>
+                <!-- Column 3: Interact -->
+                <div
+                    class="p-4 sm:p-6 md:p-10 border-r border-outline-variant/20 bg-stone-300 group hover:bg-stone-200/90 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl reveal-on-scroll delay-300">
+                    <span class="material-symbols-outlined text-primary mb-3 md:mb-8 text-2xl md:text-3xl"
+                        data-icon="sensors">sensors</span>
+                    <h3 class="font-headline text-sm sm:text-base md:text-xl mb-2 md:mb-4 tracking-tight uppercase" data-t="feat3_h3">Interact</h3>
+                    <p class="font-body text-[11px] sm:text-xs md:text-sm text-on-surface-variant leading-relaxed" data-t="feat3_p">
+                        Open doors, trigger smart lighting, and test spatial ergonomics through interactive touchpoints.
+                    </p>
+                </div>
+                <!-- Column 4: Environment -->
+                <div class="p-4 sm:p-6 md:p-10 bg-stone-400 group hover:bg-stone-300/90 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl reveal-on-scroll delay-400">
+                    <span class="material-symbols-outlined text-primary mb-3 md:mb-8 text-2xl md:text-3xl"
+                        data-icon="wb_sunny">wb_sunny</span>
+                    <h3 class="font-headline text-sm sm:text-base md:text-xl mb-2 md:mb-4 tracking-tight uppercase" data-t="feat4_h3">Environment</h3>
+                    <p class="font-body text-[11px] sm:text-xs md:text-sm text-on-surface-variant leading-relaxed" data-t="feat4_p">
+                        Simulate exact daylight conditions based on GPS coordinates and explore seasonal weather shifts.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Interactive Video Demo -->
+        <section class="flex flex-col lg:flex-row bg-on-surface min-h-0 lg:min-h-[819px]">
+            <!-- Left Content -->
+            <div class="w-full lg:w-1/3 p-12 md:p-20 flex flex-col justify-center reveal-slide-left">
+                <span class="text-tertiary font-headline text-[10px] uppercase tracking-[0.4em] mb-6"
+                    data-t="realtime_span">Real-Time Engine</span>
+                <h2 class="font-headline text-3xl md:text-5xl text-white mb-8 tracking-tighter" data-t="realtime_h2">
+                    Unprecedented fidelity at your fingertips.</h2>
+                
+                <!-- Mobile Video Placeholder -->
+                <div id="mobile-video-placeholder" class="w-full my-6 block lg:hidden animate-slide-down"></div>
+
+                <p class="text-white/60 font-body text-lg leading-relaxed mb-10" data-t="realtime_p">
+                    Our proprietary rendering engine allows for instantaneous material swaps and lighting adjustments
+                    without the need for lengthy export times.
+                </p>
+                <div class="space-y-6">
+                    <div id="realtime-opt-1"
+                        class="flex items-center gap-4 p-4 border border-white/10 hover:border-white/30 transition-colors cursor-pointer">
+                        <div id="realtime-dot-1" class="w-2 h-2 bg-white/20"></div>
+                        <span class="text-white text-xs uppercase tracking-widest font-bold"
+                            data-t="realtime_opt1">Material Intelligence</span>
+                    </div>
+                    <div id="realtime-opt-2"
+                        class="flex items-center gap-4 p-4 border border-white/10 hover:border-white/30 transition-colors cursor-pointer">
+                        <div id="realtime-dot-2" class="w-2 h-2 bg-tertiary"></div>
+                        <span class="text-white text-xs uppercase tracking-widest font-bold"
+                            data-t="realtime_opt2">Physics-Based Lighting</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Visual (Mock Interactive Player / Desktop Video Placeholder) -->
+            <div id="desktop-video-placeholder" class="w-full lg:w-2/3 relative aspect-video lg:h-auto overflow-hidden reveal-slide-right delay-200 hidden lg:block">
+                <div id="video-container" class="w-full h-full relative aspect-video overflow-hidden">
+                    <iframe
+                        data-src="https://player.mediadelivery.net/embed/625906/9d366200-056b-4240-ae8a-c7f449382cbb?autoplay=true&loop=true&muted=true&preload=true&responsive=true"
+                        style="border:0;position:absolute;top:0;left:0;width:100%;height:100%;"
+                        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                        allowfullscreen="true"></iframe>
+                </div>
+            </div>
+        </section>        <!-- Architectural Image Gallery (Modern Carousel Slider) -->
+        <!-- Architectural Image Gallery Section -->
+        <section class="py-28 px-8 md:px-20 bg-surface border-t border-white/10" id="project-studies-gallery">
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 reveal-on-scroll">
+                    <div>
+                        <span class="text-concrete/40 font-headline text-[10px] uppercase tracking-[0.4em] mb-4 block"
+                            data-t="gallery_span">Render Gallery</span>
+                    </div>
+                    
+                    <!-- View Switcher Tabs -->
+                    <div class="flex items-center gap-6 border-b border-white/10 pb-2 self-start md:self-auto">
+                        <button id="btn-view-slides" class="text-xs uppercase tracking-widest font-mono font-bold text-white border-b-2 border-white pb-2 transition-all cursor-pointer" data-t="switcher_slides">
+                            Slides
+                        </button>
+                        <button id="btn-view-grid" class="text-xs uppercase tracking-widest font-mono font-bold text-concrete/40 hover:text-white border-b-2 border-transparent pb-2 transition-all cursor-pointer" data-t="switcher_grid">
+                            Grid
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Carousel Slide View Container -->
+                <div id="carousel-view-container" class="transition-opacity duration-500 reveal-zoom-in delay-200">
+                    <!-- Main Carousel Container -->
+                    <div class="relative w-full h-[400px] md:h-[600px] overflow-hidden rounded-sm border border-white/10 bg-neutral-950">
+                        <div class="carousel-track h-full w-full" id="carousel-track">
+                            
+                            <!-- Slide 1 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_01.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 2 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_02.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 3 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_04.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 4 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_05.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 5 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_06.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 6 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_07.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 7 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_08.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 8 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_09.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 9 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_10.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 10 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_11.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 11 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_12.jpg" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 12 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_13.png" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+
+                            <!-- Slide 13 -->
+                            <div class="carousel-slide relative overflow-hidden">
+                                <img src="public/img_14.png" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                        </div>
+
+                        <!-- Mini Navigation Controls & Numeric Pagination on Carousel (Bottom Center Overlay) -->
+                        <div class="absolute bottom-6 right-6 flex items-center gap-6 z-20 bg-black/60 backdrop-blur-md px-4 py-2 border border-white/10 rounded-sm">
+                            <span class="font-mono text-sm tracking-wider text-concrete/80" id="carousel-counter">
+                                01 / 13
+                            </span>
+                            <div class="flex gap-2">
+                                <button id="carousel-prev" class="w-8 h-8 border border-white/15 hover:border-white/40 hover:bg-white/10 flex items-center justify-center text-white transition-all cursor-pointer select-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                    </svg>
+                                </button>
+                                <button id="carousel-next" class="w-8 h-8 border border-white/15 hover:border-white/40 hover:bg-white/10 flex items-center justify-center text-white transition-all cursor-pointer select-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar Indicator -->
+                    <div class="w-full h-[2px] bg-white/10 mt-6 relative rounded-full overflow-hidden">
+                        <div id="carousel-progress" class="absolute top-0 left-0 h-full bg-white transition-all duration-700 w-[7.69%]"></div>
+                    </div>
+
+                    <!-- Mini Thumbnails strip -->
+                    <div class="flex gap-3 overflow-x-auto py-4 mt-4 scrollbar-none" id="carousel-thumbnails">
+                        <!-- Thumb 1 -->
+                        <div class="thumbnail-item active flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="0">
+                            <img src="public/img_01.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 2 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="1">
+                            <img src="public/img_02.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 3 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="2">
+                            <img src="public/img_04.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 4 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="3">
+                            <img src="public/img_05.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 5 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="4">
+                            <img src="public/img_06.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 6 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="5">
+                            <img src="public/img_07.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 7 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="6">
+                            <img src="public/img_08.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 8 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="7">
+                            <img src="public/img_09.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 9 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="8">
+                            <img src="public/img_10.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 10 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="9">
+                            <img src="public/img_11.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 11 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="10">
+                            <img src="public/img_12.jpg" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 12 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="11">
+                            <img src="public/img_13.png" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <!-- Thumb 13 -->
+                        <div class="thumbnail-item flex-shrink-0 w-20 h-14 cursor-pointer border rounded-sm overflow-hidden" data-index="12">
+                            <img src="public/img_14.png" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Grid View Container (Initially Hidden) -->
+                <div id="grid-view-container" class="hidden transition-opacity duration-500 reveal-zoom-in delay-200">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4">
+                        <!-- Card 1 -->
+                        <div class="lg:col-span-8 lg:row-span-2 h-[250px] sm:h-[300px] lg:h-[480px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(0)">
+                            <img src="public/img_01.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="lg:col-span-4 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(1)">
+                            <img src="public/img_02.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="lg:col-span-4 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(2)">
+                            <img src="public/img_04.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="lg:col-span-4 lg:row-span-2 h-[250px] sm:h-[300px] lg:h-[480px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(3)">
+                            <img src="public/img_05.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 5 -->
+                        <div class="lg:col-span-8 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(4)">
+                            <img src="public/img_06.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 6 -->
+                        <div class="lg:col-span-8 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(5)">
+                            <img src="public/img_07.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 7 -->
+                        <div class="lg:col-span-6 lg:row-span-1 h-[220px] sm:h-[250px] lg:h-[280px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(6)">
+                            <img src="public/img_08.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 8 -->
+                        <div class="lg:col-span-6 lg:row-span-1 h-[220px] sm:h-[250px] lg:h-[280px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(7)">
+                            <img src="public/img_09.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 9 -->
+                        <div class="lg:col-span-4 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(8)">
+                            <img src="public/img_10.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 10 -->
+                        <div class="lg:col-span-4 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(9)">
+                            <img src="public/img_11.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 11 -->
+                        <div class="lg:col-span-4 lg:row-span-1 h-[200px] sm:h-[220px] lg:h-[230px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(10)">
+                            <img src="public/img_12.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 12 -->
+                        <div class="lg:col-span-6 lg:row-span-1 h-[220px] sm:h-[250px] lg:h-[280px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(11)">
+                            <img src="public/img_13.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                        <!-- Card 13 -->
+                        <div class="lg:col-span-6 lg:row-span-1 h-[220px] sm:h-[250px] lg:h-[280px] relative overflow-hidden group cursor-pointer border border-white/5 rounded-sm" onclick="openLightbox(12)">
+                            <img src="public/img_14.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox Fullscreen Modal -->
+        <div id="lightbox-overlay" class="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-md hidden flex flex-col justify-center items-center p-4 transition-all duration-300 opacity-0">
+            <!-- Close button -->
+            <button onclick="closeLightbox()" class="absolute top-6 right-6 text-concrete hover:text-white transition-colors cursor-pointer p-2 z-[1010]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Navigation Arrows -->
+            <button onclick="prevLightboxSlide()" class="absolute left-6 text-concrete hover:text-white transition-colors cursor-pointer p-4 select-none z-[1010]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <button onclick="nextLightboxSlide()" class="absolute right-6 text-concrete hover:text-white transition-colors cursor-pointer p-4 select-none z-[1010]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+
+            <!-- Main Image Container -->
+            <div class="max-w-5xl max-h-[80vh] flex items-center justify-center relative p-4">
+                <img id="lightbox-img" src="" class="max-w-full max-h-[80vh] object-contain rounded-sm border border-white/10" />
+            </div>
+
+            <!-- Numeric indicator/counter -->
+            <div class="mt-6 font-mono text-sm tracking-widest text-concrete/80" id="lightbox-counter">
+                01 / 13
+            </div>
+        </div>
+        <!-- Success Banner / CTA Section -->
+        <section class="py-32 px-8 md:px-20 bg-stone-100 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-surface-container-high -skew-x-12 translate-x-32 z-0">
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto reveal-on-scroll">
+                <h2 class="font-headline text-5xl md:text-7xl mb-12 tracking-tighter uppercase leading-none"
+                    data-t="cta_h2">Ready to step inside?</h2>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-16 md:py-24 px-6 md:px-0 bg-black border-t border-white/10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none"></div>
+
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 mb-8 relative z-10 reveal-on-scroll delay-100">
+            <a href="https://www.linkedin.com/in/mvirgilstudio/" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/linkedin.svg" alt="LinkedIn" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+            <a href="https://www.instagram.com/vfxmiguel/?hl=en" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/instagram.svg" alt="Instagram" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+            <a href="https://x.com/miguelvfx" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/X.svg" alt="X" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+            <a href="https://www.facebook.com/people/Miguel-Virg%C3%ADlio/pfbid09js7CsAkcMYDbvRmVMBC4KxGc5s36iGhv2GRVQqWS87DwrwM4UrBeDQUjAM7Wavbl/" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/facebook.svg" alt="Facebook" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+            <a href="https://www.youtube.com/@MVirgilStudio" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/youtube.svg" alt="YouTube" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+            <a href="https://vimeo.com/user261754571?fl=pp&fe=sh" target="_blank"
+                class="opacity-60 hover:opacity-100 transition-all hover:scale-110">
+                <img src="../../assets/images/social/vimeo.svg" alt="Vimeo" class="w-8 h-8 md:w-10 md:h-10">
+            </a>
+        </div>
+
+        <p
+            class="font-tech text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.2em] text-concrete uppercase mb-2 relative z-10 reveal-on-scroll delay-200">
+            © 2026 MV INTERACTIVE SYSTEMS
+        </p>
+        <p class="font-mono text-[8.5px] md:text-[10px] text-concrete/40 relative z-10 reveal-on-scroll delay-300" data-t="footer_p">
+            DIGITAL EXPERIENCES & VISUALIZATION
+        </p>
+    </footer>
+
+    <script>
+
+        let currentLang = 'PT';
+        const dictionary = {
+            'PT': {
+                'hero_h1': 'Dê vida ao <br/> design arquitetónico.',
+                'hero_p': 'Uma visualização 3D imersiva onde caminha livremente por cada espaço. A modelação de precisão encontra a física da luz em tempo real.',
+                'hero_scroll': 'Deslize para Explorar',
+                'feat1_h3': 'Explorar',
+                'feat1_p': 'Navegue pelos espaços arquitetónicos com total liberdade. Sem caminhos pré-renderizados, apenas exploração pura.',
+                'feat2_h3': 'Personalizar',
+                'feat2_p': 'Troque materiais em tempo real. Altere layouts de mobiliário, texturas de piso e acabamentos de parede instantaneamente.',
+                'feat3_h3': 'Interagir',
+                'feat3_p': 'Abra portas, ative iluminação inteligente e teste a ergonomia espacial através de pontos de interação.',
+                'feat4_h3': 'Ambiente',
+                'feat4_p': 'Simule condições exatas de luz natural baseadas em coordenadas GPS e explore mudanças climáticas sazonais.',
+                'realtime_span': 'Motor em Tempo Real',
+                'realtime_h2': 'Fidelidade sem precedentes na ponta dos seus dedos.',
+                'realtime_p': 'O nosso motor de renderização proprietário permite trocas instantâneas de materiais e ajustes de iluminação sem a necessidade de tempos de exportação longos.',
+                'realtime_opt1': 'Inteligência de Materiais',
+                'realtime_opt2': 'Iluminação Baseada em Física',
+                'gallery_span': 'Galeria de Renders',
+                'gallery_h2': 'Estudos de Projeto',
+                'switcher_slides': 'SLIDES',
+                'switcher_grid': 'GRELHA',
+                'cta_h2': 'Pronto para entrar?',
+                'footer_p': 'EXPERIÊNCIAS DIGITAIS E VISUALIZAÇÃO',
+                'nav.about': 'SOBRE',
+                'nav.contact': 'CONTACTO'
+            },
+            'EN': {
+                'hero_h1': 'Bring architectural <br/> design to life.',
+                'hero_p': 'An immersive 3D visualization where you freely walk through every space. Precision modeling meets real-time light physics.',
+                'hero_scroll': 'Scroll to Explore',
+                'feat1_h3': 'Explore',
+                'feat1_p': 'Navigate through architectural spaces with total freedom. No pre-rendered paths, just pure exploration.',
+                'feat2_h3': 'Customize',
+                'feat2_p': 'Swap materials in real-time. Change furniture layouts, floor textures, and wall finishes instantly.',
+                'feat3_h3': 'Interact',
+                'feat3_p': 'Open doors, trigger smart lighting, and test spatial ergonomics through interactive touchpoints.',
+                'feat4_h3': 'Environment',
+                'feat4_p': 'Simulate exact daylight conditions based on GPS coordinates and explore seasonal weather shifts.',
+                'realtime_span': 'Real-Time Engine',
+                'realtime_h2': 'Unprecedented fidelity at your fingertips.',
+                'realtime_p': 'Our proprietary rendering engine allows for instantaneous material swaps and lighting adjustments without the need for lengthy export times.',
+                'realtime_opt1': 'Material Intelligence',
+                'realtime_opt2': 'Physics-Based Lighting',
+                'gallery_span': 'Render Gallery',
+                'gallery_h2': 'Project Studies',
+                'switcher_slides': 'SLIDES',
+                'switcher_grid': 'GRID',
+                'cta_h2': 'Ready to step inside?',
+                'footer_p': 'DIGITAL EXPERIENCES & VISUALIZATION',
+                'nav.about': 'ABOUT',
+                'nav.contact': 'CONTACT'
+            }
+        };
+
+        function updateLanguage() {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (dictionary[currentLang][key]) {
+                    el.innerHTML = dictionary[currentLang][key];
+                }
+            });
+
+            // Update toggle buttons
+            const toggle = document.getElementById('lang-toggle');
+            if (toggle) toggle.textContent = currentLang;
+
+            const ptMobile = document.getElementById('lang-pt-mobile');
+            const enMobile = document.getElementById('lang-en-mobile');
+
+            if (ptMobile && enMobile) {
+                if (currentLang === 'PT') {
+                    ptMobile.classList.add('text-white');
+                    ptMobile.classList.remove('opacity-40');
+                    enMobile.classList.remove('text-white');
+                    enMobile.classList.add('opacity-40');
+                } else {
+                    enMobile.classList.add('text-white');
+                    enMobile.classList.remove('opacity-40');
+                    ptMobile.classList.remove('text-white');
+                    ptMobile.classList.add('opacity-40');
+                }
+            }
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'PT' ? 'EN' : 'PT';
+            updateLanguage();
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const menuText = document.getElementById('menu-text');
+            const hamburgerTop = document.getElementById('hamburger-top');
+            const hamburgerMid = document.getElementById('hamburger-mid');
+            const hamburgerBottom = document.getElementById('hamburger-bottom');
+
+            const isOpen = menu.classList.contains('active') || menu.classList.contains('translate-x-0');
+
+            if (!isOpen) {
+                menu.classList.remove('translate-x-full', 'pointer-events-none');
+                menu.classList.add('translate-x-0', 'opacity-100', 'active');
+                if (menuText) menuText.textContent = 'Fechar';
+                if (hamburgerTop) hamburgerTop.style.transform = 'translateY(8px) rotate(45deg)';
+                if (hamburgerMid) hamburgerMid.style.opacity = '0';
+                if (hamburgerBottom) {
+                    hamburgerBottom.style.top = '8px';
+                    hamburgerBottom.style.transform = 'translateY(0px) rotate(-45deg)';
+                }
+            } else {
+                menu.classList.add('translate-x-full', 'pointer-events-none');
+                menu.classList.remove('translate-x-0', 'opacity-100', 'active');
+                if (menuText) menuText.textContent = 'Menu';
+                if (hamburgerTop) hamburgerTop.style.transform = 'none';
+                if (hamburgerMid) hamburgerMid.style.opacity = '1';
+                if (hamburgerBottom) {
+                    hamburgerBottom.style.top = '16px';
+                    hamburgerBottom.style.transform = 'none';
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            window.scrollTo(0, 0);
+
+            // Handle Fidelity Video layout shift for mobile
+            const moveFidelityVideo = () => {
+                const video = document.getElementById('video-container');
+                const mobilePlaceholder = document.getElementById('mobile-video-placeholder');
+                const desktopPlaceholder = document.getElementById('desktop-video-placeholder');
+                if (!video || !mobilePlaceholder || !desktopPlaceholder) return;
+
+                if (window.innerWidth < 1024) {
+                    if (mobilePlaceholder.children.length === 0) {
+                        mobilePlaceholder.appendChild(video);
+                    }
+                } else {
+                    if (desktopPlaceholder.children.length === 0) {
+                        desktopPlaceholder.appendChild(video);
+                    }
+                }
+            };
+            moveFidelityVideo();
+            window.addEventListener('resize', moveFidelityVideo);
+
+            // Lazy load below-fold iframe
+            const lazyIframe = document.querySelector('iframe[data-src]');
+            if (lazyIframe) {
+                if ('IntersectionObserver' in window) {
+                    const iframeObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const target = entry.target;
+                                target.setAttribute('src', target.getAttribute('data-src'));
+                                observer.unobserve(target);
+                            }
+                        });
+                    }, { rootMargin: '200px' });
+                    iframeObserver.observe(lazyIframe);
+                } else {
+                    lazyIframe.setAttribute('src', lazyIframe.getAttribute('data-src'));
+                }
+            }
+
+            updateLanguage();
+
+            // Carousel Slider Interactions
+            const track = document.getElementById('carousel-track');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            const counter = document.getElementById('carousel-counter');
+            const progress = document.getElementById('carousel-progress');
+            const thumbs = document.querySelectorAll('.thumbnail-item');
+            
+            let currentIndex = 0;
+            const totalSlides = 13;
+            
+            function updateCarousel(index) {
+                currentIndex = (index + totalSlides) % totalSlides;
+                
+                // Shift track
+                if (track) {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                
+                // Update pagination counter
+                if (counter) {
+                    counter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+                }
+                
+                // Update progress bar
+                if (progress) {
+                    progress.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+                }
+                
+                // Update thumbnails
+                thumbs.forEach((thumb, idx) => {
+                    if (idx === currentIndex) {
+                        thumb.classList.add('active');
+                        // Center thumbnail in container without scrolling the window
+                        const container = document.getElementById('carousel-thumbnails');
+                        if (container) {
+                            const containerRect = container.getBoundingClientRect();
+                            const thumbRect = thumb.getBoundingClientRect();
+                            const relativeLeft = thumbRect.left - containerRect.left + container.scrollLeft;
+                            container.scrollTo({
+                                left: relativeLeft - (containerRect.width / 2) + (thumbRect.width / 2),
+                                behavior: 'smooth'
+                            });
+                        }
+                    } else {
+                        thumb.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (prevBtn) prevBtn.addEventListener('click', () => updateCarousel(currentIndex - 1));
+            if (nextBtn) nextBtn.addEventListener('click', () => updateCarousel(currentIndex + 1));
+            
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    const index = parseInt(thumb.getAttribute('data-index') || '0', 10);
+                    updateCarousel(index);
+                });
+            });
+            
+            // Set initial state
+            updateCarousel(0);
+
+            // View Switcher logic
+            const btnSlides = document.getElementById('btn-view-slides');
+            const btnGrid = document.getElementById('btn-view-grid');
+            const slidesView = document.getElementById('carousel-view-container');
+            const gridView = document.getElementById('grid-view-container');
+            
+            if (btnSlides && btnGrid && slidesView && gridView) {
+                btnSlides.addEventListener('click', () => {
+                    btnSlides.classList.add('text-white', 'border-white');
+                    btnSlides.classList.remove('text-concrete/40', 'border-transparent');
+                    btnGrid.classList.remove('text-white', 'border-white');
+                    btnGrid.classList.add('text-concrete/40', 'border-transparent');
+                    
+                    gridView.classList.add('hidden');
+                    slidesView.classList.remove('hidden');
+                });
+                
+                btnGrid.addEventListener('click', () => {
+                    btnGrid.classList.add('text-white', 'border-white');
+                    btnGrid.classList.remove('text-concrete/40', 'border-transparent');
+                    btnSlides.classList.remove('text-white', 'border-white');
+                    btnSlides.classList.add('text-concrete/40', 'border-transparent');
+                    
+                    slidesView.classList.add('hidden');
+                    gridView.classList.remove('hidden');
+                });
+            }
+
+            // Real-Time Engine options toggle
+            const opt1 = document.getElementById('realtime-opt-1');
+            const opt2 = document.getElementById('realtime-opt-2');
+            const dot1 = document.getElementById('realtime-dot-1');
+            const dot2 = document.getElementById('realtime-dot-2');
+            
+            if (opt1 && opt2 && dot1 && dot2) {
+                opt1.addEventListener('click', () => {
+                    dot1.classList.add('bg-tertiary');
+                    dot1.classList.remove('bg-white/20');
+                    dot2.classList.remove('bg-tertiary');
+                    dot2.classList.add('bg-white/20');
+                });
+                opt2.addEventListener('click', () => {
+                    dot2.classList.add('bg-tertiary');
+                    dot2.classList.remove('bg-white/20');
+                    dot1.classList.remove('bg-tertiary');
+                    dot1.classList.add('bg-white/20');
+                });
+            }
+            
+            // Lightbox Image Paths
+            const galleryImages = [
+                "public/img_01.jpg",
+                "public/img_02.jpg",
+                "public/img_04.jpg",
+                "public/img_05.jpg",
+                "public/img_06.jpg",
+                "public/img_07.jpg",
+                "public/img_08.jpg",
+                "public/img_09.jpg",
+                "public/img_10.jpg",
+                "public/img_11.jpg",
+                "public/img_12.jpg",
+                "public/img_13.png",
+                "public/img_14.png"
+            ];
+            
+            let lightboxIndex = 0;
+            
+            window.openLightbox = function(index) {
+                lightboxIndex = index;
+                const overlay = document.getElementById('lightbox-overlay');
+                const img = document.getElementById('lightbox-img');
+                const counter = document.getElementById('lightbox-counter');
+                
+                if (overlay && img) {
+                    img.src = galleryImages[lightboxIndex];
+                    if (counter) {
+                        counter.textContent = `${String(lightboxIndex + 1).padStart(2, '0')} / ${String(galleryImages.length).padStart(2, '0')}`;
+                    }
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => {
+                        overlay.classList.remove('opacity-0');
+                        overlay.classList.add('opacity-100');
+                    }, 10);
+                    document.body.classList.add('menu-open');
+                }
+            };
+            
+            window.closeLightbox = function() {
+                const overlay = document.getElementById('lightbox-overlay');
+                if (overlay) {
+                    overlay.classList.remove('opacity-100');
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                    }, 300);
+                    document.body.classList.remove('menu-open');
+                }
+            };
+            
+            window.prevLightboxSlide = function() {
+                lightboxIndex = (lightboxIndex - 1 + galleryImages.length) % galleryImages.length;
+                const img = document.getElementById('lightbox-img');
+                const counter = document.getElementById('lightbox-counter');
+                if (img) img.src = galleryImages[lightboxIndex];
+                if (counter) {
+                    counter.textContent = `${String(lightboxIndex + 1).padStart(2, '0')} / ${String(galleryImages.length).padStart(2, '0')}`;
+                }
+            };
+            
+            window.nextLightboxSlide = function() {
+                lightboxIndex = (lightboxIndex + 1) % galleryImages.length;
+                const img = document.getElementById('lightbox-img');
+                const counter = document.getElementById('lightbox-counter');
+                if (img) img.src = galleryImages[lightboxIndex];
+                if (counter) {
+                    counter.textContent = `${String(lightboxIndex + 1).padStart(2, '0')} / ${String(galleryImages.length).padStart(2, '0')}`;
+                }
+            };
+            
+            document.addEventListener('keydown', (e) => {
+                const overlay = document.getElementById('lightbox-overlay');
+                if (overlay && !overlay.classList.contains('hidden')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') prevLightboxSlide();
+                    if (e.key === 'ArrowRight') nextLightboxSlide();
+                }
+            });
+
+            // Intersection Observer for scroll reveal animations
+            const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-zoom-in, .reveal-slide-left, .reveal-slide-right');
+            const observerOptions = {
+                threshold: 0.05,
+                rootMargin: '0px 0px -40px 0px'
+            };
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                    } else {
+                        entry.target.classList.remove('reveal-visible');
+                    }
+                });
+            }, observerOptions);
+            
+            revealElements.forEach(el => revealObserver.observe(el));
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 80) {
+                header.style.background = 'rgba(14, 21, 17, 0.95)';
+            } else {
+                header.style.background = '';
+            }
+        }, { passive: true });
+    </script>
+</body>
+
+</html>

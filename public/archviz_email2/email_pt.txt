@@ -1,0 +1,58 @@
+MVs Archviz | Architectural Visualization
+
+Visualização Arquitetónica
+
+Técnicas arquitetónicas interativas para projetos visionários
+
+---------------------------------------------------------
+01 / EXPERIÊNCIA IMERSIVA
+---------------------------------------------------------
+Experimente uma verdadeira imersão tátil-digital. Fazemos a ponte entre maquetes físicas e layouts virtuais através de integrações inovadoras em tempo real, sincronizando instantaneamente amostras de materiais reais com configurações 3D de alta fidelidade no ecrã.
+
+Explore: Sistema de Sincronização de Maquete Física & Catálogo de Materiais
+Explorar Experiência: https://mvirgilstudio.com/archviz/code.html#digital-twin-experience-sec
+
+---------------------------------------------------------
+02 / VISUALIZADOR 3D & INTERATIVO
+---------------------------------------------------------
+Experimente a sincronização dinâmica do modelo 3D em tempo real em simultâneo com a vista 3D. Use seletores de piso, controlos de simulação solar ou rode o modelo para controlar a rotação interativa.
+
+- Sequência de Imagens Dinâmicas: Sequência de Renderização
+- Modelo 3D Sincronizado em Tempo Real: Modelo Splat Sincronizado
+
+Abra a aplicação independente para alternar pisos, simular a luz do dia e ver sequências sincronizadas.
+Abrir Visualizador 3D: https://mvirgilstudio.com/archviz/code.html#digital-twin-viewer-sec
+
+Visualizador Interativo Scan 3D:
+Explore uma captura espacial densa e de alta fidelidade de scan 3D real, preservando campos de luz, profundidade volumétrica e texturas brutas como uma interatividade navegável em tempo real.
+Explorar Espaço 3D Scan: https://mvirgilstudio.com/archviz/code.html#gaussian-splatting-sec
+
+---------------------------------------------------------
+03 / PROTOTIPAGEM 3D DE PRECISÃO
+---------------------------------------------------------
+Maquetes físicas à escala de alta fidelidade produzidos com impressão 3D, unindo modelos de design computacional e a tangibilidade arquitetónica física.
+
+Explore: Maquete física premium impressa em 3D
+Ver Vídeo de Fabrico: https://mvirgilstudio.com/archviz/code.html#precision-prototyping-sec
+
+---------------------------------------------------------
+04 / PORTFÓLIO VISUAL
+---------------------------------------------------------
+- 04.1 / Visitas Virtuais Imersivas: Misturando fidelidade visual intransigente com exploração espacial fluida. Entre na nossa visão através de simulações em tempo real de alta qualidade, capturando transições de luz natural, interações e detalhes de materiais brutos em fluxo cinemático.
+  Explorar Visitas Virtuais: https://mvirgilstudio.com/archviz/code.html#walkthrough-sec
+
+- 04.2 / Sistemas Interativos: Experimente panoramas interativos em tempo real diretamente na apresentação de design. Interaja com espaços inteligentes usando controlos intuitivos de arrasto ou movimento de mãos.
+  Ver Panoramas 360°: https://mvirgilstudio.com/archviz/code.html#interactive-systems-sec
+
+- 04.3 / Animações Cinemáticas: Assista às nossas sequências cinemáticas de alta fidelidade renderizadas em tempo real, destacando iluminação atmosférica, animações naturais e materiais.
+  Reproduzir Vídeos Cinemáticos: https://mvirgilstudio.com/archviz/code.html#video-renders-sec
+
+- 04.4 / Renders de Imagem: Abra a nossa galeria de renders de alta fidelidade.
+  Abrir Galeria Interativa: https://mvirgilstudio.com/archviz/code.html#image-renders-sec
+
+---------------------------------------------------------
+MIGUEL VIRGÍLIO STUDIO
+Visualização Arquitetónica · Web & Creative Coding · 3D VFX
+---------------------------------------------------------
+Visitar Portfólio do Estúdio: https://mvirgilstudio.com
+© 2026 Miguel Virgílio Studio. Todos os direitos reservados.

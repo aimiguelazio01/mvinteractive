@@ -1,0 +1,719 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MVs Archviz | Architectural Visualization</title>
+    <!-- Google Fonts for Orbitron and Inter if supported by client -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet" />
+    <style type="text/css">
+        /* Client-specific styles */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background-color: #f0f1f1;
+        }
+
+        /* Mobile styles */
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .fluid-img {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            .mobile-padding {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+
+            .stacked-col {
+                display: block !important;
+                width: 100% !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                margin-bottom: 20px;
+            }
+
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+
+        /* CSS Image Fade Transitions for Showcase 1.1 */
+        @keyframes imageFade {
+            0% { opacity: 0; }
+            4.17% { opacity: 1; }
+            12.5% { opacity: 1; }
+            16.67% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .fade-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 536px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .fade-gallery img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            max-width: 536px;
+            height: 100% !important;
+            object-fit: cover;
+            opacity: 0;
+        }
+
+        .fade-gallery img.img1 {
+            position: relative;
+            opacity: 1;
+            height: 150px !important;
+            max-height: 150px;
+        }
+
+        .fade-img {
+            animation-name: imageFade;
+            animation-duration: 24s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+
+        .img1 { animation-delay: 0s; }
+        .img2 { animation-delay: -21s; }
+        .img3 { animation-delay: -18s; }
+        .img4 { animation-delay: -15s; }
+        .img5 { animation-delay: -12s; }
+        .img6 { animation-delay: -9s; }
+        .img7 { animation-delay: -6s; }
+        .img8 { animation-delay: -3s; }
+
+        /* CSS Video Fade Transitions for Showcase 1.2 */
+        @keyframes videoFade {
+            0% { opacity: 0; pointer-events: none; }
+            5.56% { opacity: 1; pointer-events: auto; }
+            27.78% { opacity: 1; pointer-events: auto; }
+            33.33% { opacity: 0; pointer-events: none; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+
+        .video-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 536px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .video-wrap.vid1 {
+            position: relative;
+            opacity: 1;
+        }
+
+        .fade-video {
+            animation-name: videoFade;
+            animation-duration: 9s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+
+        .vid1 { animation-delay: 0s; z-index: 2; }
+        .vid2 { animation-delay: -6s; z-index: 2; }
+        .vid3 { animation-delay: -3s; z-index: 2; }
+
+        /* CSS Video Fade Transitions for Showcase 1.3 */
+        @keyframes walkthroughFade {
+            0% { opacity: 0; pointer-events: none; }
+            8.33% { opacity: 1; pointer-events: auto; }
+            41.67% { opacity: 1; pointer-events: auto; }
+            50% { opacity: 0; pointer-events: none; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+
+        .walkthrough-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 536px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .walkthrough-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .walkthrough-wrap.walk1 {
+            position: relative;
+            opacity: 1;
+        }
+
+        .fade-walkthrough {
+            animation-name: walkthroughFade;
+            animation-duration: 6s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+
+        .walk1 { animation-delay: 0s; z-index: 2; }
+        .walk2 { animation-delay: -3s; z-index: 2; }
+    </style>
+</head>
+
+<body
+    style="margin: 0; padding: 0; background-color: #f0f1f1; font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+
+    <!-- CONFIGURABLE BASE URL FOR HOSTED ASSETS -->
+    <!-- [Swap the URL below with your live domain, e.g. https://yourdomain.com] -->
+    <!-- @@BASE_URL_PLACEHOLDER@@ -->
+
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+        style="background-color: #f0f1f1; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <!-- Main Container -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container"
+                    style="background-color: #ffffff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td align="center"
+                            style="background-color: #1a1a1a; padding: 24px 24px 16px 24px; border-bottom: 1px solid #2a2a2a;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <div
+                                            style="font-family: 'Orbitron', 'Century Gothic', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.25em; color: #b0b0b0; text-transform: uppercase; display: inline-block; vertical-align: middle;">
+                                            <img src="cid:mvfx_logo"
+                                                alt="MVS Logo" width="32"
+                                                style="display: inline-block; vertical-align: middle; margin-right: 12px; border: 0; width: 32px; height: auto;" />
+                                            MIGUEL VIRGÍLIO <span style="font-weight: 300; opacity: 0.6;">STUDIO</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Hero Section -->
+                    <tr>
+                        <td style="background-color: #1a1c1c; position: relative;">
+                            <!-- Fallback Hero Background Image -->
+                            <img src="https://mvirgilstudio.com/archviz_email2/cid:hero_image2"
+                                width="600" class="fluid-img" alt="Brutalist concrete architecture"
+                                style="display: block; width: 100%; max-width: 600px; height: 180px; max-height: 180px; object-fit: cover; border: 0;" />
+
+                            <!-- Hero Overlay Text Info -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                style="background-color: #1a1c1c;">
+                                <tr>
+                                    <td class="mobile-padding" style="padding: 24px 32px; text-align: center;">
+                                        <p
+                                            style="margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; color: #858383; text-transform: uppercase;">
+                                            Visualização Arquitetónica</p>
+                                        <h1
+                                            style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.4; color: #ffffff; letter-spacing: 0.05em; text-transform: uppercase;">
+                                            Técnicas arquitetónicas interativas para projetos visionários</h1>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Main Navigation Overview / Summary Block -->
+                    <tr>
+                        <td style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <!-- Nav 1: Twin Sync -->
+                                    <td width="25%" class="stacked-col" align="center"
+                                        style="padding: 10px 5px; font-family: 'Orbitron', sans-serif; color: #1a1a1a;">
+                                        <div style="font-size: 13px; color: #858383; margin-bottom: 4px;">01</div>
+                                        <div
+                                            style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            EXPERIÊNCIA IMERSIVA</div>
+                                    </td>
+                                    <!-- Nav 2: 3D Simulator -->
+                                    <td width="25%" class="stacked-col" align="center"
+                                        style="padding: 10px 5px; font-family: 'Orbitron', sans-serif; border-left: 1px solid #eeeeee; color: #1a1a1a;">
+                                        <div style="font-size: 13px; color: #858383; margin-bottom: 4px;">02</div>
+                                        <div
+                                            style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            VISUALIZADOR 3D & INTERATIVO</div>
+                                    </td>
+                                    <!-- Nav 3: Prototyping -->
+                                    <td width="25%" class="stacked-col" align="center"
+                                        style="padding: 10px 5px; font-family: 'Orbitron', sans-serif; border-left: 1px solid #eeeeee; color: #1a1a1a;">
+                                        <div style="font-size: 13px; color: #858383; margin-bottom: 4px;">03</div>
+                                        <div
+                                            style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            PROTOTIPAGEM 3D DE PRECISÃO</div>
+                                    </td>
+                                    <!-- Nav 4: Showcase -->
+                                    <td width="25%" class="stacked-col" align="center"
+                                        style="padding: 10px 5px; font-family: 'Orbitron', sans-serif; border-left: 1px solid #eeeeee; color: #1a1a1a;">
+                                        <div style="font-size: 13px; color: #858383; margin-bottom: 4px;">04</div>
+                                        <div
+                                            style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            PORTFÓLIO VISUAL</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Section 02: Immersive Experience & Digital Twin -->
+                    <tr id="digital-twin">
+                        <td class="mobile-padding"
+                            style="padding: 32px 32px 16px 32px; background-color: #1a1c1c; border-left: 4px solid #ffffff;">
+                            <div
+                                style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500; color: #858383; margin-bottom: 4px; letter-spacing: 0.1em;">
+                                01 /</div>
+                            <h2
+                                style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.3;">
+                                Experiência Imersiva &amp; Interação com Objetos Reais</h2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding"
+                            style="padding: 16px 32px 32px 32px; background-color: #1a1c1c; color: #dadada;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div
+                                            style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #333333;">
+                                            <img src="cid:imersiva"
+                                                width="536" class="fluid-img" alt="Digital Twin Sync Preview"
+                                                style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover;" />
+                                            <div
+                                                style="background-color: #2a2a2a; padding: 12px 16px; text-align: left;">
+                                                <span
+                                                    style="font-size: 10px; font-family: monospace; color: #b0b0b0; letter-spacing: 0.1em; text-transform: uppercase;">Sistema
+                                                    de Sincronização de Maquete Física &amp; Catálogo de
+                                                    Materiais</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="margin: 20px 0 0 0; font-size: 14px; line-height: 1.6; color: #c4c7c7;">
+                                Experimente uma verdadeira imersão tátil-digital. Fazemos a ponte entre maquetes físicas
+                                e layouts virtuais através de integrações inovadoras em tempo real,
+                                sincronizando instantaneamente amostras de materiais reais com configurações 3D de alta
+                                fidelidade no ecrã.</p>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding: 24px 0 10px 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#digital-twin-experience-sec"
+                                            target="_blank"
+                                            style="display: inline-block; background-color: #ffffff; color: #1a1a1a; padding: 14px 28px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 0.15em; border-radius: 2px;">EXPLORAR EXPERIÊNCIA</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Section 03: 3D & Interactive Viewer -->
+                    <tr id="viewer">
+                        <td class="mobile-padding"
+                            style="padding: 32px 32px 16px 32px; background-color: #ffffff; border-left: 4px solid #1a1a1a; border-top: 1px solid #eeeeee;">
+                            <div
+                                style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500; color: #858383; margin-bottom: 4px; letter-spacing: 0.1em;">
+                                02 /</div>
+                            <h2
+                                style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                Visualizador 3D &amp; Interativo</h2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding" style="padding: 16px 32px; background-color: #ffffff;">
+                            <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #5c5f60;">
+                                Experimente a sincronização dinâmica do modelo 3D em tempo real em simultâneo com
+                                a vista 3D. Use seletores de piso, controlos de simulação solar ou rode o modelo
+                                para controlar a rotação interativa.</p>
+
+                            <!-- Synced Floor plan / model previews side-by-side -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <!-- Sequence rendering col -->
+                                    <td width="48%" class="stacked-col" valign="top">
+                                        <div
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; color: #858383; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            Sequência de Imagens Dinâmicas</div>
+                                        <div
+                                            style="border-radius: 4px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                                            <img src="cid:interativo_building"
+                                                width="257" class="fluid-img" alt="Sequência de Renderização"
+                                                style="display: block; width: 100%; max-width: 257px; height: 100px; max-height: 100px; object-fit: cover;" />
+                                        </div>
+                                    </td>
+                                    <td width="4%" class="hide-on-mobile">&nbsp;</td>
+                                    <!-- Synced model col -->
+                                    <td width="48%" class="stacked-col" valign="top">
+                                        <div
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; color: #858383; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            Modelo 3D Sincronizado em Tempo Real</div>
+                                        <div
+                                            style="border-radius: 4px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                                            <img src="cid:interactivo_control"
+                                                width="257" class="fluid-img" alt="Modelo Splat Sincronizado"
+                                                style="display: block; width: 100%; max-width: 257px; height: 100px; max-height: 100px; object-fit: cover;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 16px;">
+                                <tr>
+                                    <td
+                                        style="background-color: #f9f9f9; border: 1px solid #eeeeee; padding: 16px; border-radius: 4px; text-align: center;">
+                                        <div
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            Lançar Visualizador 3D</div>
+                                        <p
+                                            style="margin: 0 0 12px 0; font-size: 11px; line-height: 1.4; color: #858383;">
+                                            Abra a aplicação independente para alternar pisos, simular a luz do dia e
+                                            ver sequências sincronizadas.</p>
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#digital-twin-viewer-sec"
+                                            target="_blank"
+                                            style="display: inline-block; background-color: #1a1a1a; color: #ffffff; padding: 10px 20px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 2px;">Abrir
+                                            Visualizador 3D</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Part B: Historic Monsaraz 3D Splat Scan -->
+                    <tr>
+                        <td class="mobile-padding"
+                            style="padding: 24px 32px 32px 32px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
+                            <!-- Splat header -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 16px;">
+                                <tr>
+                                    <td class="stacked-col" valign="middle">
+                                        <h3
+                                            style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                            Visualizador Interativo Scan 3D</h3>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="margin: 0 0 20px 0; font-size: 13px; line-height: 1.5; color: #5c5f60;">Explore
+                                uma captura espacial densa e de alta fidelidade de scan 3D real, preservando campos de
+                                luz, profundidade volumétrica e texturas brutas como uma interatividade navegável em
+                                tempo real.</p>
+
+                            <!-- Splat Canvas Card -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div
+                                            style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.12); border: 1px solid #eeeeee;">
+                                            <img src="cid:splat_canvas_thumbnail"
+                                                width="536" class="fluid-img" alt="Splat WebGL Preview"
+                                                style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover;" />
+
+                                            <!-- Launch Overlay Info -->
+                                            <div style="background-color: #1a1a1a; padding: 14px; text-align: center;">
+                                                <div
+                                                    style="font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; color: #ffffff; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                                    Scan 3D de Gaussian Splatting</div>
+                                                <a href="https://mvirgilstudio.com/archviz/code.html#gaussian-splatting-sec"
+                                                    target="_blank"
+                                                    style="display: inline-block; margin-top: 6px; background-color: #ffffff; color: #1a1a1a; padding: 8px 16px; font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 2px;">Explorar
+                                                    Espaço 3D Scan &rarr;</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Section 03: Precision 3D Prototyping -->
+                    <tr id="prototyping">
+                        <td class="mobile-padding"
+                            style="padding: 32px 32px 16px 32px; background-color: #f9f9f9; border-left: 4px solid #1a1a1a;">
+                            <div
+                                style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500; color: #858383; margin-bottom: 4px; letter-spacing: 0.1em;">
+                                03 /</div>
+                            <h2
+                                style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                Prototipagem 3D de Precisão</h2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding"
+                            style="padding: 16px 32px 32px 32px; background-color: #f9f9f9; border-bottom: 1px solid #eeeeee;">
+                            <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #5c5f60;">Maquetes
+                                físicas à escala de alta fidelidade produzidos com impressão 3D, unindo modelos de
+                                design computacional e a tangibilidade arquitetónica física.</p>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div
+                                            style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                            <img src="cid:3d_print"
+                                                width="536" class="fluid-img" alt="3D Printing Prototyping Scale Model"
+                                                style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover;" />
+                                            <div
+                                                style="background-color: #1a1a1a; padding: 10px 14px; text-align: left;">
+                                                <span
+                                                    style="font-size: 10px; font-family: monospace; color: #ffffff; letter-spacing: 0.1em; text-transform: uppercase;">Maquete
+                                                    física premium impressa em 3D</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding: 12px 0 0 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#precision-prototyping-sec"
+                                            target="_blank"
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">Ver
+                                            Vídeo de Fabrico &rarr;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Section 04: Visual Portfolio Header -->
+                    <tr id="showcase">
+                        <td class="mobile-padding"
+                            style="padding: 32px 32px 16px 32px; background-color: #f9f9f9; border-left: 4px solid #1a1a1a;">
+                            <div
+                                style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 500; color: #858383; margin-bottom: 4px; letter-spacing: 0.1em;">
+                                04 /</div>
+                            <h2
+                                style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                Portfólio Visual</h2>
+                        </td>
+                    </tr>
+
+                    
+                    <tr>
+                        <td class="mobile-padding" style="padding: 16px 32px; background-color: #f9f9f9;">
+                            <h3
+                                style="margin: 0 0 12px 0; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                04.1 / Visitas Virtuais Imersivas</h3>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #333333;">
+                                            <img src="cid:virtual" width="536" class="fluid-img" alt="Play Immersive Walkthroughs" style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover; border: 0;" />
+                                            <!-- Description strip overlay -->
+                                            <div style="background-color: #2a2a2a; padding: 12px 16px; text-align: left;">
+                                                <span style="font-size: 12px; font-family: 'Inter', sans-serif; color: #ffffff; line-height: 1.5; display: block;">Misturando fidelidade visual intransigente com exploração espacial fluida. Entre na nossa visão através de simulações em tempo real de alta qualidade, capturando transições de luz natural, interações e detalhes de materiais brutos em fluxo cinemático.</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding: 12px 0 24px 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#walkthrough-sec"
+                                            target="_blank"
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">Explorar
+                                            Visitas Virtuais &rarr;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding" style="padding: 16px 32px; background-color: #f9f9f9;">
+                            <h3
+                                style="margin: 0 0 12px 0; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                04.2 / Sistemas Interativos</h3>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #eeeeee;">
+                                            <img src="cid:panorama" width="536" class="fluid-img" alt="360 Panoramas Preview" style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover; border: 0;" />
+                                            <div style="background-color: #1a1a1a; padding: 12px 16px; text-align: left;">
+                                                <span style="font-size: 12px; font-family: 'Inter', sans-serif; color: #ffffff; line-height: 1.5; display: block;">Experimente panoramas interativos em tempo real diretamente na apresentação de design. Interaja com espaços inteligentes  usando controlos intuitivos de arrasto ou movimento de mãos.</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding: 12px 0 24px 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#interactive-systems-sec"
+                                            target="_blank"
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">Ver
+                                            Panoramas 360&deg; &rarr;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding" style="padding: 16px 32px; background-color: #f9f9f9;">
+                            <h3
+                                style="margin: 0 0 12px 0; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                04.3 / Animações Cinemáticas</h3>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #333333;">
+                                            <img src="cid:animacoes" width="536" class="fluid-img" alt="Play Cinematic Videos" style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover; border: 0;" />
+                                            <!-- Description strip overlay -->
+                                            <div style="background-color: #2a2a2a; padding: 12px 16px; text-align: left;">
+                                                <span style="font-size: 12px; font-family: 'Inter', sans-serif; color: #ffffff; line-height: 1.5; display: block;">Assista às nossas sequências de renderização cinematográfica em tempo real de alta fidelidade, apresentando iluminação atmosférica, animações naturais e materiais.</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding: 12px 0 24px 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#video-renders-sec"
+                                            target="_blank"
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">Reproduzir
+                                            Vídeos Cinemáticos &rarr;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="mobile-padding" style="padding: 16px 32px; background-color: #f9f9f9; border-bottom: 1px solid #eeeeee;">
+                            <h3
+                                style="margin: 0 0 12px 0; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.05em;">
+                                04.4 / Renders de Imagem</h3>
+
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <div style="position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #eeeeee;">
+                                            <img src="cid:house_front" width="536" class="fluid-img" alt="Image Renders Gallery" style="display: block; width: 100%; max-width: 536px; height: 150px; max-height: 150px; object-fit: cover; border: 0;" />
+                                            <!-- Stats strip overlay -->
+                                            <div style="background-color: #1a1a1a; padding: 10px 14px; text-align: left;">
+                                                <span style="font-size: 10px; font-family: monospace; color: #ffffff; letter-spacing: 0.1em; text-transform: uppercase;">&nbsp;</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding: 12px 0 24px 0;">
+                                        <a href="https://mvirgilstudio.com/archviz/code.html#image-renders-sec"
+                                            target="_blank"
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">Abrir
+                                            Galeria Interativa &rarr;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="background-color: #1a1a1a; padding: 32px 24px; color: #b0b0b0;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 20px;">
+                                        <div
+                                            style="font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: #ffffff;">
+                                            MIGUEL VIRGÍLIO STUDIO
+                                        </div>
+                                        <div
+                                            style="font-size: 11px; color: #858383; margin-top: 6px; font-family: monospace; letter-spacing: 0.05em;">
+                                            Visualização Arquitetónica · Web &amp; Creative Coding · 3D VFX</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center"
+                                        style="border-top: 1px solid #2a2a2a; padding-top: 20px; font-size: 11px; line-height: 1.6; color: #626566;">
+                                        <p style="margin: 0;">
+                                            <span>&copy; 2026 Miguel Virgílio Studio. Todos os direitos
+                                                reservados.</span> <br />
+                                            <a href="https://mvirgilstudio.com" target="_blank"
+                                                style="color: #b0b0b0; text-decoration: underline;">Visitar Portfólio do
+                                                Estúdio</a> <br /><br />
+                                            <span style="font-size: 10px; color: #505254; display: block; max-width: 500px; margin: 0 auto; line-height: 1.4;">Se não deseja receber estas mensagens no futuro, por favor responda a este email com a palavra "Remover" ou escreva-nos para mvirgilstudio@gmail.com.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    
+</body>
+
+</html>

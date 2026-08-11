@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="keywords" content="miguel, virgilio, virgílio, miguel virgilio, miguel virgílio, miguel vfx, miguel virgilio studio, miguel virgílio studio, miguel studio, virgílio studio, virgilio studio, immersive, interactive, archviz, 3d animation, web creative coding, ai, 3D Modeling, Animation, 3D Tracking &amp; VFX, Video/Image Composition, Web &amp; Creative Coding, m virgil, mvirgil, virgil, virgil studio, studio, m virgil studio, mvirgil studio, alcobaça, alcobaca" />
+<meta name="description" content="ArchSync - Technical Specs &amp; Blueprint Details - ESP32 microcontroller, 3D printed PLA, and WebGL specs by MIGUEL VIRGÍLIO Studio." />
+<meta name="author" content="Miguel Virgílio" />
+<title>ArchSync - Technical Specs &amp; Blueprint Details</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'electric-cyan': '#00E5FF',
+            'blueprint-gray': '#E2E8F0',
+            'tech-dark': '#0F172A',
+          },
+          fontFamily: {
+            hanken: ['Hanken Grotesk', 'sans-serif'],
+          },
+          letterSpacing: {
+            'widest-tech': '0.2em',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="typography">
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+    }
+    .heading-wide {
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .blueprint-label {
+      letter-spacing: 0.25em;
+      font-weight: 800;
+    }
+  </style>
+<style data-purpose="layout-decorations">
+    /* Custom lines and geometric borders to match the reference image */
+    .blueprint-border {
+      border: 1px solid #cbd5e1;
+      position: relative;
+      border-radius: 4px;
+    }
+    .blueprint-border::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid #00E5FF;
+      border-left: 2px solid #00E5FF;
+    }
+    .cyan-glow {
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    }
+    .connecting-line {
+      background-color: #00E5FF;
+      opacity: 0.5;
+    }
+    /* Simple SVG stroke animation for a "blueprint" feel */
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    .blueprint-illustration {
+      filter: grayscale(100%) brightness(0.2);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body class="bg-white text-tech-dark min-h-screen flex items-center justify-center p-4 md:p-8">
+<!-- BEGIN: Main Container -->
+<main class="max-w-7xl w-full border border-gray-200 rounded-xl p-8 md:p-12 shadow-sm relative overflow-hidden" data-purpose="specs-section">
+<!-- BEGIN: Header Section -->
+<header class="text-center mb-16" data-purpose="header">
+<h1 class="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
+        Technical Specs &amp; Blueprint Details
+      </h1>
+<p class="text-gray-500 text-lg font-light">
+        Deep dive into the ArchSync Model's physical and digital components.
+      </p>
+</header>
+<!-- END: Header Section -->
+<!-- BEGIN: Grid Content -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 relative" data-purpose="blueprint-grid">
+<!-- Central Interconnecting Lines Decoration (Desktop) -->
+<div class="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-40 pointer-events-none" data-purpose="center-decoration">
+<svg class="w-full h-full" fill="none" viewbox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 50 H30 V150 H0" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+<path d="M100 50 H70 V150 H100" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+<path d="M30 100 H70" opacity="0.6" stroke="#00E5FF" stroke-width="1.5"></path>
+<circle cx="50" cy="100" fill="#00E5FF" r="4"></circle>
+</svg>
+</div>
+<!-- LEFT COLUMN: HARDWARE -->
+<div class="space-y-10" data-purpose="hardware-column">
+<h2 class="blueprint-label text-sm text-gray-900 mb-6">HARDWARE</h2>
+<!-- Hardware Item 1: Microcontrollers -->
+<div class="blueprint-border p-6 flex flex-col md:flex-row items-center gap-6 bg-white hover:shadow-md transition-shadow">
+<div class="w-32 h-32 flex-shrink-0 flex items-center justify-center border-r border-gray-100 pr-4">
+<!-- Placeholder for Microcontroller Illustration -->
+<img alt="Microcontroller Blueprint" class="blueprint-illustration w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4JGIuszX1PJHahcgfbFmGhfWslckVpdrrXW3FB63bGEfZ1BuRkpzGykz3dopw0nOZK1JXqyKfFnDGV4UH_Cp-pD6klbs5TWFpU5u7kogRPbJ-DYs4GcgyJTqEfBqsv9yefEnueCjoHu1d7KXhJGHM6tR8Nw120oKhUGphWw84-qIUVFfQjSmpy5C04kOAFASI4qPjtZgovRgKSH3uEatvMKll68H_W1Vi-_kXoJ8G2ePwtITSjjG85IIYuERP28c4eFG0AxQGu_A"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-bold text-lg mb-2">Microcontrollers</h3>
+<ul class="text-sm space-y-1 text-gray-600">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span> ESP32 &amp; Arduino</li>
+<li>Wireless Comm</li>
+<li>Data Processing</li>
+</ul>
+</div>
+<!-- Blueprint style line accent -->
+<div class="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 w-4 h-[1px] bg-electric-cyan opacity-40"></div>
+</div>
+<!-- Hardware Item 2: 3D Printed PLA -->
+<div class="blueprint-border p-6 flex flex-col md:flex-row items-center gap-6 bg-white hover:shadow-md transition-shadow">
+<div class="w-32 h-32 flex-shrink-0 flex items-center justify-center border-r border-gray-100 pr-4">
+<!-- Placeholder for 3D Printing Illustration -->
+<img alt="3D Print Blueprint" class="blueprint-illustration w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfCbo8gxhNr-5ARPjKa3IvBahG3fglcpaUWlD_qE9Sowv-RXMHFo5a1qm_BK4XnXl_mi-OvhS0kBuMIt7YJqM2EO_dEX8k-Er_AqxODByqpz-CQzPrlM25li_TVGV2eWgmsfyIfJHL1ZF2ofHcALBANXwzlqc9G0dIo2EuwOuy0nPBUkjD9sx_nXcpup7dUR4MHfEq9H89GyaTWpIrnXmMAt1sQRrAL7LXrQXIaws3ROsDUnCOvZhqZh5h7fsVsba-H1hknMDnP-4"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-bold text-lg mb-2">3D Printed PLA</h3>
+<ul class="text-sm space-y-1 text-gray-600">
+<li>Precision Components</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span> Eco-friendly Material</li>
+<li>Durable Build</li>
+</ul>
+</div>
+<!-- Blueprint style line accent -->
+<div class="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 w-4 h-[1px] bg-electric-cyan opacity-40"></div>
+</div>
+</div>
+<!-- RIGHT COLUMN: SOFTWARE -->
+<div class="space-y-10" data-purpose="software-column">
+<h2 class="blueprint-label text-sm text-gray-900 mb-6">SOFTWARE</h2>
+<!-- Software Item 1: Real-time Rendering -->
+<div class="blueprint-border p-6 flex flex-col md:flex-row items-center gap-6 bg-white hover:shadow-md transition-shadow">
+<!-- Blueprint style line accent -->
+<div class="hidden md:block absolute -left-4 top-1/2 -translate-y-1/2 w-4 h-[1px] bg-electric-cyan opacity-40"></div>
+<div class="w-32 h-32 flex-shrink-0 flex items-center justify-center border-r border-gray-100 pr-4">
+<!-- Placeholder for WebGL Illustration -->
+<img alt="WebGL Rendering Blueprint" class="blueprint-illustration w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA6vqyWAtMCFwxXoZ7N9gosbjJb4GCzVfYVDqphNBTlHT-FJpT7r4EEqChOL65hXiy2xWy2VwUzusCvwkHTRT_HOzJIxL2TLqzZq9VIdald9Dv9oP2YRs3Z87xSWd7nR71Ne7uBzyQzWaMeoSGy8kiH3xhicLF7d2jsU0qa4lO7AAnrg6wDKdTK0I4K42GC9n39PuhY5HbAx9WyQ7P_L3vTlh2djXxcdnpojM6PlVnOzDg34T2KpXOiYC_ZYVpB8jpeFuFzYMCGzE"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-bold text-lg mb-2 text-right md:text-left">Real-time Rendering</h3>
+<ul class="text-sm space-y-1 text-gray-600 md:text-left">
+<li class="flex items-center gap-2 justify-end md:justify-start">
+<span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span> WebGL Powered
+              </li>
+<li class="text-right md:text-left">Instant Visualization</li>
+<li class="text-right md:text-left">Digital Twin Sync</li>
+</ul>
+</div>
+</div>
+<!-- Software Item 2: Sensor Mapping -->
+<div class="blueprint-border p-6 flex flex-col md:flex-row items-center gap-6 bg-white hover:shadow-md transition-shadow">
+<!-- Blueprint style line accent -->
+<div class="hidden md:block absolute -left-4 top-1/2 -translate-y-1/2 w-4 h-[1px] bg-electric-cyan opacity-40"></div>
+<div class="w-32 h-32 flex-shrink-0 flex items-center justify-center border-r border-gray-100 pr-4">
+<!-- Placeholder for Sensor Map Illustration -->
+<img alt="Sensor Mapping Blueprint" class="blueprint-illustration w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmA6bscYlwwBeCJKLpAJEkOZ4e9CIVDNG1ayHG2Er-_Qlp6teD7bN59U5hN1QdbdwYeL867zu7l6Sa5IrAZt5l9TIPJ2OudPW6RNk1hfwHuyMMz0qfItq3iog3faqHlmam20hOEcTutwFnV5k3q_6VBZKtmdblZdw0Nk7knx3beCzV6h-5uSmOMx_akFy1LLkqzrNUcb1iwv-OAalHRBDpuNijdNtA--mmEYi3e8qr9Ju8JKqzSIvup2geKPPsQ5KqtJ9tEIZp9yo"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-bold text-lg mb-2 text-right md:text-left">Sensor Mapping</h3>
+<ul class="text-sm space-y-1 text-gray-600 md:text-left">
+<li class="text-right md:text-left">Spatial Tracking</li>
+<li class="flex items-center gap-2 justify-end md:justify-start">
+<span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span> Gesture Recognition
+              </li>
+<li class="text-right md:text-left">Seamless Interaction</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- END: Grid Content -->
+<!-- BEGIN: Footer/CTA Section -->
+<footer class="mt-20 flex justify-center" data-purpose="footer-cta">
+<button class="bg-electric-cyan text-tech-dark font-bold py-4 px-10 rounded-lg shadow-lg cyan-glow hover:scale-105 active:scale-95 transition-all duration-200">
+        Request Demo
+      </button>
+</footer>
+<!-- END: Footer/CTA Section -->
+</main>
+<!-- END: Main Container -->
+</body></html>

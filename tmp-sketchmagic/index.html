@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/mvfx_logo.svg">
+    <title>MVs SketchMagic AI | Level Up Your Art!</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=DotGothic16&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        concrete: "#b0b0b0",
+                    },
+                    fontFamily: {
+                        orbitron: ["Orbitron", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        #root header {
+            display: none !important;
+        }
+
+        /* Ensure SketchMagic popups appear above the main portfolio navbar (z-[500]) */
+        .fixed.inset-0.z-\[200\],
+        .z-\[200\] {
+            z-index: 1000 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Portfolio Integration Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full px-6 sm:px-12 md:px-16 py-3 md:py-5 z-[100] pointer-events-none mix-blend-difference bg-neutral-800/80 backdrop-blur-md grayscale-[10%]"
+        id="main-header">
+        <div class="flex justify-between items-center w-full">
+            <div class="cursor-pointer pointer-events-auto group"
+                onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <svg viewBox="0 0 1920 1080" class="h-8 md:h-[38.4px] w-auto">
+                        <g fill="#b0b0b0" class="transition-opacity group-hover:opacity-80">
+                            <path
+                                d="M424.86,291.14c1.02,11.16-1.19,22.28-1.85,33.37-10.01,168.36-21.31,336.76-33,505-1.58,22.77-1.36,47.42-4.13,69.87-5.95,48.25-44.76,75.11-92.37,69.61l-132.51-8.99,29.99-450.51c3.07-46.01,5.15-92.05,9-138,2.16-25.8,1.74-45,20.5-65.5,28.36-30.99,59.72-24.14,97.02-22,33.91,1.95,69.33,2.85,103,6.01,1.51.14,3,.47,4.35,1.14Z" />
+                            <path
+                                d="M697.96,325.03l105.96,386.54c12.5,42.4-11.69,85.42-53.92,96.94l-138.01,37.49-106.53-388.97c-9.29-44.84,10.39-80.02,53.52-94.54,38.91-13.1,87.6-25.49,127.79-35.21,1.88-.46,10.36-2.97,11.18-2.25Z" />
+                            <path
+                                d="M881.5,94.04l299.47,360.49c29.61,34.48,27.99,79.47-4.96,110.98l-111.66,92.4c-1.32.24-2.1-1.14-2.88-1.89-9.68-9.42-21.33-25.61-30.45-36.55-88.98-106.73-176.67-214.56-266-321-31.21-36.14-28.65-81.31,6.5-113.45l109.97-90.98Z" />
+                            <path
+                                d="M1054.06,849.09l280.39-154.14,167.05-583.95c10.52-43.7,52.14-64.24,94.87-54.88l161.66,19.34c1.55,1.16.46,1.27.22,2.26-1.35,5.49-3.04,11.03-4.54,16.49-67.07,244.01-136.55,487.45-204.95,731.05-11.58,29.34-31.64,48.25-58.74,63.26-82.44,45.64-171.49,83.3-254.34,128.66-42.39,18.03-77.87,6.18-102.49-31.87-27.56-42.59-49.97-88.88-77.36-131.64l-1.78-4.58Z" />
+                        </g>
+                    </svg>
+                    <span
+                        class="text-[10px] sm:text-sm md:text-base xl:text-lg font-medium font-orbitron tracking-[0.1em] md:tracking-[0.2em] xl:tracking-[0.3em] text-concrete group-hover:opacity-80 transition-opacity hidden min-[400px]:block whitespace-nowrap flex-shrink-0 uppercase">MIGUEL
+                        VIRGÍLIO <span class="opacity-60 font-light text-[0.85em]">STUDIO</span></span>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex gap-6 xl:gap-8 pointer-events-auto items-center">
+                <a href="/#expertise"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    data-t="nav.expertise">
+                    ESPECIALIDADE
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#about"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    data-t="nav.about">
+                    SOBRE
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/#contact"
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer transition-colors relative group no-underline"
+                    data-t="nav.contact">
+                    CONTACTO
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </a>
+
+                <span
+                    class="text-sm font-mono uppercase tracking-widest text-concrete hover:text-white cursor-pointer relative group w-6 text-center pointer-events-auto"
+                    onclick="toggleLang()" id="lang-toggle">
+                    PT
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                </span>
+            </nav>
+
+            <button class="lg:hidden flex items-center gap-2 sm:gap-4 pointer-events-auto" id="mobile-menu-btn"
+                onclick="toggleMenu()">
+                <span class="text-[10px] sm:text-xs font-mono tracking-widest text-concrete uppercase"
+                    id="menu-text">Menu</span>
+                <div class="relative w-6 h-4 group cursor-pointer">
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-0"
+                        id="hamburger-top"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-opacity duration-300 top-2"
+                        id="hamburger-mid"></span>
+                    <span class="absolute left-0 w-full h-[1px] bg-white transition-all duration-300 ease-out top-4"
+                        id="hamburger-bottom"></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 min-h-screen bg-black z-[450] flex flex-col justify-center p-8 lg:hidden pointer-events-none opacity-0 transition-all duration-500 translate-x-full">
+        <div class="flex flex-col gap-6 sm:gap-8 min-[400px]:gap-12 max-w-sm mx-auto w-full pointer-events-auto">
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">01</span>
+                <span data-t="nav.expertise">ESPECIALIDADE</span>
+            </div>
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">02</span>
+                <span data-t="nav.about">SOBRE</span>
+            </div>
+            <div class="text-lg min-[400px]:text-xl sm:text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-tighter hover:opacity-50 transition-opacity cursor-pointer flex items-center gap-3 sm:gap-6 group"
+                onclick="toggleMenu()">
+                <span class="text-xs font-mono text-concrete group-hover:text-white transition-colors">03</span>
+                <span data-t="nav.contact">CONTACTO</span>
+            </div>
+
+            <!-- Mobile Language Switcher -->
+            <div class="mt-8 flex gap-4 font-mono text-sm tracking-widest pointer-events-auto">
+                <span class="text-white cursor-pointer" id="lang-pt-mobile" onclick="toggleLang()">PT</span>
+                <span class="text-white/20">/</span>
+                <span class="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" id="lang-en-mobile"
+                    onclick="toggleLang()">EN</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="root"></div>
+
+    <!-- Optical Control UI -->
+    <div id="optical-ui-wrapper" style="visibility: hidden; opacity: 0; pointer-events: none;"
+        class="fixed top-16 left-4 sm:top-auto sm:bottom-4 z-[3000] flex flex-col items-start gap-2 transition-all duration-300">
+        <div id="camera-container"
+            class="w-24 sm:w-32 aspect-video bg-black/80 rounded-xl overflow-hidden border border-white/20 shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none">
+            <video id="input-video" class="w-full h-full object-cover absolute opacity-0 pointer-events-none"
+                playsinline></video>
+            <canvas id="output-canvas" class="w-full h-full object-cover opacity-60" width="640" height="480"></canvas>
+        </div>
+        <button id="hand-tracking-toggle" onclick="window.toggleHandTracking()"
+            class="flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-black/80 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/10 transition-all group pointer-events-auto shadow-xl">
+            <div id="tracking-status" class="w-2 h-2 rounded-full bg-white/30"></div>
+            <span id="tracking-button-text"
+                class="text-xs sm:text-sm font-mono text-white/80 group-hover:text-white">Optical Control</span>
+        </button>
+    </div>
+
+    <!-- Hand Cursor -->
+    <div id="hand-cursor"
+        class="fixed w-8 h-8 rounded-full border-2 border-white bg-white/20 pointer-events-none z-[4000] opacity-0 transition-all duration-75 transform -translate-x-1/2 -translate-y-1/2">
+    </div>
+
+
+    <script>
+        // Comprehensive translation map for SketchMagic
+        const translations = {
+            pt: {
+                // Navbar
+                "nav.expertise": "ESPECIALIDADE",
+                "nav.about": "SOBRE",
+                "nav.contact": "CONTACTO",
+                "nav.menu": "Menu",
+                "nav.close": "Fechar",
+                // Hero
+                "Unleash Imagination!": "Liberta a Imaginação!",
+                "DRAW WITH YOUR HANDS!": "DESENHA COM AS TUAS MÃOS!",
+                "Wave your hands to create magical sketches and watch them transform into playful AI images in real time!": "Acena com as mãos para criares esboços mágicos e vê-os transformarem-se em imagens de IA divertidas em tempo real!",
+                "START MAGIC!": "COMEÇAR MAGIA!",
+                "MEMORY GAME!": "JOGO DA MEMÓRIA!",
+                "RE_MIXING...": "A REMISTURAR...",
+                // Concept
+                "FUN & INTERACTIVE MAGIC": "MAGIA DIVERTIDA E INTERATIVA",
+                "An immersive experience combining creativity and technology. Sensors capture your movements and transform them into art instantly!": "Uma experiência imersiva que combina criatividade e tecnologia. Sensores captam os teus movimentos e transformam-nos em arte instantaneamente!",
+                "#MAGIC_WAND": "#VARINHA_MÁGICA",
+                "#SUPER_FUN": "#DIVERSÃO_TOTAL",
+                "#CREATIVE": "#CRIATIVO",
+                // How to Play
+                "HOW TO PLAY": "COMO JOGAR",
+                "WAVE & DRAW": "ACENA E DESENHA",
+                "Wave your hands in the air to draw on the screen. The more creative, the better!": "Acena com as mãos no ar para desenhares no ecrã. Quanto mais criativo, melhor!",
+                "PICK A THEME": "ESCOLHE UM TEMA",
+                "Choose your theme: Cute Cartoon Monsters, Rainbow Stars, or Abstract Landscapes.": "Escolhe o teu tema: Monstros Coloridos, Estrelas Arco-íris ou Paisagens Abstratas.",
+                "WATCH IT GLOW": "VÊ O BRILHO",
+                "Watch projections display your results in real time! Share your magical art with everyone.": "Vê as projeções mostrarem os teus resultados em tempo real! Partilha a tua arte mágica com todos.",
+                // Features
+                "REAL-TIME": "TEMPO REAL",
+                "INSTANT PROJECTIONS": "PROJEÇÕES INSTANTÂNEAS",
+                "Sensors instantly capture your every gesture, projecting your playful AI-generated art onto screens in real time.": "Sensores captam instantaneamente cada gesto teu, projetando a tua arte gerada por IA nos ecrãs em tempo real.",
+                "SUPER FAST": "SUPER RÁPIDO",
+                "As you move, the magic follows. See your art transform instantly on the big screen.": "À medida que te moves, a magia acompanha-te. Vê a tua arte transformar-se instantaneamente no ecrã gigante.",
+                "100% FUN": "100% DIVERSÃO",
+                "CUTE MONSTERS": "MONSTROS FOFOS",
+                "Create friendly, colorful cartoon monsters that react to your movements.": "Cria monstros de animação amigáveis e coloridos que reagem aos teus movimentos.",
+                "RAINBOW STARS": "ESTRELAS ARCO-ÍRIS",
+                "Fill the screen with magical, glowing rainbow stars and bright colors.": "Enche o ecrã com estrelas arco-íris mágicas e brilhantes.",
+                "DREAM LANDSCAPES": "PAISAGENS DE SONHO",
+                "Build beautiful, abstract landscapes based on your pure imagination.": "Constrói paisagens abstratas e bonitas baseadas na tua pura imaginação.",
+                // Footer
+                "DIREITOS RESERVADOS": "TODOS OS DIREITOS RESERVADOS",
+                "SOLUÇÕES EM TECNOLOGIA DE MISTURA DE REALIDADES": "SOLUÇÕES TECNOLÓGICAS DE REALIDADE MISTA"
+            },
+            en: {
+                "nav.expertise": "EXPERTISE",
+                "nav.about": "ABOUT",
+                "nav.contact": "CONTACT",
+                "nav.menu": "Menu",
+                "nav.close": "Close",
+                "Unleash Imagination!": "Unleash Imagination!",
+                "DRAW WITH YOUR HANDS!": "DRAW WITH YOUR HANDS!",
+                "Wave your hands to create magical sketches and watch them transform into playful AI images in real time!": "Wave your hands to create magical sketches and watch them transform into playful AI images in real time!",
+                "START MAGIC!": "START MAGIC!",
+                "MEMORY GAME!": "MEMORY GAME!",
+                "RE_MIXING...": "RE_MIXING...",
+                "FUN & INTERACTIVE MAGIC": "FUN & INTERACTIVE MAGIC",
+                "An immersive experience combining creativity and technology. Sensors capture your movements and transform them into art instantly!": "An immersive experience combining creativity and technology. Sensors capture your movements and transform them into art instantly!",
+                "#MAGIC_WAND": "#MAGIC_WAND",
+                "#SUPER_FUN": "#SUPER_FUN",
+                "#CREATIVE": "#CREATIVE",
+                "HOW TO PLAY": "HOW TO PLAY",
+                "WAVE & DRAW": "WAVE & DRAW",
+                "Wave your hands in the air to draw on the screen. The more creative, the better!": "Wave your hands in the air to draw on the screen. The more creative, the better!",
+                "PICK A THEME": "PICK A THEME",
+                "Choose your theme: Cute Cartoon Monsters, Rainbow Stars, or Abstract Landscapes.": "Choose your theme: Cute Cartoon Monsters, Rainbow Stars, or Abstract Landscapes.",
+                "WATCH IT GLOW": "WATCH IT GLOW",
+                "Watch projections display your results in real time! Share your magical art with everyone.": "Watch projections display your results in real time! Share your magical art with everyone.",
+                "REAL-TIME": "REAL-TIME",
+                "INSTANT PROJECTIONS": "INSTANT PROJECTIONS",
+                "Sensors instantly capture your every gesture, projecting your playful AI-generated art onto screens in real time.": "Sensors instantly capture your every gesture, projecting your playful AI-generated art onto screens in real time.",
+                "SUPER FAST": "SUPER FAST",
+                "As you move, the magic follows. See your art transform instantly on the big screen.": "As you move, the magic follows. See your art transform instantly on the big screen.",
+                "100% FUN": "100% FUN",
+                "CUTE MONSTERS": "CUTE MONSTERS",
+                "Create friendly, colorful cartoon monsters that react to your movements.": "Create friendly, colorful cartoon monsters that react to your movements.",
+                "RAINBOW STARS": "RAINBOW STARS",
+                "Fill the screen with magical, glowing rainbow stars and bright colors.": "Fill the screen with magical, glowing rainbow stars and bright colors.",
+                "DREAM LANDSCAPES": "DREAM LANDSCAPES",
+                "Build beautiful, abstract landscapes based on your pure imagination.": "Build beautiful, abstract landscapes based on your pure imagination.",
+                "DIREITOS RESERVADOS": "ALL RIGHTS RESERVED",
+                "SOLUÇÕES EM TECNOLOGIA DE MISTURA DE REALIDADES": "MIXED REALITY TECHNOLOGY SOLUTIONS"
+            }
+        };
+
+        let currentLang = 'pt';
+
+        function translateNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.textContent.trim();
+                if (!text) return;
+
+                for (const key in translations.en) {
+                    if (translations.en[key] === text && currentLang === 'pt') {
+                        node.textContent = node.textContent.replace(translations.en[key], translations.pt[key]);
+                        return;
+                    }
+                }
+                for (const key in translations.pt) {
+                    if (translations.pt[key] === text && currentLang === 'en') {
+                        node.textContent = node.textContent.replace(translations.pt[key], translations.en[key]);
+                        return;
+                    }
+                }
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.id === 'main-header' || node.id === 'mobile-menu') return;
+
+                // Handle complex titles with nested tags/br
+                if (node.tagName === 'H1' || node.tagName === 'H2') {
+                    const fullText = node.innerText.replace(/\s+/g, ' ').trim().toUpperCase();
+                    const isHero = fullText.includes("DRAW WITH YOUR HANDS") || fullText.includes("DESENHA COM AS TUAS MÃOS");
+                    const isConcept = fullText.includes("FUN & INTERACTIVE MAGIC") || fullText.includes("MAGIA DIVERTIDA E INTERATIVA");
+
+                    if (isHero) {
+                        if (currentLang === 'pt') {
+                            node.innerHTML = 'DESENHA COM <br /> AS TUAS <span class="text-secondary">MÃOS!</span>';
+                        } else {
+                            node.innerHTML = 'DRAW WITH <br /> YOUR <span class="text-secondary">HANDS!</span>';
+                        }
+                        return;
+                    }
+                    if (isConcept) {
+                        if (currentLang === 'pt') {
+                            node.innerHTML = 'MAGIA DIVERTIDA E <br/><span class="text-white drop-shadow-[4px_4px_0px_#000]">INTERATIVA</span>';
+                        } else {
+                            node.innerHTML = 'FUN & INTERACTIVE <br/><span class="text-white drop-shadow-[4px_4px_0px_#000]">MAGIC</span>';
+                        }
+                        return;
+                    }
+                }
+
+                node.childNodes.forEach(translateNode);
+            }
+        }
+
+        function updateLanguage() {
+            // 1. Update static elements with data-t
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (translations[currentLang][key]) {
+                    el.textContent = translations[currentLang][key];
+                }
+            });
+
+            // 2. Update dynamic content inside #root
+            const root = document.getElementById('root');
+            if (root) translateNode(root);
+
+            // 3. Update toggle buttons UI
+            const toggle = document.getElementById('lang-toggle');
+            if (toggle) toggle.textContent = currentLang.toUpperCase();
+
+            const ptMobile = document.getElementById('lang-pt-mobile');
+            const enMobile = document.getElementById('lang-en-mobile');
+
+            if (ptMobile && enMobile) {
+                if (currentLang === 'pt') {
+                    ptMobile.classList.add('text-white');
+                    ptMobile.classList.remove('opacity-40');
+                    enMobile.classList.remove('text-white');
+                    enMobile.classList.add('opacity-40');
+                } else {
+                    enMobile.classList.add('text-white');
+                    enMobile.classList.remove('opacity-40');
+                    ptMobile.classList.remove('text-white');
+                    ptMobile.classList.add('opacity-40');
+                }
+            }
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            updateLanguage();
+        }
+
+        // MutationObserver to handle React re-renders
+        const observer = new MutationObserver((mutations) => {
+            if (currentLang === 'pt') { // Only auto-translate to PT if that's the current selection
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => translateNode(node));
+                });
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage();
+            const root = document.getElementById('root');
+            if (root) {
+                observer.observe(root, { childList: true, subtree: true });
+            }
+        });
+    </script>
+
+    <!-- MediaPipe dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script type="module" src="/src/optical.js"></script>
+</body>
+
+</html>
